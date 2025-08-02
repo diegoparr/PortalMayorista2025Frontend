@@ -10,50 +10,50 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "http://82.25.91.192:8082/api/$1"
+      "source": "/api/(.*)",
+      "destination": "http://82.25.91.192:8082/api/$1"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "http://82.25.91.192:8082/images/$1"
+      "source": "/images/(.*)",
+      "destination": "http://82.25.91.192:8082/images/$1"
     },
     {
-      "src": "/build.js",
-      "dest": "/build.js"
+      "source": "/build.js",
+      "destination": "/build.js"
     },
     {
-      "src": "/style.css",
-      "dest": "/style.css"
+      "source": "/style.css",
+      "destination": "/style.css"
     },
     {
-      "src": "/favicon.png",
-      "dest": "/favicon.png"
+      "source": "/favicon.png",
+      "destination": "/favicon.png"
     },
     {
-      "src": "/img/(.*)",
-      "dest": "/img/$1"
+      "source": "/img/(.*)",
+      "destination": "/img/$1"
     },
     {
-      "src": "/fonts/(.*)",
-      "dest": "/fonts/$1"
+      "source": "/fonts/(.*)",
+      "destination": "/fonts/$1"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
     },
     {
-      "src": "/new/(.*)",
-      "dest": "/new/$1"
+      "source": "/new/(.*)",
+      "destination": "/new/$1"
     },
     {
-      "src": "/dist/(.*)",
-      "dest": "/dist/$1"
+      "source": "/dist/(.*)",
+      "destination": "/dist/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api|images|build\\.js|style\\.css|favicon\\.png|img|fonts|assets|new|dist).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
