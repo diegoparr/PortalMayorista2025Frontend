@@ -52,7 +52,7 @@
       "destination": "/dist/$1"
     },
     {
-      "source": "/((?!api|images|build\\.js|style\\.css|favicon\\.png|img|fonts|assets|new|dist).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
