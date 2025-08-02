@@ -1,9 +1,9 @@
 <template>
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" v-if="getAutenticadoFull">
-      <img :src="getUsuario.v_avatar" class="user-image"
+      <img :src="getImageUrl(getUsuario.v_avatar)" class="user-image"
            alt="User Image">
-      <span class="hidden-xs">{{getUsuario.v_primer_nombre + ' ' + getUsuario.v_primer_apellido}}</span>
+      <span class="hidden-xs">{{getUsuario.v_primer_nombre}} {{getUsuario.v_primer_apellido}}</span>
     </a>
     <button type="button" class="btn btn-hipertienda-oscuro btn-flat" style="margin: 7px;" v-else v-on:click="register">
       <i class="fa fa-user-plus" aria-hidden="true">
@@ -11,8 +11,9 @@
       <span id="registrate"> Registrate</span>
     </button>
     <ul class="dropdown-menu">
+      <!-- User image -->
       <li class="user-header">
-        <img :src="getUsuario.v_avatar" class="img-circle"
+        <img :src="getImageUrl(getUsuario.v_avatar)" class="img-circle"
              alt="User Image">
         <p>
           {{getUsuario.v_primer_nombre + ' ' + getUsuario.v_primer_apellido}}

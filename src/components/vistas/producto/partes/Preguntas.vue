@@ -21,7 +21,7 @@
       <div class="ctj-pgta-inf-producto" v-for="post in pagination.data">
         <div class="dll-usr-pgta-inf-producto">
           <div class="ctd-img-usr-pgta-inf-producto">
-            <img :src="post.usuario.v_avatar" class="img-usr-pgta-inf-producto">
+            <img :src="getImageUrl(post.usuario.v_avatar)" class="img-usr-pgta-inf-producto">
           </div>
           <div class="ctd-dts-usr-pgta-inf-producto">
             <div class="ctd-txt-usr-pgta-inf-producto">

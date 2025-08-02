@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-md-12">
       <div align="center" class="container-imgs">
         <div class="col-md-4 col-md-offset-4">
-          <img :src="usuario.v_avatar"
+          <img :src="getImageUrl(usuario.v_avatar)"
                class="centrar-imagen imagen-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen avatar

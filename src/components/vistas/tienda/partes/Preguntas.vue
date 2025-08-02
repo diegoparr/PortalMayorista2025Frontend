@@ -36,7 +36,7 @@
       <div class="cj-pgta-inf-tienda" v-for="post in pagination.data" v-if="post.usuario !=null">
         <div class="ctd-dts-usr-pgta-inf-tienda">
           <div class="ctd-img-usr-pgta-inf-tienda">
-            <img :src="post.usuario.v_avatar" class="img-usr-pgta-inf-tienda">
+            <img :src="getImageUrl(post.usuario.v_avatar)" class="img-usr-pgta-inf-tienda">
           </div>
           <div class="dts-usr-pgta-info-tienda">
             <div class="txt-usr-pgta-inf-tienda">

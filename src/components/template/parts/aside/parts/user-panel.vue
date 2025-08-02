@@ -1,6 +1,6 @@
 <template>
   <div class="user-panel" v-if="getAutenticadoFull">
-    <img :src="getUsuario.v_avatar" class="img-circle img-responsive img-sidebar" alt="User Image" style="margin: auto">
+    <img :src="getImageUrl(getUsuario.v_avatar)" class="img-circle img-responsive img-sidebar" alt="User Image" style="margin: auto">
   </div>
 </template>
 <script>

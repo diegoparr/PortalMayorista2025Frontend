@@ -4,7 +4,7 @@
       <template v-if="getUsuario.estaAutenticadoFull">
         <div class="nombre-img-usuario">
           <div class="contenedor-img-usuario-panel">
-            <img :src="getUsuario.v_avatar" class="img-usuario-panel">
+            <img :src="getImageUrl(getUsuario.v_avatar)" class="img-usuario-panel">
           </div>
           <div class="contenedor-nombre-usuario-panel">
             <span>
