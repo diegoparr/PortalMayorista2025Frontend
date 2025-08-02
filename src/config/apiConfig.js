@@ -2,11 +2,12 @@ export default {
   // Configuración de API según el entorno
   getApiBaseUrl() {
     if (process.env.NODE_ENV === 'production') {
-      // En producción, usar el proxy de Vercel
-      return '';
+      // En producción, usar la IP del VPS
+      return 'http://82.25.91.192:8082';
     } else {
       // En desarrollo, usar la URL directa del backend
-      return 'http://82.25.91.192:8082';
+     return 'http://82.25.91.192:8082';
+      //return 'http://127.0.0.1:8000';
     }
   },
 
