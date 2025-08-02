@@ -132,7 +132,7 @@
                       <v-layout>
                         <v-flex>
                           <a @click.stop="zoom2 = !zoom2" class="product-image-link">
-                            <img :src="carouselItem" alt="" class="main-product-image">
+                            <img :src="getImageUrl(carouselItem)" alt="" class="main-product-image" @error="handleImageError">
                           </a>
                         </v-flex>
                         <v-dialog class="text-xs-center" v-model="zoom2" fullscreen hide-overlay
@@ -144,7 +144,7 @@
                           </v-toolbar>
                           <v-card class="text-xs-center">
                             <v-container>
-                              <img style="height: 700px; width: auto" :src="imagen2" alt="">
+                              <img style="height: 700px; width: auto" :src="getImageUrl(imagen2)" alt="" @error="handleImageError">
                             </v-container>
                           </v-card>
                         </v-dialog>
@@ -757,7 +757,25 @@
           this.$router.push('/tienda/' + slug);
         },
         handleImageError(event) {
-          event.target.src = '../../../dist/new/promo2.jpg';
+          console.warn('Image failed to load:', event.target.src);
+          event.target.src = this.getImageUrl(null); // Usar la imagen por defecto del mixin
+        },
+        
+        // Método de depuración para verificar URLs de imágenes
+        debugImageUrls() {
+          console.log('=== DEBUG IMAGE URLS ===');
+          console.log('carouselItem:', this.carouselItem);
+          console.log('imagen2:', this.imagen2);
+          console.log('producto.v_portada:', this.producto.v_portada);
+          console.log('getImageUrl(carouselItem):', this.getImageUrl(this.carouselItem));
+          console.log('getImageUrl(imagen2):', this.getImageUrl(this.imagen2));
+          if (this.producto.imagenes) {
+            console.log('producto.imagenes:', this.producto.imagenes);
+            this.producto.imagenes.forEach((img, index) => {
+              console.log(`imagen ${index}:`, img.v_url, '->', this.getImageUrl(img.v_url));
+            });
+          }
+          console.log('=== END DEBUG ===');
         },
         compartirFacebook() {
           try {
