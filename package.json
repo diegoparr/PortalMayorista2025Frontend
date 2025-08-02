@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png ."
   },
   "dependencies": {
     "@deveodk/vue-toastr": "^1.0.4",
