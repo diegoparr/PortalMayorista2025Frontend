@@ -1,0 +1,9 @@
+<template>
+  <v-app>
+    <v-card>
+      <v-card-title>
+        CONFIGURACION
+      </v-card-title>
+    </v-card>
+  </v-app>
+</template>

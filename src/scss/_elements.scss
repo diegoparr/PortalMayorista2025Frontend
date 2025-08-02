@@ -1,0 +1,46 @@
+.btn-hipertienda {
+  background-color: $color_hipertienda;
+  color: white;
+}
+
+.btn-hipertienda:hover {
+  background-color: $color_hipertienda;
+  color: white;
+}
+
+.btn-hipertienda:focus {
+  background-color: $color_hipertienda_hover;
+  color: white;
+}
+
+.btn-hipertienda-oscuro {
+  background-color: $color_hipertienda_oscuro;
+  color: white;
+}
+
+.btn-hipertienda-oscuro:hover {
+  background-color: $color_hipertienda_oscuro_hover;
+  color: white;
+}
+
+.btn-hipertienda-oscuro:focus {
+  background-color: $color_hipertienda_oscuro_hover;
+  color: white;
+}
+
+.container-elements {
+  background-color: transparent;
+  margin: 15px 0 15px 0;
+}
+
+.size-icon-elements {
+  font-size: 20px;
+}
+
+.box.box-hipertienda {
+  border-top-color: $color_hipertienda;
+}
+
+.footer-container-product {
+
+}

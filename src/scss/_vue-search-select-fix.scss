@@ -1,0 +1,347 @@
+/* Estilos agresivos para vue-search-select */
+/* Estos estilos se aplican con !important para asegurar que tengan prioridad */
+
+/* Estilos base para v-select */
+.v-select {
+  position: relative !important;
+  width: 100% !important;
+  font-family: inherit !important;
+}
+
+/* Estilos para el toggle del dropdown */
+.v-select .dropdown-toggle,
+.ui.fluid.search.selection.dropdown {
+  background: #ffffff !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  color: #2c3e50 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 48px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+/* Hover y focus states */
+.v-select .dropdown-toggle:hover,
+.ui.fluid.search.selection.dropdown:hover {
+  border-color: #3498db !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
+}
+
+.v-select .dropdown-toggle:focus,
+.ui.fluid.search.selection.dropdown:focus {
+  outline: none !important;
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
+}
+
+/* Estilos para el menú dropdown */
+.v-select .dropdown-menu,
+.ui.fluid.search.selection.dropdown .menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  background: #ffffff !important;
+  border: 2px solid #3498db !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  margin-top: 2px !important;
+  padding: 0 !important;
+  list-style: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  animation: slideDown 0.2s ease-out !important;
+}
+
+/* Estilos para los items del dropdown */
+.v-select .dropdown-menu li,
+.ui.fluid.search.selection.dropdown .menu .item {
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.v-select .dropdown-menu li a,
+.ui.fluid.search.selection.dropdown .menu .item {
+  display: block !important;
+  padding: 12px 16px !important;
+  color: #2c3e50 !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  font-size: 14px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  background: transparent !important;
+  line-height: 1.5 !important;
+  text-align: center !important;
+}
+
+/* Hover en items */
+.v-select .dropdown-menu li a:hover,
+.ui.fluid.search.selection.dropdown .menu .item:hover {
+  background-color: #3498db !important;
+  color: white !important;
+  transform: translateX(5px) !important;
+}
+
+/* Último item sin borde */
+.v-select .dropdown-menu li:last-child a,
+.ui.fluid.search.selection.dropdown .menu .item:last-child {
+  border-bottom: none !important;
+}
+
+/* Item seleccionado */
+.v-select .dropdown-menu li.highlighted a,
+.ui.fluid.search.selection.dropdown .menu .item.selected {
+  background-color: #3498db !important;
+  color: white !important;
+}
+
+/* Centrar texto en ui dropdown */
+.ui.fluid.search.selection.dropdown .text {
+  text-align: center !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* Placeholder centrado */
+.ui.fluid.search.selection.dropdown .default.text {
+  text-align: center !important;
+  color: #95a5a6 !important;
+  font-style: italic !important;
+}
+
+/* Texto seleccionado centrado */
+.ui.fluid.search.selection.dropdown .text:not(.default) {
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+}
+
+/* Input interno centrado */
+.ui.fluid.search.selection.dropdown input {
+  text-align: center !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  color: #2c3e50 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.ui.fluid.search.selection.dropdown input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Icono del dropdown centrado */
+.ui.fluid.search.selection.dropdown .dropdown.icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+}
+
+/* Scrollbar personalizado */
+.v-select .dropdown-menu::-webkit-scrollbar,
+.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.v-select .dropdown-menu::-webkit-scrollbar-track,
+.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 3px !important;
+}
+
+.v-select .dropdown-menu::-webkit-scrollbar-thumb,
+.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-thumb {
+  background: #3498db !important;
+  border-radius: 3px !important;
+}
+
+.v-select .dropdown-menu::-webkit-scrollbar-thumb:hover,
+.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-thumb:hover {
+  background: #2980b9 !important;
+}
+
+/* Estados de error */
+.form-group.has-error .v-select .dropdown-toggle,
+.form-group.has-error .ui.fluid.search.selection.dropdown {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+/* Animación */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para ModelSelect específicamente */
+.model-select {
+  position: relative !important;
+  width: 100% !important;
+}
+
+.model-select .dropdown-toggle {
+  background: #ffffff !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  color: #2c3e50 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 48px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+/* Asegurar que los estilos se apliquen incluso después de refrescar */
+*[class*="search-select"] {
+  position: relative !important;
+  width: 100% !important;
+}
+
+*[class*="search-select"] .dropdown-toggle {
+  background: #ffffff !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  color: #2c3e50 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 48px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+/* ESTILOS CRÍTICOS PARA CENTRAR EL TEXTO SELECCIONADO */
+/* Centrar el texto dentro del input del dropdown */
+.v-select .dropdown-toggle .form-control,
+.ui.fluid.search.selection.dropdown input,
+.ui.fluid.search.selection.dropdown .text {
+  text-align: center !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  color: #2c3e50 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Centrar el placeholder */
+.v-select .dropdown-toggle .form-control::placeholder,
+.ui.fluid.search.selection.dropdown input::placeholder,
+.ui.fluid.search.selection.dropdown .default.text {
+  text-align: center !important;
+  color: #95a5a6 !important;
+  font-style: italic !important;
+}
+
+/* Centrar el texto seleccionado */
+.v-select .dropdown-toggle .form-control:not(:placeholder-shown),
+.ui.fluid.search.selection.dropdown .text:not(.default) {
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+}
+
+/* Forzar el centrado en todos los elementos del dropdown */
+.v-select .dropdown-toggle *,
+.ui.fluid.search.selection.dropdown * {
+  text-align: center !important;
+}
+
+/* Estilos específicos para el texto dentro del dropdown */
+.v-select .dropdown-toggle .form-control,
+.ui.fluid.search.selection.dropdown .text {
+  text-align: center !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  color: #2c3e50 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+}
+
+/* Centrar el texto en el contenedor del dropdown */
+.v-select .dropdown-toggle,
+.ui.fluid.search.selection.dropdown {
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Asegurar que el texto esté centrado en todos los estados */
+.v-select .dropdown-toggle .form-control,
+.ui.fluid.search.selection.dropdown .text,
+.ui.fluid.search.selection.dropdown input {
+  text-align: center !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  color: #2c3e50 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+  text-align-last: center !important;
+  -webkit-text-align-last: center !important;
+  -moz-text-align-last: center !important;
+} 

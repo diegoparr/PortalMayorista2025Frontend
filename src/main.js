@@ -1,0 +1,125 @@
+try {
+  window.$ = window.jQuery = require('jquery');
+  require('admin-lte');
+  require('bootstrap-sass');
+} catch (e) {
+  console.log(e);
+}
+
+// Importar estilos globales para selects antes que cualquier componente
+import './assets/css/global-selects.css';
+
+import Vue from 'vue';
+import App from './components/App.vue';
+import Router from './router';
+import VueResource from 'vue-resource';
+import VueToastr from '@deveodk/vue-toastr';
+import VeeValidate, {Validator} from "vee-validate";
+import messagesES from "vee-validate/dist/locale/es";
+import {store} from "./store/store";
+import helpers from './helpers';
+import VueSweetAlert from 'vue-sweetalert';
+import VueFormWizard from 'vue-form-wizard';
+import SocialSharing from 'vue-social-sharing';
+import Tabs from 'vue-tabs-component';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import VueAnalytics from 'vue-analytics'
+import * as VueGoogleMaps from "vue2-google-maps";
+//MIXINS
+import EndpointsApi from './mixin/EndpointsApi';
+import AppServices from './mixin/AppServices';
+import Helpers from './mixin/Helpers';
+import ImageHandler from './mixin/ImageHandler';
+
+//COMPONENTS
+import ImageWithFallback from './components/parts/ImageWithFallback.vue';
+
+let VueTruncate = require('vue-truncate-filter');
+Vue.use (VueAnalytics, {
+  id: 'UA-120079707-1',
+  autoTracking: {
+    screenview: true,
+    pageviewOnLoad: true
+  },
+  checkDuplicatedScript: true
+});
+Vue.use(Vuetify,{
+  theme: {
+    primary: '#ec6920',
+    secondary: '#f08219',
+    banner: '#ffa300',
+    accent: '#4b4a4b',
+    error: '#cf0000',
+    info: '#0093ff',
+    success: '#35af36',
+    warning: '#ffd900'
+  }
+});
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyCj6xRbCqUtY1Q67mtO4pxg2P5WNEZqRGs",
+    libraries: "places" // necessary for places input
+  }
+});
+
+Vue.use(VueTruncate);
+Vue.mixin(EndpointsApi);
+Vue.mixin(AppServices);
+Vue.mixin(Helpers);
+Vue.mixin(ImageHandler);
+
+// Registrar componente global
+Vue.component('image-with-fallback', ImageWithFallback);
+
+Vue.use(Tabs);
+Vue.use(VueFormWizard);
+Vue.use(VueSweetAlert);
+Vue.use(SocialSharing);
+Validator.localize('es', messagesES);
+
+
+Vue.use(VeeValidate, {
+  locale: 'es',
+  dictionary: {
+    es: { messages: messagesES }
+  }
+});
+
+Vue.use(VueResource);
+Vue.use(VueToastr, {
+  defaultPosition: 'toast-top-right',
+  defaultType: 'info',
+  defaultTimeout: 6000
+});
+
+Router.beforeEach(
+  (to, from, next) => {
+    let authenticated = helpers.ifTokenExists();
+    if (to.matched.some(record => record.meta.protectRoute)) {
+      if (!authenticated) {
+        next({
+          name: 'access',
+        })
+      } else next()
+    }
+    else
+      next()
+  }
+);
+
+ Vue.http.options.root = 'http://82.25.91.192:8082';
+
+//Desarrollo
+// Vue.http.options.root = 'http://192.168.0.51';
+// Vue.http.options.root = 'http://LaHipertiendaApi/';
+
+Vue.http.headers['Content-Type'] = 'application/json';
+Vue.http.headers['Accept'] = 'application/json';
+
+new Vue({
+  el: '#app',
+  render: h => h(App),
+  router: Router,
+  store
+});
