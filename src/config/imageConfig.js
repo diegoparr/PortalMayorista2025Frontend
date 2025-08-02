@@ -1,8 +1,8 @@
 export default {
   // URLs base para diferentes entornos
   baseUrls: {
-    development: 'http://82.25.91.192:8082',
-    production: '', // Usar proxy de Vercel en producción
+    development: 'http://127.0.0.1:8000',
+    production: 'http://82.25.91.192:8082', // Usar IP del VPS en producción
     staging: 'https://staging.tu-dominio.com'
   },
   
@@ -51,13 +51,9 @@ export default {
       return this.defaultImage;
     }
     
-    // Si es una URL completa válida, convertirla a relativa en producción
+    // Si es una URL completa válida, manejarla según el entorno
     if (url.startsWith('http://') || url.startsWith('https://')) {
-      if (process.env.NODE_ENV === 'production') {
-        // En producción, convertir URLs absolutas a relativas para usar el proxy
-        const urlObj = new URL(url);
-        return urlObj.pathname;
-      }
+      // En desarrollo y producción, mantener la URL tal como está
       return url;
     }
     
