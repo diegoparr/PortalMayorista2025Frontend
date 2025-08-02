@@ -1,48 +1,53 @@
 import imageConfig from '../config/imageConfig';
 
 export default {
-  data() {
-    return {
-      defaultImage: imageConfig.defaultImage,
-      obsoleteServers: imageConfig.obsoleteServers
-    }
-  },
   methods: {
-    // Método para manejar URLs de imágenes
-    getImageUrl(imageUrl) {
-      const processedUrl = imageConfig.cleanUrl(imageUrl);
-      return processedUrl;
-    },
-    
-    // Método para manejar errores de carga de imágenes
-    handleImageError(event) {
-      if (event && event.target) {
-        event.target.src = this.defaultImage;
+    // Función para procesar URLs de imágenes
+    processImageUrl(url) {
+      if (!url) return imageConfig.defaultImage;
+      
+      // Si es una URL absoluta del backend, convertirla a relativa en producción
+      if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/')) {
+        if (process.env.NODE_ENV === 'production') {
+          // Extraer solo la ruta para usar el proxy de Vercel
+          const urlObj = new URL(url);
+          return urlObj.pathname;
+        }
       }
+      
+      // Usar la función de limpieza existente
+      return imageConfig.cleanUrl(url);
     },
-    
-    // Método para verificar si una imagen existe
+
+    // Función para manejar errores de imagen
+    handleImageError(event) {
+      console.warn('Image failed to load:', event.target.src);
+      event.target.src = imageConfig.defaultImage;
+    },
+
+    // Función para verificar si una imagen existe
     async checkImageExists(url) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url;
-      });
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+      } catch (error) {
+        console.warn('Error checking image:', url, error);
+        return false;
+      }
     },
     
     // Método para obtener imagen con fallback
     async getImageWithFallback(imageUrl) {
-      const processedUrl = this.getImageUrl(imageUrl);
+      const processedUrl = this.processImageUrl(imageUrl);
       
       // Si ya es la imagen por defecto, la devolvemos
-      if (processedUrl === this.defaultImage) {
-        return this.defaultImage;
+      if (processedUrl === imageConfig.defaultImage) {
+        return imageConfig.defaultImage;
       }
       
       // Verificar si la imagen existe
       const exists = await this.checkImageExists(processedUrl);
-      return exists ? processedUrl : this.defaultImage;
+      return exists ? processedUrl : imageConfig.defaultImage;
     },
     
     // Método para obtener URL de imagen por tipo

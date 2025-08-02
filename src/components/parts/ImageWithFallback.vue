@@ -1,21 +1,19 @@
 <template>
   <img 
     :src="processedSrc" 
-    :alt="alt"
+    :alt="alt" 
     :class="imgClass"
-    :style="imgStyle"
-    @error="handleError"
-    @load="handleLoad"
+    @error="handleImageError"
+    @load="handleImageLoad"
     v-bind="$attrs"
   />
 </template>
 
 <script>
-import ImageHandler from '../../mixin/ImageHandler';
+import imageConfig from '../../config/imageConfig';
 
 export default {
   name: 'ImageWithFallback',
-  mixins: [ImageHandler],
   props: {
     src: {
       type: String,
@@ -28,62 +26,60 @@ export default {
     imgClass: {
       type: String,
       default: ''
-    },
-    imgStyle: {
-      type: Object,
-      default: () => ({})
-    },
-    fallbackSrc: {
-      type: String,
-      default: null
     }
   },
   data() {
     return {
-      hasError: false,
-      processedSrc: ''
-    }
+      processedSrc: '',
+      hasError: false
+    };
   },
   watch: {
     src: {
       immediate: true,
       handler(newSrc) {
-        this.processImage(newSrc);
+        this.processImageUrl(newSrc);
       }
     }
   },
   methods: {
-    processImage(src) {
-      if (!src) {
-        this.processedSrc = this.fallbackSrc || this.defaultImage;
+    processImageUrl(url) {
+      if (!url) {
+        this.processedSrc = imageConfig.defaultImage;
         return;
       }
 
-      // Procesar la URL usando el mixin
-      this.processedSrc = this.getImageUrl(src);
+      // Si es una URL absoluta del backend, convertirla a relativa en producción
+      if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/')) {
+        if (process.env.NODE_ENV === 'production') {
+          // Extraer solo la ruta para usar el proxy de Vercel
+          const urlObj = new URL(url);
+          this.processedSrc = urlObj.pathname;
+          return;
+        }
+      }
+
+      // Usar la función de limpieza existente
+      this.processedSrc = imageConfig.cleanUrl(url);
     },
-    handleError(event) {
-      console.log('Error cargando imagen:', event.target.src);
+
+    handleImageError(event) {
+      console.warn('Image failed to load:', event.target.src);
       this.hasError = true;
-      
-      // Si ya estamos usando la imagen por defecto, no hacer nada más
-      if (event.target.src === this.defaultImage) {
-        return;
-      }
-      
-      // Usar fallback personalizado si está disponible, sino usar el default
-      if (this.fallbackSrc && event.target.src !== this.fallbackSrc) {
-        event.target.src = this.fallbackSrc;
-      } else {
-        event.target.src = this.defaultImage;
-      }
-      
-      this.$emit('error', event);
+      event.target.src = imageConfig.defaultImage;
     },
-    handleLoad(event) {
+
+    handleImageLoad(event) {
       this.hasError = false;
       this.$emit('load', event);
     }
   }
+};
+</script>
+
+<style scoped>
+img {
+  max-width: 100%;
+  height: auto;
 }
-</script> 
+</style> 

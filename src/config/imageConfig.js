@@ -47,13 +47,17 @@ export default {
   
   // Función para limpiar URLs obsoletas
   cleanUrl(url) {
-    
     if (!url || this.isObsoleteUrl(url)) {
       return this.defaultImage;
     }
     
-    // Si es una URL completa válida, la devolvemos
+    // Si es una URL completa válida, convertirla a relativa en producción
     if (url.startsWith('http://') || url.startsWith('https://')) {
+      if (process.env.NODE_ENV === 'production') {
+        // En producción, convertir URLs absolutas a relativas para usar el proxy
+        const urlObj = new URL(url);
+        return urlObj.pathname;
+      }
       return url;
     }
     

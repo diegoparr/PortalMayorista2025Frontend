@@ -16,6 +16,10 @@
       "destination": "http://82.25.91.192:8082/api/$1"
     },
     {
+      "source": "/images/(.*)",
+      "destination": "http://82.25.91.192:8082/images/$1"
+    },
+    {
       "source": "/dist/(.*)",
       "destination": "/dist/$1"
     },
@@ -53,6 +57,19 @@
         {
           "key": "Access-Control-Allow-Credentials",
           "value": "true"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }

@@ -33,6 +33,7 @@ import Helpers from './mixin/Helpers';
 import ImageHandler from './mixin/ImageHandler';
 import HttpInterceptor from './mixin/HttpInterceptor';
 import ApiConfig from './config/apiConfig';
+import imageConfig from './config/imageConfig';
 
 //COMPONENTS
 import ImageWithFallback from './components/parts/ImageWithFallback.vue';
@@ -120,6 +121,40 @@ Vue.http.options.root = ApiConfig.getApiBaseUrl();
 
 // Configurar headers de API
 Object.assign(Vue.http.headers, ApiConfig.getApiHeaders());
+
+// Función global para procesar URLs de imágenes
+Vue.prototype.$processImageUrl = function(url) {
+  if (!url) return imageConfig.defaultImage;
+  
+  // Si es una URL absoluta del backend, convertirla a relativa en producción
+  if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/')) {
+    if (process.env.NODE_ENV === 'production') {
+      // Extraer solo la ruta para usar el proxy de Vercel
+      const urlObj = new URL(url);
+      return urlObj.pathname;
+    }
+  }
+  
+  // Usar la función de limpieza existente
+  return imageConfig.cleanUrl(url);
+};
+
+// Filtro global para procesar URLs de imágenes
+Vue.filter('processImage', function(url) {
+  if (!url) return imageConfig.defaultImage;
+  
+  // Si es una URL absoluta del backend, convertirla a relativa en producción
+  if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/')) {
+    if (process.env.NODE_ENV === 'production') {
+      // Extraer solo la ruta para usar el proxy de Vercel
+      const urlObj = new URL(url);
+      return urlObj.pathname;
+    }
+  }
+  
+  // Usar la función de limpieza existente
+  return imageConfig.cleanUrl(url);
+});
 
 new Vue({
   el: '#app',
