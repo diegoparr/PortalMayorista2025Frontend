@@ -31,6 +31,8 @@ import EndpointsApi from './mixin/EndpointsApi';
 import AppServices from './mixin/AppServices';
 import Helpers from './mixin/Helpers';
 import ImageHandler from './mixin/ImageHandler';
+import HttpInterceptor from './mixin/HttpInterceptor';
+import ApiConfig from './config/apiConfig';
 
 //COMPONENTS
 import ImageWithFallback from './components/parts/ImageWithFallback.vue';
@@ -68,6 +70,7 @@ Vue.mixin(EndpointsApi);
 Vue.mixin(AppServices);
 Vue.mixin(Helpers);
 Vue.mixin(ImageHandler);
+Vue.mixin(HttpInterceptor);
 
 // Registrar componente global
 Vue.component('image-with-fallback', ImageWithFallback);
@@ -108,14 +111,15 @@ Router.beforeEach(
   }
 );
 
- Vue.http.options.root = 'http://82.25.91.192:8082';
+// Configuración de API según el entorno
+Vue.http.options.root = ApiConfig.getApiBaseUrl();
 
 //Desarrollo
 // Vue.http.options.root = 'http://192.168.0.51';
 // Vue.http.options.root = 'http://LaHipertiendaApi/';
 
-Vue.http.headers['Content-Type'] = 'application/json';
-Vue.http.headers['Accept'] = 'application/json';
+// Configurar headers de API
+Object.assign(Vue.http.headers, ApiConfig.getApiHeaders());
 
 new Vue({
   el: '#app',

@@ -2,7 +2,7 @@ export default {
   // URLs base para diferentes entornos
   baseUrls: {
     development: 'http://82.25.91.192:8082',
-    production: 'https://tu-nuevo-dominio.com',
+    production: '', // Usar proxy de Vercel en producción
     staging: 'https://staging.tu-dominio.com'
   },
   
