@@ -94,8 +94,6 @@ module.exports = {
   devtool: '#eval-source-map'
 };
 
-
-
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';
   // http://vue-loader.vuejs.org/en/workflow/production.html
@@ -106,14 +104,27 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
 
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
+    // Comentar UglifyJS temporalmente para evitar errores
+    // new webpack.optimize.UglifyJsPlugin({
+    //   sourceMap: true,
+    //   compress: {
+    //     warnings: false,
+    //     drop_console: true,
+    //     drop_debugger: true,
+    //     pure_funcs: ['console.log']
+    //   },
+    //   mangle: {
+    //     except: ['$', 'jQuery', 'Vue']
+    //   }
+    // }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
+    }),
+    
+    // Agregar plugin para manejar módulos ES6
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
     })
   ])
 }

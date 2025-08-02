@@ -1,19 +1,39 @@
 {
-    "rewrites": [
-      {
-        "source": "/:path*",
-        "has": [
-          {
-            "type": "host",
-            "value": "maternidad.avasalud.mx"
-          }
-        ],
-        "destination": "/landing-maternidad/:path*"
-      },
-      {
-        "source": "/(.*)",
-        "destination": "/index.html"
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
       }
-    ]
-  }
+    }
+  ],
+  "routes": [
+    {
+      "source": "/dist/(.*)",
+      "destination": "/dist/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "maternidad.avasalud.mx"
+        }
+      ],
+      "destination": "/landing-maternidad/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
   
