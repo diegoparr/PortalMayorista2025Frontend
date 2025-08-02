@@ -6,9 +6,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && echo 'Production build completed'"
+    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && echo 'Production build completed'",
+    "check-env": "node check-env.js"
   },
   "dependencies": {
     "@deveodk/vue-toastr": "^1.0.4",

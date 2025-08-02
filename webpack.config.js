@@ -3,11 +3,30 @@ let webpack = require('webpack');
 
 require('vue-social-sharing');
 
+// Determinar si estamos en desarrollo o producción
+const isDevelopment = process.env.NODE_ENV === 'development';
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Logs para mostrar la configuración
+if (isDevelopment) {
+  console.log('🔧 Configurando Webpack para DESARROLLO');
+  console.log(`📁 NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`🌐 Public Path: /dist/`);
+} else if (isProduction) {
+  console.log('🏭 Configurando Webpack para PRODUCCIÓN');
+  console.log(`📁 NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`🌐 Public Path: /`);
+} else {
+  console.log('⚠️  NODE_ENV no definido, usando configuración por defecto');
+  console.log(`📁 NODE_ENV: ${process.env.NODE_ENV || 'undefined'}`);
+}
+
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    // En desarrollo, usar /dist/, en producción usar /
+    publicPath: isDevelopment ? '/dist/' : '/',
     filename: 'build.js'
   },
   module: {
