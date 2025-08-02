@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && cp dist/img_logo.png . && cp dist/logo_small.png . && cp dist/promo*.jpg . && cp dist/promo*.png . && cp dist/*.png . && cp dist/*.gif . && cp dist/*.svg . && cp -r dist/img . && cp -r dist/fonts . && cp -r dist/assets . && cp -r dist/new . && echo 'Production build completed'",
+    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && cp dist/img_logo.png . && cp dist/logo_small.png . && cp dist/promo*.jpg . && cp dist/promo*.png . && cp dist/*.png . && cp dist/*.gif . && cp dist/*.svg . && cp -r dist/img . && cp -r dist/fonts . && cp -r dist/assets . && cp -r dist/new . && cp index.html . && echo 'Production build completed'",
     "check-env": "node check-env.js"
   },
   "dependencies": {

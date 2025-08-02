@@ -15,7 +15,7 @@ if (isDevelopment) {
 } else if (isProduction) {
   console.log('🏭 Configurando Webpack para PRODUCCIÓN');
   console.log(`📁 NODE_ENV: ${process.env.NODE_ENV}`);
-  console.log(`🌐 Public Path: /`);
+  console.log(`🌐 Public Path: /dist/`);
 } else {
   console.log('⚠️  NODE_ENV no definido, usando configuración por defecto');
   console.log(`📁 NODE_ENV: ${process.env.NODE_ENV || 'undefined'}`);
@@ -25,8 +25,8 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    // En desarrollo, usar /dist/, en producción usar /
-    publicPath: isDevelopment ? '/dist/' : '/',
+    // Usar /dist/ tanto en desarrollo como en producción
+    publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {

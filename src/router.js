@@ -35,6 +35,7 @@ Vue.use(Meta, {
   ssrAttribute: 'data-vue-meta-server-rendered', // the attribute name that lets vue-meta know that meta info has already been server-rendered
   tagIDKeyName: 'vmid' // the property name that vue-meta uses to determine whether to overwrite or append a tag
 });
+
 const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'active',
@@ -435,8 +436,25 @@ const router = new VueRouter({
         // bodyClass: "sidebar-mini skin-black-light fixed sidebar-collapse",
         showPublicity: true,
         sizeContainer: 'col-xs-10'
+      },
+      beforeEnter: (to, from, next) => {
+        // Validar que el ID sea un número
+        if (to.params.id && !isNaN(to.params.id)) {
+          next();
+        } else {
+          // Redirigir a la página principal si el ID no es válido
+          next('/');
+        }
       }
     },
   ]
 });
+
+// Manejo global de errores de navegación
+router.onError((error) => {
+  console.error('Error de navegación:', error);
+  // Redirigir a la página principal en caso de error
+  router.push('/');
+});
+
 export default router;

@@ -1,6 +1,31 @@
 <template>
   <v-app>
     <loader v-if="cargandoData"></loader>
+    <v-container v-else-if="error" grid-list-md text-xs-center fluid white class="error-container">
+      <v-layout row wrap justify-center align-center style="min-height: 400px;">
+        <v-flex xs12 md6>
+          <v-card class="error-card">
+            <v-card-title class="error-title">
+              <v-icon color="error" large>error</v-icon>
+              <span class="error-text">Error al cargar el producto</span>
+            </v-card-title>
+            <v-card-text class="error-message">
+              {{ errorMessage }}
+            </v-card-text>
+            <v-card-actions class="error-actions">
+              <v-btn color="primary" @click="retryLoad">
+                <v-icon left>refresh</v-icon>
+                Intentar de nuevo
+              </v-btn>
+              <v-btn color="secondary" @click="$router.push('/')">
+                <v-icon left>home</v-icon>
+                Ir al inicio
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <v-container grid-list-md text-xs-center v-else fluid white class="product-page-container">
       <v-layout row wrap>
         <v-flex xs12 md2>
@@ -349,8 +374,15 @@
       this.caracteristicas = [];
       this.caracteristicasMultiples = [];
       this.caracteristicasUnicas = [];
-      this.informacionProducto(this.$route.params.id);
-      this.url = window.location.origin + '/producto/' + this.$route.params.id;
+      
+      // Validar que el ID del producto sea válido
+      if (this.$route.params.id && !isNaN(this.$route.params.id)) {
+        this.informacionProducto(this.$route.params.id);
+        this.url = window.location.origin + '/producto/' + this.$route.params.id;
+      } else {
+        // Redirigir a la página principal si el ID no es válido
+        this.$router.push('/');
+      }
     },
     metaInfo() {
       return {
@@ -410,6 +442,8 @@
         laterales: [],
         publicidades: [],
         defecto: true,
+        error: false,
+        errorMessage: ''
       }
     },
 
@@ -510,6 +544,9 @@
         },
         informacionProducto(id_producto) {
           let yo = this;
+          this.error = false;
+          this.errorMessage = '';
+          
           if (this.getUsuario.estaAutenticadoFull)
             this.getMethodsWithBearer(this.urlsApi().endpointsBuscarProducto.autenticado + id_producto, this.getUsuario.token, 'all', 1, "'catalogo','categoriaPrincipal','tienda','imagenes','caracteristicas','iva' ").then(response => {
               this.cargandoData = false;
@@ -559,9 +596,18 @@
                     this.publicidades.push({src: item.v_imagen, id: item.id_m_productos_fk});
                   });
                   this.defecto = response.body.data === 0;
-                }, errors => this.mapErrorsResponses(this, errors))
+                }, errors => {
+                  console.error('Error cargando publicidades:', errors);
+                  this.mapErrorsResponses(this, errors);
+                })
 
-            }, errors => this.mapErrorsResponses(this, errors));
+            }, errors => {
+              console.error('Error cargando producto:', errors);
+              this.cargandoData = false;
+              this.error = true;
+              this.errorMessage = 'Error al cargar el producto. Por favor, intenta de nuevo.';
+              this.mapErrorsResponses(this, errors);
+            });
           else
             this.getMethodWithoutBearer(this.urlsApi().endpointsBuscarProducto.noAutenticado + id_producto, 'all', 1, "'catalogo','categoriaPrincipal','tienda','imagenes','caracteristicas','iva'")
               .then(response => {
@@ -597,20 +643,34 @@
                   this.nombres[a] = multiple.v_nombre;
                   this.combos[multiple.v_nombre].push({text: multiple.pivot.v_valor, value: multiple.pivot.v_valor});
                 });
+                yo.obtenerPosts(this.pagination.current_page);
+                let title_meta = $("#title_meta_content");
+                let description_meta = $("#description_meta_content");
                 this.getMethodWithoutBearer(this.urlsApi().endpointsPublicidad.index, 'all', null, null, "['v_posicion_pantalla','lateral']", null, null, this.producto.id_m_categorias_fk)
                   .then(response => {
-                    console.log(response.body.data);
-                    this.defecto = response.body.data === 0;
-                    console.log(this.defecto);
                     this.laterales = response.body.data;
                     this.publicidades = [];
                     this.laterales.forEach(item => {
                       this.publicidades.push({src: item.v_imagen, id: item.id_m_productos_fk});
                     });
-
-                  }, errors => this.mapErrorsResponses(this, errors));
-                yo.obtenerPosts(this.pagination.current_page);
-              }, errors => this.mapErrorsResponses(this, errors));
+                    this.defecto = response.body.data === 0;
+                  }, errors => {
+                    console.error('Error cargando publicidades:', errors);
+                    this.mapErrorsResponses(this, errors);
+                  })
+              }, errors => {
+                console.error('Error cargando producto:', errors);
+                this.cargandoData = false;
+                this.error = true;
+                this.errorMessage = 'Error al cargar el producto. Por favor, intenta de nuevo.';
+                this.mapErrorsResponses(this, errors);
+              });
+        },
+        retryLoad() {
+          this.error = false;
+          this.errorMessage = '';
+          this.cargandoData = true;
+          this.informacionProducto(this.$route.params.id);
         },
         getUrlPublicidad(pub) {
           let url;
@@ -1404,5 +1464,77 @@
 
 .v-card {
   animation: fadeInUp 0.6s ease-out;
+}
+
+/* Estilos para el componente de error */
+.error-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.error-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.error-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.error-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.error-message {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.error-actions .v-btn {
+  border-radius: 25px;
+  text-transform: none;
+  font-weight: 600;
+  padding: 0 2rem;
+  height: 45px;
+}
+
+@media (max-width: 768px) {
+  .error-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .error-text {
+    font-size: 1.3rem;
+  }
+  
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .error-actions .v-btn {
+    width: 100%;
+    max-width: 250px;
+  }
 }
 </style>
