@@ -1,0 +1,19 @@
+{
+    "rewrites": [
+      {
+        "source": "/:path*",
+        "has": [
+          {
+            "type": "host",
+            "value": "maternidad.avasalud.mx"
+          }
+        ],
+        "destination": "/landing-maternidad/:path*"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/index.html"
+      }
+    ]
+  }
+  
