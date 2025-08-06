@@ -10,12 +10,12 @@ export default {
       }
       
       next((response) => {
-        // Manejar errores de CORS
-        if (response.status === 0 || response.status === 404) {
-          console.warn('CORS error detected, trying alternative approach');
-          // Intentar con URL completa si es necesario
+        // Manejar errores de CORS solo en desarrollo
+        if (process.env.NODE_ENV !== 'production' && (response.status === 0 || response.status === 404)) {
+          console.warn('CORS error detected in development, trying alternative approach');
+          // Solo en desarrollo, intentar con URL completa si es necesario
           if (request.url && !request.url.startsWith('http')) {
-            request.url = `http://82.25.91.192:8082${request.url}`;
+            request.url = `http://127.0.0.1:8000${request.url}`;
           }
         }
         return response;

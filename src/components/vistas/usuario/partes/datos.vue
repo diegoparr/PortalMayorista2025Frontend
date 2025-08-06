@@ -31,7 +31,7 @@
                   <div class="col-md-12 col-sm-4 col-xs-4 text-center">
                   </div>
                   <div class="col-md-12 col-sm-4 col-xs-4 text-center">
-                    <img :src="imageAvatar"
+                    <img :src="getImageUrl(imageAvatar)"
                         class="centrar-imagen imagen-previsualizar" style="width:100%;">
                   </div>
                   <div class="col-md-12 col-sm-4 col-xs-4 text-center">
@@ -334,6 +334,7 @@ import { ModelSelect } from "vue-search-select";
 import AppServices from "../../../AppServices";
 import TerminosCondiciones from "../../../TerminosCondiciones/TerminosCondiciones";
 import Vue from 'vue';
+import ImageHandler from '../../../mixin/ImageHandler';
 
 export default {
   data() {
@@ -377,6 +378,7 @@ export default {
       tipo_documentos: []
     };
   },
+  mixins: [ImageHandler],
   props: ["modal", "cambiar"],
   methods: Object.assign(
     {},
@@ -666,7 +668,7 @@ export default {
         this.usuario.provincia.text = this.getUsuario.v_nombre_provincia;
         this.usuario.ciudad.text = this.getUsuario.v_nombre_ciudad;
         this.usuario.avatar = this.getUsuario.v_avatar;
-        this.imageAvatar = this.getUsuario.v_avatar;
+        this.imageAvatar = this.getImageUrl(this.getUsuario.v_avatar);
         
         console.log("Ubicación cargada:", {
           pais: this.usuario.pais,

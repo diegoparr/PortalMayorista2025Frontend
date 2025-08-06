@@ -149,7 +149,7 @@ export default {
     },
     compartirFacebook(producto) {
       try {
-        const url = `http://82.25.91.192:8082/producto/${producto.id_m_productos}`;
+        const url = `${window.location.origin}/producto/${producto.id_m_productos}`;
         const title = producto.v_nombre;
         const description = producto.v_descripcion;
 
