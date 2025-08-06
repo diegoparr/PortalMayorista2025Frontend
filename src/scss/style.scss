@@ -21,8 +21,8 @@
 @import "./vistas/explorar";
 @import "./vistas/tienda";
 @import "modern-ui";
-@import "vue-search-select-fix";
-@import "global-selects";
+// @import "vue-search-select-fix"; // Comentado para evitar conflictos con global-selects.css
+// @import "global-selects"; // Comentado para evitar conflictos con global-selects.css
 
 body {
   background-color: transparent !important;

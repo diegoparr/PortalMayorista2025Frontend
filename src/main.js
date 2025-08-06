@@ -8,6 +8,10 @@ try {
 
 // Importar estilos globales para selects antes que cualquier componente
 import './assets/css/global-selects.css';
+// Importar estilos específicos para el panel de usuario
+import './assets/css/panel-usuario-styles.css';
+// Importar fix para el responsive del panel administrativo
+import './assets/css/admin-responsive-fix.css';
 
 import Vue from 'vue';
 import App from './components/App.vue';

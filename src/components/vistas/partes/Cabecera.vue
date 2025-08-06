@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-toolbar dense flat color="white" style="z-index: 10">
       <v-responsive>
         <router-link class="link-negro-naranja" :to="{name:'index'}">
@@ -256,7 +256,7 @@
         </v-card>
       </v-container>
     </v-dialog>
-  </v-app>
+  </div>
 </template>
 
 <script>

@@ -1,65 +1,49 @@
-/* ESTILOS GLOBALES CRÍTICOS PARA VUE-SEARCH-SELECT */
+/* ESTILOS GLOBALES SIMPLES PARA SELECTS */
 /* Este archivo se carga antes que cualquier componente para asegurar que los estilos se apliquen */
 
-/* ===== ESTILOS BASE CRÍTICOS ===== */
+/* ===== ESTILOS BÁSICOS PARA TODOS LOS SELECTS ===== */
 
-/* Estilos base para v-select */
-.v-select {
-  position: relative !important;
-  width: 100% !important;
-  font-family: inherit !important;
-  margin-bottom: 0 !important;
-}
-
-/* Estilos para el toggle del dropdown */
-.v-select .dropdown-toggle,
-.ui.fluid.search.selection.dropdown {
+/* Estilos para cualquier elemento que pueda ser un select - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper select:not(.modern-select), 
+.wrapper .content-wrapper .select:not(.modern-select), 
+.wrapper .content-wrapper .v-select:not(.modern-select), 
+.wrapper .content-wrapper .vue-search-select:not(.modern-select), 
+.wrapper .content-wrapper [class*="search-select"]:not(.modern-select), 
+.wrapper .content-wrapper .model-select:not(.modern-select),
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select), 
+.wrapper .content-wrapper .form-control:not(.modern-select) {
   background: #ffffff !important;
   border: 2px solid #e1e8ed !important;
   border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  transition: all 0.3s ease !important;
   color: #2c3e50 !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+  font-size: 14px !important;
+  padding: 12px 16px !important;
   min-height: 48px !important;
   box-sizing: border-box !important;
-  text-align: center !important;
-  margin: 0 !important;
-  outline: none !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Hover y focus states */
-.v-select .dropdown-toggle:hover,
-.ui.fluid.search.selection.dropdown:hover {
-  border-color: #3498db !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
+/* Estilos para inputs que pueden ser selects - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper input[type="text"]:not(.modern-input), 
+.wrapper .content-wrapper input[type="email"]:not(.modern-input), 
+.wrapper .content-wrapper input[type="password"]:not(.modern-input), 
+.wrapper .content-wrapper input[type="number"]:not(.modern-input) {
+  background: #ffffff !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  padding: 12px 16px !important;
+  min-height: 48px !important;
+  box-sizing: border-box !important;
+  transition: all 0.3s ease !important;
 }
 
-.v-select .dropdown-toggle:focus,
-.ui.fluid.search.selection.dropdown:focus {
-  outline: none !important;
-  border-color: #3498db !important;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
-}
+/* ===== ESTILOS PARA LOS DROPDOWNS Y SUS OPCIONES ===== */
 
-/* Ocultar elementos innecesarios */
-.v-select .dropdown-toggle .clear,
-.v-select .dropdown-toggle .dropdown-toggle-button,
-.ui.fluid.search.selection.dropdown .clear {
-  display: none !important;
-}
-
-/* ===== ESTILOS PARA EL MENÚ DROPDOWN ===== */
-
-/* Estilos para el menú dropdown */
-.v-select .dropdown-menu,
-.ui.fluid.search.selection.dropdown .menu {
+/* Estilos para el menú dropdown - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select) .menu,
+.wrapper .content-wrapper .v-select:not(.modern-select) .dropdown-menu {
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
@@ -76,19 +60,11 @@
   list-style: none !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  animation: slideDown 0.2s ease-out !important;
 }
 
-/* Estilos para los items del dropdown */
-.v-select .dropdown-menu li,
-.ui.fluid.search.selection.dropdown .menu .item {
-  padding: 0 !important;
-  margin: 0 !important;
-  list-style: none !important;
-}
-
-.v-select .dropdown-menu li a,
-.ui.fluid.search.selection.dropdown .menu .item {
+/* Estilos para los items del dropdown - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select) .menu .item,
+.wrapper .content-wrapper .v-select:not(.modern-select) .dropdown-menu li a {
   display: block !important;
   padding: 12px 16px !important;
   color: #2c3e50 !important;
@@ -99,401 +75,740 @@
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  background: transparent !important;
+  background: #ffffff !important;
   line-height: 1.5 !important;
-  text-align: center !important;
+  text-align: left !important;
 }
 
-/* Hover en items */
-.v-select .dropdown-menu li a:hover,
-.ui.fluid.search.selection.dropdown .menu .item:hover {
+/* Hover en items del dropdown - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select) .menu .item:hover,
+.wrapper .content-wrapper .v-select:not(.modern-select) .dropdown-menu li a:hover {
   background-color: #3498db !important;
+  background: #3498db !important;
   color: white !important;
   transform: translateX(5px) !important;
+  opacity: 1 !important;
 }
 
-/* Último item sin borde */
-.v-select .dropdown-menu li:last-child a,
-.ui.fluid.search.selection.dropdown .menu .item:last-child {
+/* Último item sin borde - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select) .menu .item:last-child,
+.wrapper .content-wrapper .v-select:not(.modern-select) .dropdown-menu li:last-child a {
   border-bottom: none !important;
 }
 
-/* Item seleccionado */
-.v-select .dropdown-menu li.highlighted a,
-.ui.fluid.search.selection.dropdown .menu .item.selected {
+/* Item seleccionado - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select) .menu .item.selected,
+.wrapper .content-wrapper .v-select:not(.modern-select) .dropdown-menu li.highlighted a {
   background-color: #3498db !important;
-  color: white !important;
-}
-
-/* ===== ESTILOS CRÍTICOS PARA CENTRAR EL TEXTO ===== */
-
-/* Centrar el texto dentro del input del dropdown */
-.v-select .dropdown-toggle .form-control,
-.ui.fluid.search.selection.dropdown input,
-.ui.fluid.search.selection.dropdown .text {
-  text-align: center !important;
-  width: 100% !important;
-  border: none !important;
-  background: transparent !important;
-  font-size: 14px !important;
-  color: #2c3e50 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Centrar el placeholder */
-.v-select .dropdown-toggle .form-control::placeholder,
-.ui.fluid.search.selection.dropdown input::placeholder,
-.ui.fluid.search.selection.dropdown .default.text {
-  text-align: center !important;
-  color: #95a5a6 !important;
-  font-style: italic !important;
-}
-
-/* Centrar el texto seleccionado */
-.v-select .dropdown-toggle .form-control:not(:placeholder-shown),
-.ui.fluid.search.selection.dropdown .text:not(.default) {
-  text-align: center !important;
-  color: #2c3e50 !important;
-  font-weight: 600 !important;
-}
-
-/* Forzar el centrado en todos los elementos del dropdown */
-.v-select .dropdown-toggle *,
-.ui.fluid.search.selection.dropdown * {
-  text-align: center !important;
-}
-
-/* Estilos específicos para el texto dentro del dropdown */
-.v-select .dropdown-toggle .form-control,
-.ui.fluid.search.selection.dropdown .text {
-  text-align: center !important;
-  width: 100% !important;
-  border: none !important;
-  background: transparent !important;
-  font-size: 14px !important;
-  color: #2c3e50 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 24px !important;
-}
-
-/* Centrar el texto en el contenedor del dropdown */
-.v-select .dropdown-toggle,
-.ui.fluid.search.selection.dropdown {
-  text-align: center !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Asegurar que el texto esté centrado en todos los estados */
-.v-select .dropdown-toggle .form-control,
-.ui.fluid.search.selection.dropdown .text,
-.ui.fluid.search.selection.dropdown input {
-  text-align: center !important;
-  width: 100% !important;
-  border: none !important;
-  background: transparent !important;
-  font-size: 14px !important;
-  color: #2c3e50 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 24px !important;
-  text-align-last: center !important;
-  -webkit-text-align-last: center !important;
-  -moz-text-align-last: center !important;
-}
-
-/* ===== ESTILOS PARA MODELSELECT ESPECÍFICAMENTE ===== */
-
-/* Estilos para ModelSelect específicamente */
-.model-select {
-  position: relative !important;
-  width: 100% !important;
-}
-
-.model-select .dropdown-toggle {
-  background: #ffffff !important;
-  border: 2px solid #e1e8ed !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  transition: all 0.3s ease !important;
-  color: #2c3e50 !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-height: 48px !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
-}
-
-/* Asegurar que los estilos se apliquen incluso después de refrescar */
-*[class*="search-select"] {
-  position: relative !important;
-  width: 100% !important;
-}
-
-*[class*="search-select"] .dropdown-toggle {
-  background: #ffffff !important;
-  border: 2px solid #e1e8ed !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  transition: all 0.3s ease !important;
-  color: #2c3e50 !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-height: 48px !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
-}
-
-/* ===== ESTILOS ESPECÍFICOS PARA VUE-SEARCH-SELECT ===== */
-
-/* Estilos específicos para vue-search-select */
-.vue-search-select {
-  position: relative !important;
-  width: 100% !important;
-}
-
-.vue-search-select .dropdown-toggle {
-  background: #ffffff !important;
-  border: 2px solid #e1e8ed !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  transition: all 0.3s ease !important;
-  color: #2c3e50 !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-height: 48px !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
-}
-
-/* Estilos para el input dentro del dropdown */
-.vue-search-select .dropdown-toggle input,
-.vue-search-select .dropdown-toggle .form-control {
-  background: transparent !important;
-  border: none !important;
-  color: #2c3e50 !important;
-  font-size: 14px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  text-align: center !important;
-  width: 100% !important;
-}
-
-/* Estilos para el placeholder */
-.vue-search-select .dropdown-toggle input::placeholder,
-.vue-search-select .dropdown-toggle .form-control::placeholder {
-  color: #95a5a6 !important;
-  font-style: italic !important;
-  text-align: center !important;
-}
-
-/* ===== SCROLLBAR PERSONALIZADO ===== */
-
-/* Scrollbar personalizado */
-.v-select .dropdown-menu::-webkit-scrollbar,
-.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar {
-  width: 6px !important;
-}
-
-.v-select .dropdown-menu::-webkit-scrollbar-track,
-.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-track {
-  background: #f1f1f1 !important;
-  border-radius: 3px !important;
-}
-
-.v-select .dropdown-menu::-webkit-scrollbar-thumb,
-.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-thumb {
   background: #3498db !important;
-  border-radius: 3px !important;
+  color: white !important;
+  opacity: 1 !important;
 }
 
-.v-select .dropdown-menu::-webkit-scrollbar-thumb:hover,
-.ui.fluid.search.selection.dropdown .menu::-webkit-scrollbar-thumb:hover {
-  background: #2980b9 !important;
+/* Hover states - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper select:not(.modern-select):hover, 
+.wrapper .content-wrapper .select:not(.modern-select):hover, 
+.wrapper .content-wrapper .v-select:not(.modern-select):hover, 
+.wrapper .content-wrapper .vue-search-select:not(.modern-select):hover, 
+.wrapper .content-wrapper [class*="search-select"]:not(.modern-select):hover, 
+.wrapper .content-wrapper .model-select:not(.modern-select):hover,
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select):hover, 
+.wrapper .content-wrapper .form-control:not(.modern-select):hover,
+.wrapper .content-wrapper input[type="text"]:not(.modern-input):hover, 
+.wrapper .content-wrapper input[type="email"]:not(.modern-input):hover, 
+.wrapper .content-wrapper input[type="password"]:not(.modern-input):hover, 
+.wrapper .content-wrapper input[type="number"]:not(.modern-input):hover {
+  border-color: #3498db !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
 }
 
-/* ===== ESTADOS DE ERROR ===== */
-
-/* Estados de error */
-.form-group.has-error .v-select .dropdown-toggle,
-.form-group.has-error .ui.fluid.search.selection.dropdown {
-  border-color: #e74c3c !important;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+/* Focus states - SOLO EN EL PANEL ADMINISTRATIVO, EXCLUYENDO FORMULARIOS MODERNOS */
+.wrapper .content-wrapper select:not(.modern-select):focus, 
+.wrapper .content-wrapper .select:not(.modern-select):focus, 
+.wrapper .content-wrapper .v-select:not(.modern-select):focus, 
+.wrapper .content-wrapper .vue-search-select:not(.modern-select):focus, 
+.wrapper .content-wrapper [class*="search-select"]:not(.modern-select):focus, 
+.wrapper .content-wrapper .model-select:not(.modern-select):focus,
+.wrapper .content-wrapper .ui.fluid.search.selection.dropdown:not(.modern-select):focus, 
+.wrapper .content-wrapper .form-control:not(.modern-select):focus,
+.wrapper .content-wrapper input[type="text"]:not(.modern-input):focus, 
+.wrapper .content-wrapper input[type="email"]:not(.modern-input):focus, 
+.wrapper .content-wrapper input[type="password"]:not(.modern-input):focus, 
+.wrapper .content-wrapper input[type="number"]:not(.modern-input):focus {
+  outline: none !important;
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
 }
 
-/* ===== ANIMACIONES ===== */
-
-/* Animación */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Override específico para estilos negros - SOLO EN EL PANEL ADMINISTRATIVO */
+.wrapper .content-wrapper *[style*="background-color: #000000"], 
+.wrapper .content-wrapper *[style*="background-color: #000"],
+.wrapper .content-wrapper *[style*="background: #000000"], 
+.wrapper .content-wrapper *[style*="background: #000"] {
+  background: #ffffff !important;
+  color: #2c3e50 !important;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
-
-/* Responsive para dropdowns */
-@media (max-width: 768px) {
-  .v-select .dropdown-menu,
-  .ui.fluid.search.selection.dropdown .menu {
-    max-height: 150px !important;
-    font-size: 13px !important;
-  }
-  
-  .v-select .dropdown-menu li a,
-  .ui.fluid.search.selection.dropdown .menu .item {
-    padding: 10px 12px !important;
-    font-size: 13px !important;
-  }
-  
-  .v-select .dropdown-toggle,
-  .ui.fluid.search.selection.dropdown {
-    min-height: 44px !important;
-    padding: 10px 14px !important;
-    font-size: 13px !important;
-  }
+/* Override para cualquier elemento con fondo negro - SOLO EN EL PANEL ADMINISTRATIVO */
+.wrapper .content-wrapper select[style*="background"], 
+.wrapper .content-wrapper input[style*="background"] {
+  background: #ffffff !important;
+  color: #2c3e50 !important;
 }
 
-/* ===== ESTILOS PARA MODALES ===== */
+/* ===== ESTILOS ESPECÍFICOS PARA FORMULARIOS MODERNOS ===== */
 
-/* Estilos específicos para el modal */
-.modal .v-select .dropdown-menu,
-.modal .ui.fluid.search.selection.dropdown .menu {
+/* Estilos para dropdowns en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .menu,
+.modern-form .v-select .dropdown-menu {
   position: absolute !important;
-  z-index: 9999 !important;
-  max-height: 150px !important;
-}
-
-/* ===== OVERRIDE CUALQUIER ESTILO INLINE ===== */
-
-/* Override cualquier estilo inline que pueda estar interfiriendo */
-.v-select * {
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  background: #ffffff !important;
+  border: 2px solid #3498db !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  margin-top: 2px !important;
+  padding: 0 !important;
+  list-style: none !important;
+  width: 100% !important;
   box-sizing: border-box !important;
 }
 
-/* Asegurar que el dropdown esté por encima de todo */
-.v-select .dropdown-menu {
-  position: fixed !important;
-  z-index: 10000 !important;
+/* Estilos para items del dropdown en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .menu .item,
+.modern-form .v-select .dropdown-menu li a {
+  display: block !important;
+  padding: 12px 16px !important;
+  color: #2c3e50 !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  font-size: 14px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  background: #ffffff !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
 }
 
-/* Forzar el estilo del input dentro del dropdown */
-.v-select .dropdown-toggle input {
-  border: none !important;
-  background: transparent !important;
+/* Hover en items del dropdown en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .menu .item:hover,
+.modern-form .v-select .dropdown-menu li a:hover {
+  background-color: #3498db !important;
+  background: #3498db !important;
+  color: white !important;
+  transform: translateX(5px) !important;
+  opacity: 1 !important;
+}
+
+/* Item seleccionado en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .menu .item.selected,
+.modern-form .v-select .dropdown-menu li.highlighted a {
+  background-color: #3498db !important;
+  background: #3498db !important;
+  color: white !important;
+  opacity: 1 !important;
+}
+
+/* ===== ESTILOS PARA EL TEXTO SELECCIONADO DENTRO DEL SELECT ===== */
+
+/* Estilos para el texto seleccionado en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .text,
+.modern-form .v-select .dropdown-toggle .form-control {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
-  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+}
+
+/* Estilos para el texto por defecto en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .default.text {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  text-align: center !important;
+}
+
+/* Estilos para el input interno en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown input {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Estilos para el contenedor del texto en formularios modernos */
+.modern-form .ui.fluid.search.selection.dropdown .text,
+.modern-form .v-select .dropdown-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* Asegurar que el texto seleccionado esté visible dentro del select */
+.modern-form .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* ===== ESTILOS ESPECÍFICOS PARA MODEL-SELECT ===== */
+
+/* Estilos para el contenedor principal de model-select */
+.modern-form .model-select {
+  position: relative !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+/* Estilos para el dropdown de model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown {
+  position: relative !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  background: #ffffff !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
   font-size: 14px !important;
   color: #2c3e50 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  margin: 0 !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Estilos para el texto seleccionado en model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+}
+
+/* Estilos para el texto por defecto en model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  text-align: center !important;
+}
+
+/* Estilos para el input interno en model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown input {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Estilos para el icono del dropdown en model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+}
+
+/* Hover states para model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown:hover {
+  border-color: #3498db !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
+}
+
+/* Focus states para model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown:focus,
+.modern-form .model-select .ui.fluid.search.selection.dropdown.active {
+  outline: none !important;
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
+}
+
+/* ===== REGLA ESPECÍFICA PARA CENTRAR TEXTO EN DROPDOWNS ===== */
+
+/* Centrar texto específicamente en model-select del formulario moderno */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 40px) !important;
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Estilos específicos para el texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos específicos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* ===== REGLAS ADICIONALES PARA GARANTIZAR EL CENTRADO ===== */
+
+/* Asegurar que el contenedor del dropdown tenga posición relativa */
+.modern-form .model-select .ui.fluid.search.selection.dropdown {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Centrar texto de manera más agresiva */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 60px) !important; /* Más espacio para el icono */
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 2 !important; /* Mayor z-index */
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
   height: auto !important;
   min-height: auto !important;
-  width: 100% !important;
 }
 
-.v-select .dropdown-toggle input:focus {
-  box-shadow: none !important;
+/* Asegurar que el icono no interfiera con el texto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Override para cualquier estilo que pueda estar interfiriendo */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default) {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
   border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
+}
+
+/* Estilos específicos para texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos específicos para texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+} 
+
+/* ===== SOLUCIÓN AGRESIVA PARA CENTRAR TEXTO EN MODEL-SELECT ===== */
+
+/* Estilos específicos para la estructura HTML de vue-search-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown,
+.modern-form .model-select .v-select .dropdown-toggle {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 48px !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Centrar cualquier elemento de texto dentro del dropdown */
+.modern-form .model-select .ui.fluid.search.selection.dropdown *,
+.modern-form .model-select .v-select .dropdown-toggle * {
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Estilos específicos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 60px) !important;
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* Estilos para el texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* Asegurar que el icono no interfiera */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon,
+.modern-form .model-select .v-select .dropdown-toggle .dropdown-toggle-button {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Override final para cualquier estructura HTML */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder,
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]),
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
+}
+
+/* Estilos específicos para el input interno */
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
   outline: none !important;
+  box-sizing: border-box !important;
 }
 
-/* ===== ESTILOS PARA MULTISELECT ===== */
+/* ===== ESTILOS ESPECÍFICOS PARA LA ESTRUCTURA HTML DE VUE-SEARCH-SELECT ===== */
 
-/* Estilos para MultiSelect si se usa */
-.v-select.multi-select .dropdown-toggle .selected-tag {
-  background: #3498db !important;
-  color: white !important;
-  border-radius: 4px !important;
-  padding: 2px 8px !important;
-  margin: 2px !important;
-  font-size: 12px !important;
-  display: inline-block !important;
+/* Estilos para cualquier elemento que contenga texto en el dropdown */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder,
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]),
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
 }
 
-/* ===== ESTILOS PARA ESTADOS ESPECIALES ===== */
-
-/* Estilos para selects deshabilitados */
-.v-select.disabled .dropdown-toggle,
-.ui.fluid.search.selection.dropdown.disabled {
-  background: #f5f5f5 !important;
-  color: #999 !important;
-  cursor: not-allowed !important;
-  opacity: 0.6 !important;
+/* Estilos específicos para el texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
 }
 
-/* Estilos para selects con valor seleccionado */
-.v-select.has-value .dropdown-toggle,
-.ui.fluid.search.selection.dropdown.has-value {
-  border-color: #27ae60 !important;
+/* Estilos específicos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+} 
+
+/* ===== SOLUCIÓN FINAL AGRESIVA PARA CENTRAR TEXTO ===== */
+
+/* Forzar centrado en cualquier elemento de texto dentro de model-select */
+.modern-form .model-select * {
+  text-align: center !important;
 }
 
-/* ===== ESTILOS PARA DARK MODE (si se implementa) ===== */
-
-/* Estilos para modo oscuro */
-@media (prefers-color-scheme: dark) {
-  .v-select .dropdown-toggle,
-  .ui.fluid.search.selection.dropdown {
-    background: #2c3e50 !important;
-    border-color: #34495e !important;
-    color: #ecf0f1 !important;
-  }
-  
-  .v-select .dropdown-menu,
-  .ui.fluid.search.selection.dropdown .menu {
-    background: #2c3e50 !important;
-    border-color: #3498db !important;
-  }
-  
-  .v-select .dropdown-menu li a,
-  .ui.fluid.search.selection.dropdown .menu .item {
-    color: #ecf0f1 !important;
-  }
+/* Estilos específicos para cualquier estructura HTML de vue-search-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown,
+.modern-form .model-select .v-select,
+.modern-form .model-select .v-select .dropdown-toggle {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 48px !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
 }
 
-/* ===== ESTILOS PARA IMPRESIÓN ===== */
+/* Centrar cualquier elemento de texto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown *,
+.modern-form .model-select .v-select *,
+.modern-form .model-select .v-select .dropdown-toggle * {
+  text-align: center !important;
+}
 
-@media print {
-  .v-select .dropdown-menu,
-  .ui.fluid.search.selection.dropdown .menu {
-    display: none !important;
-  }
-  
-  .v-select .dropdown-toggle,
-  .ui.fluid.search.selection.dropdown {
-    border: 1px solid #000 !important;
-    background: transparent !important;
-  }
+/* Estilos específicos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control,
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 60px) !important;
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* Estilos para el texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* Asegurar que el icono no interfiera */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon,
+.modern-form .model-select .v-select .dropdown-toggle .dropdown-toggle-button {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Override final para cualquier estructura HTML */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder,
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]),
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
 } 

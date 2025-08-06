@@ -43,3 +43,38 @@
     }
   }
 </script>
+
+<style scoped>
+/* Eliminar espacios en blanco */
+.content-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.content-header {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.row {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Asegurar que el contenido comience desde arriba */
+section {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Eliminar cualquier espacio del breadcrumb */
+.breadcrumb {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+</style>

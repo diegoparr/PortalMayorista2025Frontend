@@ -613,80 +613,16 @@
       }
     }),
     watch: {
-      // Aplicar estilos cuando el modal se abre
-      '$parent.$refs.modal': {
-        handler(newVal) {
-          if (newVal && newVal.style && newVal.style.display === 'block') {
-            console.log('🚀 Modal abierto, aplicando estilos...');
-            setTimeout(() => {
-              this.forceSelectStyles();
-            }, 500);
-          }
-        },
-        deep: true
-      },
-      // Aplicar estilos cuando los datos de los selects cambian
-      paises: {
-        handler() {
-          console.log('📊 Datos de países cargados, aplicando estilos...');
-          this.$nextTick(() => {
-            this.applyStylesToElements();
-          });
-        }
-      },
-      provincias: {
-        handler() {
-          console.log('📊 Datos de provincias cargados, aplicando estilos...');
-          this.$nextTick(() => {
-            this.applyStylesToElements();
-          });
-        }
-      },
-      ciudades: {
-        handler() {
-          console.log('📊 Datos de ciudades cargados, aplicando estilos...');
-          this.$nextTick(() => {
-            this.applyStylesToElements();
-          });
-        }
-      },
-      usuarios_asesores: {
-        handler() {
-          console.log('📊 Datos de asesores cargados, aplicando estilos...');
-          this.$nextTick(() => {
-            this.applyStylesToElements();
-          });
-        }
-      },
-      usuarios_clientes: {
-        handler() {
-          console.log('📊 Datos de clientes cargados, aplicando estilos...');
-          this.$nextTick(() => {
-            this.applyStylesToElements();
-          });
-        }
-      }
+      // Los watchers se eliminan porque causan conflictos con los estilos CSS
     },
     updated() {
-      // Aplicar estilos cuando el componente se actualiza
-      console.log('🔄 Componente actualizado, aplicando estilos...');
-      this.$nextTick(() => {
-        this.applyStylesToElements();
-      });
+      // Eliminar la aplicación de estilos dinámicos
     },
     mounted() {
       let yo = this;
       $('#modal').on('hidden.bs.modal', function (e) {
         yo.$emit('modal_close');
       });
-      
-      // Diagnosticar el problema con los selects
-      this.diagnoseSelects();
-      
-      // Forzar estilos después de un delay
-      setTimeout(() => {
-        this.forceSelectStyles();
-      }, 1000);
     },
     created() {
       $(function () {
@@ -713,566 +649,6 @@
       }, errors => this.getAppServices().mapErrorsResponses(this, errors));
     },
     methods: {
-      diagnoseSelects() {
-        console.log('🔍 Diagnóstico de selects...');
-        
-        // Buscar todos los elementos que podrían ser selects
-        const vSelects = document.querySelectorAll('.v-select');
-        const modelSelects = document.querySelectorAll('.model-select');
-        const searchSelects = document.querySelectorAll('[class*="search-select"]');
-        const uiDropdowns = document.querySelectorAll('.ui.fluid.search.selection.dropdown');
-        
-        console.log('📊 Elementos encontrados:');
-        console.log('- v-selects:', vSelects.length);
-        console.log('- model-selects:', modelSelects.length);
-        console.log('- search-selects:', searchSelects.length);
-        console.log('- ui-dropdowns:', uiDropdowns.length);
-        
-        // Verificar estilos aplicados
-        vSelects.forEach((select, index) => {
-          const computedStyle = window.getComputedStyle(select);
-          console.log(`📋 v-select ${index + 1}:`, {
-            background: computedStyle.background,
-            border: computedStyle.border,
-            color: computedStyle.color,
-            display: computedStyle.display
-          });
-        });
-        
-        // Verificar si los CSS están cargados
-        const styleSheets = Array.from(document.styleSheets);
-        console.log('📋 Stylesheets cargados:', styleSheets.length);
-        styleSheets.forEach((sheet, index) => {
-          if (sheet.href) {
-            console.log(`- ${index + 1}: ${sheet.href}`);
-          }
-        });
-      },
-      
-      forceSelectStyles() {
-        console.log('🎨 Forzando estilos de selects...');
-        
-        // Crear estilos inline críticos
-        const criticalStyles = `
-          .v-select {
-            position: relative !important;
-            width: 100% !important;
-            font-family: inherit !important;
-            margin-bottom: 0 !important;
-          }
-          
-          .v-select .dropdown-toggle {
-            background: #ffffff !important;
-            border: 2px solid #e1e8ed !important;
-            border-radius: 8px !important;
-            padding: 12px 16px !important;
-            font-size: 14px !important;
-            transition: all 0.3s ease !important;
-            color: #2c3e50 !important;
-            cursor: pointer !important;
-            width: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            min-height: 48px !important;
-            box-sizing: border-box !important;
-            text-align: center !important;
-            margin: 0 !important;
-            outline: none !important;
-          }
-          
-          .v-select .dropdown-toggle:hover {
-            border-color: #3498db !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
-          }
-          
-          .v-select .dropdown-toggle:focus {
-            outline: none !important;
-            border-color: #3498db !important;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
-          }
-          
-          .v-select .dropdown-toggle .clear,
-          .v-select .dropdown-toggle .dropdown-toggle-button {
-            display: none !important;
-          }
-          
-          .v-select .dropdown-toggle .form-control {
-            text-align: center !important;
-            width: 100% !important;
-            border: none !important;
-            background: transparent !important;
-            font-size: 14px !important;
-            color: #2c3e50 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-          }
-          
-          .v-select .dropdown-toggle .form-control::placeholder {
-            text-align: center !important;
-            color: #95a5a6 !important;
-            font-style: italic !important;
-          }
-          
-          .v-select .dropdown-menu {
-            position: absolute !important;
-            top: 100% !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 10000 !important;
-            background: #ffffff !important;
-            border: 2px solid #3498db !important;
-            border-radius: 8px !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
-            max-height: 200px !important;
-            overflow-y: auto !important;
-            margin-top: 2px !important;
-            padding: 0 !important;
-            list-style: none !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            animation: slideDown 0.2s ease-out !important;
-          }
-          
-          .v-select .dropdown-menu li {
-            padding: 0 !important;
-            margin: 0 !important;
-            list-style: none !important;
-          }
-          
-          .v-select .dropdown-menu li a {
-            display: block !important;
-            padding: 12px 16px !important;
-            color: #2c3e50 !important;
-            text-decoration: none !important;
-            transition: all 0.3s ease !important;
-            border-bottom: 1px solid #f0f0f0 !important;
-            font-size: 14px !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            background: transparent !important;
-            line-height: 1.5 !important;
-            text-align: center !important;
-          }
-          
-          .v-select .dropdown-menu li a:hover {
-            background-color: #3498db !important;
-            color: white !important;
-            transform: translateX(5px) !important;
-          }
-          
-          .v-select .dropdown-menu li:last-child a {
-            border-bottom: none !important;
-          }
-          
-          .v-select .dropdown-menu li.highlighted a {
-            background-color: #3498db !important;
-            color: white !important;
-          }
-          
-          /* ESTILOS PARA UI DROPDOWNS (Semantic UI) */
-          .ui.fluid.search.selection.dropdown {
-            position: relative !important;
-            width: 100% !important;
-            font-family: inherit !important;
-            margin-bottom: 0 !important;
-            background: #ffffff !important;
-            border: 2px solid #e1e8ed !important;
-            border-radius: 8px !important;
-            padding: 12px 16px !important;
-            font-size: 14px !important;
-            transition: all 0.3s ease !important;
-            color: #2c3e50 !important;
-            cursor: pointer !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            min-height: 48px !important;
-            box-sizing: border-box !important;
-            text-align: center !important;
-            margin: 0 !important;
-            outline: none !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown:hover {
-            border-color: #3498db !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown:focus {
-            outline: none !important;
-            border-color: #3498db !important;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .text {
-            text-align: center !important;
-            width: 100% !important;
-            border: none !important;
-            background: transparent !important;
-            font-size: 14px !important;
-            color: #2c3e50 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            min-height: 24px !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .default.text {
-            text-align: center !important;
-            color: #95a5a6 !important;
-            font-style: italic !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown input {
-            text-align: center !important;
-            width: 100% !important;
-            border: none !important;
-            background: transparent !important;
-            font-size: 14px !important;
-            color: #2c3e50 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            min-height: 24px !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown input:focus {
-            outline: none !important;
-            box-shadow: none !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .dropdown.icon {
-            position: absolute !important;
-            right: 12px !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            color: #95a5a6 !important;
-            font-size: 16px !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .menu {
-            position: absolute !important;
-            top: 100% !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 10000 !important;
-            background: #ffffff !important;
-            border: 2px solid #3498db !important;
-            border-radius: 8px !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
-            max-height: 200px !important;
-            overflow-y: auto !important;
-            margin-top: 2px !important;
-            padding: 0 !important;
-            list-style: none !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            animation: slideDown 0.2s ease-out !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .menu .item {
-            display: block !important;
-            padding: 12px 16px !important;
-            color: #2c3e50 !important;
-            text-decoration: none !important;
-            transition: all 0.3s ease !important;
-            border-bottom: 1px solid #f0f0f0 !important;
-            font-size: 14px !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            background: transparent !important;
-            line-height: 1.5 !important;
-            text-align: center !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .menu .item:hover {
-            background-color: #3498db !important;
-            color: white !important;
-            transform: translateX(5px) !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .menu .item:last-child {
-            border-bottom: none !important;
-          }
-          
-          .ui.fluid.search.selection.dropdown .menu .item.selected {
-            background-color: #3498db !important;
-            color: white !important;
-          }
-          
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-10px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        `;
-        
-        // Remover estilos anteriores si existen
-        const existingStyle = document.getElementById('forced-select-styles');
-        if (existingStyle) {
-          existingStyle.remove();
-        }
-        
-        // Crear y agregar los nuevos estilos
-        const styleElement = document.createElement('style');
-        styleElement.id = 'forced-select-styles';
-        styleElement.textContent = criticalStyles;
-        document.head.appendChild(styleElement);
-        
-        console.log('✅ Estilos forzados aplicados');
-        
-        // Aplicar estilos directamente a los elementos DOM
-        this.applyStylesToElements();
-        
-        // Verificar que se aplicaron
-        setTimeout(() => {
-          const vSelects = document.querySelectorAll('.v-select');
-          vSelects.forEach((select, index) => {
-            const computedStyle = window.getComputedStyle(select);
-            console.log(`✅ v-select ${index + 1} después de forzar:`, {
-              background: computedStyle.background,
-              border: computedStyle.border,
-              color: computedStyle.color
-            });
-          });
-        }, 100);
-      },
-      
-      applyStylesToElements() {
-        console.log('🎯 Aplicando estilos directamente a elementos...');
-        
-        // Buscar todos los elementos ui dropdown (que es lo que realmente se está usando)
-        const uiDropdowns = document.querySelectorAll('.ui.fluid.search.selection.dropdown');
-        
-        console.log(`🎨 Encontrados ${uiDropdowns.length} elementos ui dropdown`);
-        
-        uiDropdowns.forEach((dropdown, index) => {
-          console.log(`🎨 Aplicando estilos a ui dropdown ${index + 1}`);
-          
-          // Aplicar estilos al contenedor principal
-          dropdown.style.position = 'relative';
-          dropdown.style.width = '100%';
-          dropdown.style.fontFamily = 'inherit';
-          dropdown.style.marginBottom = '0';
-          
-          // Aplicar estilos al dropdown principal
-          dropdown.style.background = '#ffffff';
-          dropdown.style.border = '2px solid #e1e8ed';
-          dropdown.style.borderRadius = '8px';
-          dropdown.style.padding = '12px 16px';
-          dropdown.style.fontSize = '14px';
-          dropdown.style.transition = 'all 0.3s ease';
-          dropdown.style.color = '#2c3e50';
-          dropdown.style.cursor = 'pointer';
-          dropdown.style.width = '100%';
-          dropdown.style.display = 'flex';
-          dropdown.style.alignItems = 'center';
-          dropdown.style.justifyContent = 'space-between';
-          dropdown.style.minHeight = '48px';
-          dropdown.style.boxSizing = 'border-box';
-          dropdown.style.textAlign = 'center';
-          dropdown.style.margin = '0';
-          dropdown.style.outline = 'none';
-          
-          // Aplicar estilos al texto interno
-          const textElement = dropdown.querySelector('.text');
-          if (textElement) {
-            console.log(`  - Aplicando estilos a text element`);
-            textElement.style.textAlign = 'center';
-            textElement.style.width = '100%';
-            textElement.style.border = 'none';
-            textElement.style.background = 'transparent';
-            textElement.style.fontSize = '14px';
-            textElement.style.color = '#2c3e50';
-            textElement.style.padding = '0';
-            textElement.style.margin = '0';
-            textElement.style.boxShadow = 'none';
-            textElement.style.display = 'flex';
-            textElement.style.alignItems = 'center';
-            textElement.style.justifyContent = 'center';
-            textElement.style.minHeight = '24px';
-          }
-          
-          // Aplicar estilos al input interno
-          const inputElement = dropdown.querySelector('input');
-          if (inputElement) {
-            console.log(`  - Aplicando estilos a input element`);
-            inputElement.style.textAlign = 'center';
-            inputElement.style.width = '100%';
-            inputElement.style.border = 'none';
-            inputElement.style.background = 'transparent';
-            inputElement.style.fontSize = '14px';
-            inputElement.style.color = '#2c3e50';
-            inputElement.style.padding = '0';
-            inputElement.style.margin = '0';
-            inputElement.style.boxShadow = 'none';
-            inputElement.style.display = 'flex';
-            inputElement.style.alignItems = 'center'; 
-            inputElement.style.justifyContent = 'center';
-            inputElement.style.minHeight = '24px';
-          }
-          
-          // Aplicar estilos al icono del dropdown
-          const iconElement = dropdown.querySelector('.dropdown.icon');
-          if (iconElement) {
-            console.log(`  - Aplicando estilos a dropdown icon`);
-            iconElement.style.position = 'absolute';
-            iconElement.style.right = '12px';
-            iconElement.style.top = '50%';
-            iconElement.style.transform = 'translateY(-50%)';
-            iconElement.style.color = '#95a5a6';
-            iconElement.style.fontSize = '16px';
-          }
-          
-          // Aplicar estilos al menú dropdown
-          const menuElement = dropdown.querySelector('.menu');
-          if (menuElement) {
-            console.log(`  - Aplicando estilos a menu element`);
-            menuElement.style.position = 'absolute';
-            menuElement.style.top = '100%';
-            menuElement.style.left = '0';
-            menuElement.style.right = '0';
-            menuElement.style.zIndex = '10000';
-            menuElement.style.background = '#ffffff';
-            menuElement.style.border = '2px solid #3498db';
-            menuElement.style.borderRadius = '8px';
-            menuElement.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
-            menuElement.style.maxHeight = '200px';
-            menuElement.style.overflowY = 'auto';
-            menuElement.style.marginTop = '2px';
-            menuElement.style.padding = '0';
-            menuElement.style.listStyle = 'none';
-            menuElement.style.width = '100%';
-            menuElement.style.boxSizing = 'border-box';
-          }
-          
-          // Aplicar estilos a los items del menú
-          const menuItems = dropdown.querySelectorAll('.menu .item');
-          menuItems.forEach((item, itemIndex) => {
-            console.log(`  - Aplicando estilos a menu item ${itemIndex + 1}`);
-            item.style.display = 'block';
-            item.style.padding = '12px 16px';
-            item.style.color = '#2c3e50';
-            item.style.textDecoration = 'none';
-            item.style.transition = 'all 0.3s ease';
-            item.style.borderBottom = '1px solid #f0f0f0';
-            item.style.fontSize = '14px';
-            item.style.whiteSpace = 'nowrap';
-            item.style.overflow = 'hidden';
-            item.style.textOverflow = 'ellipsis';
-            item.style.background = 'transparent';
-            item.style.lineHeight = '1.5';
-            item.style.textAlign = 'center';
-          });
-        });
-        
-        // También buscar elementos v-select por si acaso
-        const vSelects = document.querySelectorAll('.v-select');
-        if (vSelects.length > 0) {
-          console.log(`🎨 También aplicando estilos a ${vSelects.length} elementos v-select`);
-          vSelects.forEach((vSelect, index) => {
-            console.log(`🎨 Aplicando estilos a v-select ${index + 1}`);
-            
-            // Aplicar estilos al contenedor principal
-            vSelect.style.position = 'relative';
-            vSelect.style.width = '100%';
-            vSelect.style.fontFamily = 'inherit';
-            vSelect.style.marginBottom = '0';
-            
-            // Buscar y aplicar estilos al dropdown toggle
-            const dropdownToggle = vSelect.querySelector('.dropdown-toggle');
-            if (dropdownToggle) {
-              console.log(`  - Aplicando estilos a dropdown-toggle`);
-              dropdownToggle.style.background = '#ffffff';
-              dropdownToggle.style.border = '2px solid #e1e8ed';
-              dropdownToggle.style.borderRadius = '8px';
-              dropdownToggle.style.padding = '12px 16px';
-              dropdownToggle.style.fontSize = '14px';
-              dropdownToggle.style.transition = 'all 0.3s ease';
-              dropdownToggle.style.color = '#2c3e50';
-              dropdownToggle.style.cursor = 'pointer';
-              dropdownToggle.style.width = '100%';
-              dropdownToggle.style.display = 'flex';
-              dropdownToggle.style.alignItems = 'center';
-              dropdownToggle.style.justifyContent = 'space-between';
-              dropdownToggle.style.minHeight = '48px';
-              dropdownToggle.style.boxSizing = 'border-box';
-              dropdownToggle.style.textAlign = 'center';
-              dropdownToggle.style.margin = '0';
-              dropdownToggle.style.outline = 'none';
-              
-              // Ocultar elementos innecesarios
-              const clearButton = dropdownToggle.querySelector('.clear');
-              const toggleButton = dropdownToggle.querySelector('.dropdown-toggle-button');
-              if (clearButton) clearButton.style.display = 'none';
-              if (toggleButton) toggleButton.style.display = 'none';
-              
-              // Aplicar estilos al input interno
-              const formControl = dropdownToggle.querySelector('.form-control');
-              if (formControl) {
-                console.log(`  - Aplicando estilos a form-control`);
-                formControl.style.textAlign = 'center';
-                formControl.style.width = '100%';
-                formControl.style.border = 'none';
-                formControl.style.background = 'transparent';
-                formControl.style.fontSize = '14px';
-                formControl.style.color = '#2c3e50';
-                formControl.style.padding = '0';
-                formControl.style.margin = '0';
-                formControl.style.boxShadow = 'none';
-                formControl.style.display = 'flex';
-                formControl.style.alignItems = 'center';
-                formControl.style.justifyContent = 'center';
-              }
-            }
-            
-            // Buscar y aplicar estilos al dropdown menu
-            const dropdownMenu = vSelect.querySelector('.dropdown-menu');
-            if (dropdownMenu) {
-              console.log(`  - Aplicando estilos a dropdown-menu`);
-              dropdownMenu.style.position = 'absolute';
-              dropdownMenu.style.top = '100%';
-              dropdownMenu.style.left = '0';
-              dropdownMenu.style.right = '0';
-              dropdownMenu.style.zIndex = '10000';
-              dropdownMenu.style.background = '#ffffff';
-              dropdownMenu.style.border = '2px solid #3498db';
-              dropdownMenu.style.borderRadius = '8px';
-              dropdownMenu.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
-              dropdownMenu.style.maxHeight = '200px';
-              dropdownMenu.style.overflowY = 'auto';
-              dropdownMenu.style.marginTop = '2px';
-              dropdownMenu.style.padding = '0';
-              dropdownMenu.style.listStyle = 'none';
-              dropdownMenu.style.width = '100%';
-              dropdownMenu.style.boxSizing = 'border-box';
-            }
-          });
-        }
-        
-        console.log('✅ Estilos aplicados directamente a elementos');
-      },
-      
       getAppServices() {
         return AppServices;
       },
@@ -1532,40 +908,222 @@
   font-weight: 500;
 }
 
+/* ===== ESTILOS ESPECÍFICOS PARA CENTRADO PERFECTO ===== */
+
+/* Asegurar centrado absoluto del texto en model-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Centrar texto de manera absoluta */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 60px) !important;
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* Estilos para texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos para texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* Asegurar que el icono no interfiera */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Override final para garantizar centrado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default) {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
+}
+
+/* ===== SOLUCIÓN AGRESIVA PARA VUE-SEARCH-SELECT ===== */
+
+/* Estilos para cualquier estructura HTML que genere vue-search-select */
+.modern-form .model-select .ui.fluid.search.selection.dropdown *,
+.modern-form .model-select .v-select .dropdown-toggle * {
+  text-align: center !important;
+}
+
+/* Estilos específicos para el texto dentro del dropdown */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 60px) !important;
+  text-align: center !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* Estilos para el texto por defecto */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder {
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+/* Estilos para el texto seleccionado */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+}
+
+/* Asegurar que el icono no interfiera */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .dropdown.icon,
+.modern-form .model-select .v-select .dropdown-toggle .dropdown-toggle-button {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #95a5a6 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Override final para cualquier estructura HTML */
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .default.text,
+.modern-form .model-select .ui.fluid.search.selection.dropdown .text:not(.default),
+.modern-form .model-select .v-select .dropdown-toggle .form-control,
+.modern-form .model-select .v-select .dropdown-toggle .form-control::placeholder,
+.modern-form .model-select .v-select .dropdown-toggle .form-control:not([placeholder]) {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  width: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
+}
+
+/* Estilos específicos para el input interno */
+.modern-form .model-select .ui.fluid.search.selection.dropdown input,
+.modern-form .model-select .v-select .dropdown-toggle input {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Estilos para los horarios */
 .modern-section-title {
   color: #2c3e50;
   font-size: 18px;
-  font-weight: 700;
-  margin: 30px 0 20px 0;
+  font-weight: 600;
+  margin-bottom: 20px;
   text-align: center;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.modern-section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #3498db, #2980b9);
-  border-radius: 2px;
 }
 
 .modern-day-container {
   background: #f8f9fa;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 10px 0;
-  border: 1px solid #e9ecef;
-  transition: all 0.3s ease;
-}
-
-.modern-day-container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #e1e8ed;
 }
 
 .modern-day-label {
@@ -1580,12 +1138,13 @@
 .modern-time-input {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  border: 2px solid #e1e8ed;
   border-radius: 6px;
   font-size: 13px;
-  margin: 5px 0;
+  transition: all 0.3s ease;
   background: #ffffff;
   color: #2c3e50;
+  margin-bottom: 8px;
 }
 
 .modern-time-input:focus {
@@ -1598,132 +1157,56 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0;
+  margin: 8px 0;
   font-size: 12px;
   color: #7f8c8d;
   cursor: pointer;
 }
 
 .modern-checkbox {
-  margin-right: 8px;
-  transform: scale(1.2);
-  accent-color: #3498db;
+  margin-right: 6px;
+  transform: scale(1.1);
 }
 
 .modern-textarea {
-  min-height: 100px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  color: #2c3e50;
   resize: vertical;
-  font-family: inherit;
-  line-height: 1.5;
+  min-height: 80px;
 }
 
-/* Botón de envío moderno */
-.btn-registrar {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  border: none;
-  color: white;
-  padding: 12px 30px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-}
-
-.btn-registrar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-  background: linear-gradient(135deg, #2980b9, #1f5f8b);
-}
-
-.btn-registrar:active {
-  transform: translateY(0);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .modern-form {
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  .modern-day-container {
-    padding: 15px;
-    margin: 5px 0;
-  }
-  
-  .modern-section-title {
-    font-size: 16px;
-  }
-}
-
-/* Animaciones suaves */
-.modern-form-group {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Estados de error mejorados */
-.modern-form-group.has-error .modern-input,
-.modern-form-group.has-error .modern-select {
-  border-color: #e74c3c;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
-}
-
-.modern-form-group.has-error .modern-label {
-  color: #e74c3c;
-}
-
-/* Mejoras para imágenes */
-.container-imgs {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 15px;
-  border: 2px dashed #dee2e6;
-  transition: all 0.3s ease;
-}
-
-.container-imgs:hover {
+.modern-textarea:focus {
+  outline: none;
   border-color: #3498db;
-  background: #f0f8ff;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  transform: translateY(-1px);
 }
 
-/* Estilos para las imágenes previas */
-.img-preview {
-  max-width: 100%;
-  height: auto;
+/* Estilos para las imágenes */
+.container-imgs {
+  margin-bottom: 20px;
+}
+
+.img-previsualizar {
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 10px;
 }
 
-/* Botones de eliminar imagen */
-.btn-remove-img {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  margin-top: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.centrar-imagen {
+  display: block;
+  margin: 0 auto;
 }
 
-.btn-remove-img:hover {
-  background: #c0392b;
-  transform: scale(1.05);
+.imagen-previsualizar {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
 }
 </style>
