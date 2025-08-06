@@ -334,7 +334,7 @@ import { ModelSelect } from "vue-search-select";
 import AppServices from "../../../AppServices";
 import TerminosCondiciones from "../../../TerminosCondiciones/TerminosCondiciones";
 import Vue from 'vue';
-import ImageHandler from '../../../mixin/ImageHandler';
+import ImageHandler from '../../../../mixin/ImageHandler';
 
 export default {
   data() {
