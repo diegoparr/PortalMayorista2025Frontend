@@ -32,7 +32,7 @@
               <template v-else-if="!cargandoData">
                 <div class="contenedor-coincidencias text-center" v-for="coincidencia in coincidencias" >
                   <div v-on:click="buscar(coincidencia.v_nombre)">
-                  <img :src="coincidencia.v_portada"
+                  <img :src="getImageUrl(coincidencia.v_portada)"
                        class="img-responsive img-coincidencias">
                   <h5 class="text-coincidencia">{{coincidencia.v_nombre}}</h5>
                   </div>
@@ -62,8 +62,10 @@
   import Loader from '../parts/loader.vue';
   import AppServices from '../AppServices';
   import {mapGetters, mapMutations} from 'vuex';
+  import ImageHandler from '../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         cargandoData: false,

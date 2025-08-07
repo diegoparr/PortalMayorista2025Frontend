@@ -31,7 +31,7 @@
             </tr>
             <template v-else>
               <tr v-for="(publicidad,i) in publicidades" :key="i">
-                <td class="text-center"><img style="height: 60px" :src="publicidad.v_imagen" alt=""></td>
+                <td class="text-center"><img style="height: 60px" :src="getImageUrl(publicidad.v_imagen)" alt=""></td>
                 <td class="text-center">{{publicidad.d_fecha_inicio}}</td>
                 <td class="text-center">{{publicidad.d_fecha_fin}}</td>
                 <td class="text-center">{{publicidad.v_posicion_pantalla}}</td>
@@ -138,8 +138,10 @@
   import Store from './parts/store.vue';
   import Show from './parts/show.vue';
   import Update from './parts/update.vue';
+  import ImageHandler from '../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         cargando: false,

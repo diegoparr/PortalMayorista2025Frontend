@@ -40,7 +40,7 @@
             <template v-else-if="ifProducts && shopSelect">
               <tr v-for="product in pagination.data">
                 <td>
-                  <img :src="product.v_portada" class="img-responsive" width="100" height="50" style="margin: auto;">
+                  <img :src="getImageUrl(product.v_portada)" class="img-responsive" width="100" height="50" style="margin: auto;">
                 </td>
                 <td class="text-center">{{product.v_nombre}}</td>
                 <td class="text-center">{{getHelpers().formatInvoice(product.n_precio)}}</td>
@@ -133,8 +133,10 @@
   import Store from './parts/store.vue';
   import Update from './parts/update.vue';
   import Show from './parts/show.vue';
+  import ImageHandler from '../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         modalActive: '',

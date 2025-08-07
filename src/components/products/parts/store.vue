@@ -37,7 +37,7 @@
                 <h3 class="box-title">{{catalogo.v_nombre}}</h3>
               </div>
               <div class="box-body">
-                <img :src="catalogo.v_imagen_portada" class="img-responsive img-product"
+                <img :src="getImageUrl(catalogo.v_imagen_portada)" class="img-responsive img-product"
                      v-on:click="seleccionarCatalogo(catalogo)" style="cursor: pointer;">
               </div>
             </div>
@@ -644,8 +644,10 @@
   import Loader from '../../parts/loader.vue';
   import AppService from '../../AppServices';
   import helpers from '../../../helpers';
+  import ImageHandler from '../../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         siguienteTab: false,
