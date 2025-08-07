@@ -6,11 +6,11 @@
         <v-carousel-item
           v-for="(catalogo,i) in catalogo.imagenes"
           :key="i">
-          <img :src="catalogo.v_url" style="height: 100%; width: 100%">
+          <img :src="getImageUrl(catalogo.v_url)" style="height: 100%; width: 100%">
         </v-carousel-item>
       </v-carousel>
 
-      <img v-else :src="catalogo.v_imagen_portada" style="height: 100%; width: 100%">
+      <img v-else :src="getImageUrl(catalogo.v_imagen_portada)" style="height: 100%; width: 100%">
 
     </div>
     <div class="col-xs-12 col-md-6 container-detail-catalogos-margin">
@@ -41,7 +41,10 @@
   </div>
 </template>
 <script>
+  import ImageHandler from '../../../mixin/ImageHandler';
+
   export default {
+    mixins: [ImageHandler],
     props: ['catalogo'],
     mounted() {
       let yo = this;

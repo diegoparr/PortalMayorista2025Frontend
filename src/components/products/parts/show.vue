@@ -5,10 +5,10 @@
         <v-carousel-item
           v-for="(product,i) in product.imagenes"
           :key="i">
-          <img :src="product.v_url" style="height: 100%; width: 100%">
+          <img :src="getImageUrl(product.v_url)" style="height: 100%; width: 100%">
         </v-carousel-item>
       </v-carousel>
-      <img v-else :src="product.v_portada" style="height: 100%; width: 100%">
+      <img v-else :src="getImageUrl(product.v_portada)" style="height: 100%; width: 100%">
     </div>
     <div class="col-xs-12 col-md-6 container-detail-products-margin">
       <div class="nav-tabs-custom">
@@ -46,7 +46,10 @@
   </div>
 </template>
 <script>
+  import ImageHandler from '../../../mixin/ImageHandler';
+
   export default {
+    mixins: [ImageHandler],
     data(){
       return{
         unicas:[],

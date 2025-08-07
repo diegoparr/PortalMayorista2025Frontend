@@ -30,7 +30,7 @@
         <div class="ctd-oft-inf-tienda">
           <div class="ctd-img-oft-inf-tienda">
             <div class="contenedor-imagen-slide oferta"
-                 :style="{'background-image': 'url(' + oferta.v_portada + ')'}"
+                 :style="{'background-image': 'url(' + getImageUrl(oferta.v_portada) + ')'}"
                  v-on:click="redirigirProducto(oferta.id_m_productos)">
             </div>
           </div>
@@ -71,16 +71,18 @@
 </template>
 <script>
   import {Carousel, Slide} from 'vue-carousel';
+  import ImageHandler from '../../../../mixin/ImageHandler';
 
   export default {
-        data(){
-          return {
-            idProducto: false,
-            cantidad: null,
-            letras: 70,
-            letras2: 20
-          }
-        },
+    mixins: [ImageHandler],
+    data(){
+      return {
+        idProducto: false,
+        cantidad: null,
+        letras: 70,
+        letras2: 20
+      }
+    },
     props: ['ofertas'],
     components: {Carousel, Slide},
     created() {

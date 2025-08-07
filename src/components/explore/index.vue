@@ -32,48 +32,50 @@
       </div>
     </div>
     <loader v-if="loadingData"></loader>
-    <div class="col-xs-12 col-sm-6 col-md-6" v-for="product in productosOrdernados" v-else>
-      <div class="box box-hipertienda shadow-box-products">
-        <div class="box-header with-border">
-          <h3 class="box-title">
-            <div class="col-xs-10">
-              {{product.v_nombre}}
-            </div>
-            <div class="col-xs-2">
-              <template v-if="product.v_tipo=='nuevo'">
-                <small class="label pull-right bg-green"> Nuevo</small>
-              </template>
-              <template v-else>
-                <small class="label pull-right bg-blue"> Usado</small>
-              </template>
-            </div>
-          </h3>
-        </div>
-        <div class="box-body">
-          <img :src="product.v_portada" class="img-responsive img-product" alt="">
-        </div>
-        <div class="box-footer footer-container-product">
-          <div class="col-xs-6 text-center text-price-product">
-            <span>${{getHelpers().formatInvoice(product.n_precio)}}</span>
+    <div v-else>
+      <div class="col-xs-12 col-sm-6 col-md-6" v-for="product in productosOrdernados">
+        <div class="box box-hipertienda shadow-box-products">
+          <div class="box-header with-border">
+            <h3 class="box-title">
+              <div class="col-xs-10">
+                {{product.v_nombre}}
+              </div>
+              <div class="col-xs-2">
+                <template v-if="product.v_tipo=='nuevo'">
+                  <small class="label pull-right bg-green"> Nuevo</small>
+                </template>
+                <template v-else>
+                  <small class="label pull-right bg-blue"> Usado</small>
+                </template>
+              </div>
+            </h3>
           </div>
-          <div class="col-xs-6">
-            <button type="button" class="btn btn-hipertienda-oscuro btn-flat btn-website"
-                    v-on:click="detalleProducto(product)">
-              Ver Producto
-            </button>
-            <button type="button" class="btn btn-hipertienda-oscuro btn-flat btn-responsive"
-                    v-on:click="showProduct(product)">
-              Ver Producto
-            </button>
+          <div class="box-body">
+            <img :src="getImageUrl(product.v_portada)" class="img-responsive img-product" alt="">
           </div>
-          <div class="col-xs-12 text-center margin-container-ciudad-tienda">
-            <span class="location-product">
-              <i class="fa fa-map-marker"
-                 aria-hidden="true"></i> {{getHelpers().locationShop(product.tienda.v_nombre_ciudad)}}
-            </span>
-            <a v-on:click="showShop(product.tienda)" class="categories-links">
-              Ver Tienda
-            </a>
+          <div class="box-footer footer-container-product">
+            <div class="col-xs-6 text-center text-price-product">
+              <span>${{getHelpers().formatInvoice(product.n_precio)}}</span>
+            </div>
+            <div class="col-xs-6">
+              <button type="button" class="btn btn-hipertienda-oscuro btn-flat btn-website"
+                      v-on:click="detalleProducto(product)">
+                Ver Producto
+              </button>
+              <button type="button" class="btn btn-hipertienda-oscuro btn-flat btn-responsive"
+                      v-on:click="showProduct(product)">
+                Ver Producto
+              </button>
+            </div>
+            <div class="col-xs-12 text-center margin-container-ciudad-tienda">
+              <span class="location-product">
+                <i class="fa fa-map-marker"
+                   aria-hidden="true"></i> {{getHelpers().locationShop(product.tienda.v_nombre_ciudad)}}
+              </span>
+              <a v-on:click="showShop(product.tienda)" class="categories-links">
+                Ver Tienda
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -117,10 +119,10 @@
                   <div class="carousel-inner">
                     <div class="item active">
                       <img width="300" height="200" class="img-responsive img-responsive-center"
-                           :src="product.v_portada">
+                           :src="getImageUrl(product.v_portada)">
                     </div>
                     <div class="item" v-for="product in product.imagenes">
-                      <img width="300" height="200" class="img-responsive img-responsive-center" :src="product.v_url">
+                      <img width="300" height="200" class="img-responsive img-responsive-center" :src="getImageUrl(product.v_url)">
                     </div>
                   </div>
                   <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -166,16 +168,22 @@
   </div>
 </template>
 <script>
-  import AppServices from '../AppServices';
-  import Helpers from '../../helpers';
-  import Loader from '../parts/loader.vue';
   import {mapGetters, mapMutations} from 'vuex';
+  import AppServices from '../AppServices';
+  import Helpers from '../Helpers';
+  import Loader from '../parts/loader';
+  import ImageHandler from '../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
+        sizeContainer: '',
         loadingData: false,
+        loadDataProducto: false,
         ifData: false,
+        productosOrdernados: [],
+        product: [],
         pagination: {
           total: 0,
           per_page: 2,
@@ -185,17 +193,11 @@
           data: []
         },
         offset: 4,
-        sizeContainer: '',
-        loadDataProducto: false,
-        productosOrdernados: [],
-        product: {
-          imagenes: [],
-          caracteristicas: []
-        },
-        busqueda: (this.$route.params.busqueda) ? this.$route.params.busqueda : '',
         filtrado: null,
-        order: null,
-        orderEndpoint: null
+        order: 'todos',
+        orderEndpoint: null,
+        imagenes: [],
+        imagenesM: []
       }
     },
     methods: Object.assign({}, mapMutations([

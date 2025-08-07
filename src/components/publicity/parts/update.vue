@@ -222,7 +222,7 @@
               id="v_imagen"
             ></div>
           <div class="col-xs-12 col-md-6 text-xs-center">
-            <img :src="publicidad.v_imagen" alt="" style="height: 200px; width: 150px">
+            <img :src="getImageUrl(publicidad.v_imagen)" alt="" style="height: 200px; width: 150px">
           </div>
         </div>
         <div class="row container">
@@ -238,7 +238,7 @@
               id="v_imagen_movil">
           </div>
           <div class="col-xs-12 col-md-6 text-xs-center">
-            <img :src="publicidad.v_imagen_movil" alt="" style="height: 200px; width: 150px">
+            <img :src="getImageUrl(publicidad.v_imagen_movil)" alt="" style="height: 200px; width: 150px">
           </div>
         </div>
       </div>
@@ -256,7 +256,7 @@
               id="v_imagen_lateral">
           </div>
           <div class="col-xs-12 col-md-6 text-xs-center">
-            <img :src="publicidad.v_imagen" alt="" style="height: 200px; width: 150px">
+            <img :src="getImageUrl(publicidad.v_imagen)" alt="" style="height: 200px; width: 150px">
           </div>
         </div>
       </div>
@@ -278,8 +278,10 @@
   import {mapGetters} from 'vuex';
   import Loader from '../../parts/loader.vue';
   import {ModelSelect} from 'vue-search-select';
+  import ImageHandler from '../../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         publicidadPrincipal: true,

@@ -257,8 +257,10 @@
   import Loader from '../../parts/loader';
   import PanelOpciones from '../partes/PanelOpciones';
   import TiendasRecomendadas from '../partes/TiendasRecomendadas';
+  import ImageHandler from '../../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     components: {Loader, PanelOpciones, 'recomendadas':TiendasRecomendadas},
     name: "explorar",
     data() {
@@ -313,7 +315,7 @@
         }
       },
       getUrlImage: function (ruta) {
-        let url = ruta;
+        let url = this.getImageUrl(ruta);
         return {
           'background-image': 'url(' + url + ')'
         }

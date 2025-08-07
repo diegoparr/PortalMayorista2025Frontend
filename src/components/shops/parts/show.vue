@@ -272,14 +272,14 @@
 
     <div class="row">
       <div class="col-xs-12 col-md-6">
-        <img :src="shop.v_rut" width="200" height="200"
+        <img :src="getImageUrl(shop.v_rut)" width="200" height="200"
              class="img-responsive img-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen Rut
         </button>
       </div>
       <div class="col-xs-12 col-md-6">
-        <img :src="shop.v_camara_comercio" width="200" height="200"
+        <img :src="getImageUrl(shop.v_camara_comercio)" width="200" height="200"
              class="img-responsive img-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen Camara Comercio
@@ -288,14 +288,14 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-6">
-        <img :src="shop.v_contrato" width="200" height="200"
+        <img :src="getImageUrl(shop.v_contrato)" width="200" height="200"
              class="img-responsive img-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen Contrato
         </button>
       </div>
       <div class="col-xs-12 col-md-6">
-        <img :src="shop.v_logo" width="200" height="200"
+        <img :src="getImageUrl(shop.v_logo)" width="200" height="200"
              class="img-responsive img-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen Logo
@@ -304,7 +304,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12" align="center">
-        <img :src="shop.v_portada" width="200" height="200" style="margin: 10px;"
+        <img :src="getImageUrl(shop.v_portada)" width="200" height="200" style="margin: 10px;"
              class="centrar-imagen imagen-previsualizar">
         <button class="btn btn-danger btn-block btn-flat" disabled>
           Imagen Portada
@@ -314,7 +314,10 @@
   </form>
 </template>
 <script>
+  import ImageHandler from '../../../mixin/ImageHandler';
+
   export default {
+    mixins: [ImageHandler],
     data() {
       return {
         principalPhone: '',

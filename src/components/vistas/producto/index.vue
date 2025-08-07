@@ -690,8 +690,9 @@
 
         },
         getUrlImage: function (ruta) {
+          let url = this.getImageUrl(ruta);
           return {
-            'background-image': 'url(' + ruta + ')'
+            'background-image': 'url(' + url + ')'
           }
         },
         obtenerPosts(pagina) {
