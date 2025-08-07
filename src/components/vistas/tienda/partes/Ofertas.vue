@@ -5,7 +5,7 @@
 
        <!-- <v-container fluid grid-list-lg>
           <v-card>
-            <v-card-media style="height: 100px; cursor: pointer" v-on:click="redirigirProducto(oferta.id_m_productos)" :src="oferta.v_portada">
+            <v-card-media style="height: 100px; cursor: pointer" v-on:click="redirigirProducto(oferta.id_m_productos)" :src="getImageUrl(oferta.v_portada)">
             </v-card-media>
             <v-card-title primary-title>
               <div>

@@ -28,7 +28,7 @@
                 hide-actions
                 class="elevation-1">
                 <template slot="items" slot-scope="props" >
-                  <td class="text-xs-left"><img class="hidden-sm-and-up media-object rounded small" style="height: 30px; width: auto" :src="props.item.foto" :alt="props.item.name"><img class="hidden-md-and-down media-object rounded small" style="height: 100px; width: auto" :src="props.item.foto" :alt="props.item.name"></td>
+                  <td class="text-xs-left"><img class="hidden-sm-and-up media-object rounded small" style="height: 30px; width: auto" :src="getImageUrl(props.item.foto)" :alt="props.item.name"><img class="hidden-md-and-down media-object rounded small" style="height: 100px; width: auto" :src="getImageUrl(props.item.foto)" :alt="props.item.name"></td>
                   <td class="text-xs-left">{{props.item.name}}</td>
                   <td class="text-xs-left">{{props.item.tienda.nombre}}</td>
                   <td class="text-xs-left">${{formatInvoice(props.item.price)}}</td>
@@ -86,8 +86,10 @@
 <script>
   import Loader from '../../parts/loader';
   import {mapGetters, mapMutations, mapState} from 'vuex';
+  import ImageHandler from '../../../mixin/ImageHandler';
 
   export default {
+    mixins: [ImageHandler],
     props: {
       product: Object
     },
