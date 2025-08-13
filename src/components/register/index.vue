@@ -158,7 +158,6 @@
                   ref="menu"
                   :close-on-content-click="false"
                   v-model="menu"
-                  :return-value.sync="usuario.d_fechanacimiento"
                   lazy
                   transition="scale-transition"
                   offset-y
@@ -168,21 +167,27 @@
                 >
                   <v-text-field
                     slot="activator"
-                    v-model="usuario.d_fechanacimiento"
+                    :value="fechaFormateada"
                     label="Fecha de Nacimiento"
                     prepend-icon="event"
                     readonly
+                    required
+                    v-validate="'required'"
+                    placeholder="Selecciona tu fecha de nacimiento"
+                    hint="Debes tener al menos 13 años"
+                    persistent-hint
                   ></v-text-field>
                   <v-date-picker
-                    format="dd MMMM yyyy"
-                    v-model="usuario.d_fechanacimiento"
-                    :disabled="validacionDatePicker"
+                    v-model="pickerDate"
+                    :max="maxDate"
+                    :min="minDate"
                     locale="es"
                     scrollable
+                    @input="onDateSelected"
                   >
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false">Cancelar</v-btn>
-                    <v-btn flat color="primary" @click="$refs.menu.save(usuario.d_fechanacimiento)">OK</v-btn>
+                    <v-btn flat color="primary" @click="cancelDate">Cancelar</v-btn>
+                    <v-btn flat color="primary" @click="confirmDate">OK</v-btn>
                   </v-date-picker>
                 </v-menu>
                 <span v-show="errors.has('d_fechanacimiento')"
@@ -270,11 +275,14 @@
                   single-line
                   prepend-icon="fa fa-key"
                   v-model="usuario.password"
-                  type="password"
+                  :type="showPassword ? 'text' : 'password'"
                   label="Contraseña"
+                  name="password"
                   data-vv-name="password"
-                  v-validate="'required|min:8|max:25|alpha_num|confirmed:confirm_password'"
+                  v-validate="'required|min:8|max:25|alpha_num'"
                   required
+                  :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                  @click:append="showPassword = !showPassword"
                 ></v-text-field>
                 <span v-show="errors.has('password')"
                       class="help-block text-center">{{ errors.first('password')}}</span>
@@ -285,14 +293,24 @@
                 <v-text-field
                   single-line
                   prepend-icon="fa fa-key"
-                  type="password"
+                  :type="showConfirmPassword ? 'text' : 'password'"
                   id="confirm_password"
                   name="confirm_password"
                   label="Confirmar Contraseña"
                   data-vv-name="confirm_password"
+                  v-model="usuario.confirm_password"
                   v-validate="'required|min:8|max:25|alpha_num'"
                   required
+                  :append-icon="showConfirmPassword ? 'visibility_off' : 'visibility'"
+                  @click:append="showConfirmPassword = !showConfirmPassword"
+                  @blur="validarPassword"
                 ></v-text-field>
+                <span v-show="errors.has('confirm_password')"
+                      class="help-block text-center">{{ errors.first('confirm_password')}}</span>
+                <span v-show="!errors.has('confirm_password') && usuario.password && usuario.confirm_password && usuario.password === usuario.confirm_password"
+                      class="help-block text-center" style="color: green;">
+                  <i class="fa fa-check"></i> Las contraseñas coinciden
+                </span>
               </div>
             </div>
           </div>
@@ -359,6 +377,7 @@ export default {
       usuario: {
         email: null,
         password: null,
+        confirm_password: null,
         v_primer_nombre: null,
         v_segundo_nombre: null,
         v_primer_apellido: null,
@@ -376,7 +395,12 @@ export default {
       paises: [],
       provincias: [],
       ciudades: [],
-      tipo_documentos: []
+      tipo_documentos: [],
+      pickerDate: null,
+      minDate: new Date(1900, 0, 1).toISOString().substr(0, 10),
+      maxDate: new Date().toISOString().substr(0, 10),
+      showPassword: false,
+      showConfirmPassword: false
     };
   },
   props: ["modal", "cambiar"],
@@ -500,10 +524,120 @@ export default {
     },
     terminosYcondiciones(evento) {
       this.terminos_condiciones = evento.terminos_condiciones;
+    },
+    onDateSelected(date) {
+      console.log('Fecha seleccionada:', date);
+      
+      // Validar que la persona tenga al menos 13 años
+      const selectedDate = new Date(date + 'T00:00:00'); // Agregar hora para evitar problemas de zona horaria
+      const today = new Date();
+      let age = today.getFullYear() - selectedDate.getFullYear();
+      const monthDiff = today.getMonth() - selectedDate.getMonth();
+      
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
+        age--;
+      }
+      
+      if (age < 13) {
+        this.$toastr('error', 'Debes tener al menos 13 años para registrarte', 'Edad mínima');
+        this.pickerDate = null;
+        return;
+      }
+      
+      console.log('Fecha válida seleccionada:', date);
+    },
+    confirmDate() {
+      // Confirmar la fecha seleccionada
+      if (this.pickerDate) {
+        console.log('Confirmando fecha:', this.pickerDate);
+        
+        // Usar Vue.set para asegurar la reactividad
+        this.$set(this.usuario, 'd_fechanacimiento', this.pickerDate);
+        
+        console.log('Fecha guardada:', this.usuario.d_fechanacimiento);
+      } else {
+        console.log('No hay fecha para confirmar');
+      }
+      
+      // Cerrar el menú
+      this.menu = false;
+    },
+    // Método para cancelar la selección de fecha
+    cancelDate() {
+      console.log('Cancelando selección de fecha');
+      // Limpiar pickerDate pero mantener usuario.d_fechanacimiento si ya existía
+      this.pickerDate = null;
+      this.menu = false;
+    },
+    // Método para formatear la fecha para mostrar
+    formatDate(date) {
+      if (!date) return '';
+      
+      // Crear la fecha con hora específica para evitar problemas de zona horaria
+      const dateStr = date + 'T00:00:00';
+      const d = new Date(dateStr);
+      
+      // Verificar que la fecha sea válida
+      if (isNaN(d.getTime())) return '';
+      
+      return d.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    },
+    // Método para limpiar errores de contraseña cuando cambien
+    limpiarErroresPassword() {
+      if (this.errors.has('password')) {
+        this.errors.remove('password');
+      }
+      if (this.errors.has('confirm_password')) {
+        this.errors.remove('confirm_password');
+      }
+    },
+    // Método para validar manualmente las contraseñas
+    validarPassword() {
+      if (this.usuario.password && this.usuario.confirm_password) {
+        if (this.usuario.password === this.usuario.confirm_password) {
+          // Las contraseñas coinciden
+          this.limpiarErroresPassword();
+          return true;
+        } else {
+          // Las contraseñas no coinciden
+          this.errors.add('confirm_password', 'Las contraseñas no coinciden');
+          return false;
+        }
+      }
+      return true;
+    }
+  },
+  watch: {
+    // Watcher removido - estaba causando problemas
+    'usuario.password': {
+      handler() {
+        // Limpiar errores cuando cambie la contraseña principal
+        this.limpiarErroresPassword();
+      }
+    },
+    'usuario.confirm_password': {
+      handler() {
+        // Limpiar errores cuando cambie la confirmación
+        this.limpiarErroresPassword();
+      }
     }
   },
   components: { Datepicker, ModelSelect, TerminosCondiciones },
-  mounted() {},
+  mounted() {
+    // Inicializar el date picker con la fecha actual
+    this.pickerDate = new Date().toISOString().substr(0, 10);
+    
+    // Configurar el locale español para el date picker
+    if (this.$vuetify && this.$vuetify.lang) {
+      this.$vuetify.lang.current = 'es';
+    }
+    
+    console.log('Componente montado - pickerDate inicializado:', this.pickerDate);
+  },
   created() {
     this.getMethodWithoutBearer(this.urlsApi().endpointsPublicos.paises).then(
       response => {
@@ -535,11 +669,17 @@ export default {
         !this.errors.has("v_telefono_movil") &&
         !this.errors.has("id_m_tipos_documentos_fk") &&
         !this.errors.has("v_documento") &&
-        !this.errors.has("password")
+        !this.errors.has("password") &&
+        !this.errors.has("confirm_password")
       );
     },
     terminosCondiciones() {
       return !this.terminos_condiciones;
+    },
+    // Fecha formateada para mostrar en el campo
+    fechaFormateada() {
+      if (!this.usuario.d_fechanacimiento) return '';
+      return this.formatDate(this.usuario.d_fechanacimiento);
     }
   }
 };
@@ -556,4 +696,76 @@ export default {
     padding: 0px;
 }
 
+/* Estilos para el date picker */
+.v-date-picker {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.v-date-picker .v-date-picker-table {
+  border-radius: 8px;
+}
+
+.v-date-picker .v-date-picker-table__events {
+  border-radius: 8px;
+}
+
+/* Mejorar la navegación del calendario */
+.v-date-picker .v-date-picker-header {
+  background: #ff6b35;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.v-date-picker .v-date-picker-header .v-btn {
+  color: white !important;
+}
+
+.v-date-picker .v-date-picker-header .v-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Estilo para el campo de fecha */
+.v-text-field--readonly .v-input__slot {
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+.v-text-field--readonly .v-input__slot:hover {
+  background: #eeeeee;
+}
+
+/* Botones del date picker */
+.v-date-picker .v-card__actions .v-btn {
+  margin: 0 8px;
+  border-radius: 4px;
+}
+
+.v-date-picker .v-card__actions .v-btn--flat {
+  color: #666;
+}
+
+.v-date-picker .v-card__actions .v-btn--flat:hover {
+  background: #f0f0f0;
+}
+
+/* Estilos para los campos de contraseña */
+.v-text-field .v-input__append-outer {
+  cursor: pointer;
+  color: #666;
+}
+
+.v-text-field .v-input__append-outer:hover {
+  color: #ff6b35;
+}
+
+/* Mejorar la apariencia de los campos de contraseña */
+.v-text-field--password .v-input__slot {
+  border-radius: 4px;
+}
+
+.v-text-field--password .v-input__slot:hover {
+  border-color: #ff6b35;
+}
 </style>

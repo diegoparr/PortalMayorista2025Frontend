@@ -47,7 +47,12 @@ const getters = {
     return localStorage.getItem('expiracion_token_lahipertienda');
   },
   getUsuario: (state) => {
-      console.log(state);      
+      console.log('🔍 GETTER - Estado completo:', state);
+      console.log('🔍 GETTER - State.telefonos:', state.telefonos);
+      console.log('🔍 GETTER - State.direccion:', state.direccion);
+      console.log('🔍 GETTER - Tipo state.telefonos:', typeof state.telefonos);
+      console.log('🔍 GETTER - Tipo state.direccion:', typeof state.direccion);
+      
     return {
       id: state.id,
       email: state.email,
@@ -147,8 +152,21 @@ const mutations = {
       state.b_data_completa = data.b_data_completa;
       state.b_reinicio_password = data.b_reinicio_password;
       state.b_acepta_terminos = data.b_acepta_terminos;
-      state.telefonos =data.telefonos;
-      state.direccion =data.direccion;
+      
+      // Logs detallados para debuggear
+      console.log('🔍 STORE - Data recibida telefonos:', data.telefonos);
+      console.log('🔍 STORE - Data recibida direccion:', data.direccion);
+      console.log('🔍 STORE - Tipo de telefonos:', typeof data.telefonos);
+      console.log('🔍 STORE - Tipo de direccion:', typeof data.direccion);
+      
+      state.telefonos = data.telefonos;
+      state.direccion = data.direccion; // Corregido: usar direccion (singular) para consistencia
+      
+      // Logs para verificar que se procesen correctamente
+      console.log('🔍 STORE - Telefonos procesados:', state.telefonos);
+      console.log('🔍 STORE - Direccion procesada:', state.direccion);
+      console.log('🔍 STORE - Estado final telefonos:', state.telefonos);
+      console.log('🔍 STORE - Estado final direccion:', state.direccion);
      
   },
   setUsuarioDestroy: (state) => {
@@ -188,8 +206,8 @@ const mutations = {
     state.b_data_completa = false;
     state.b_reinicio_password = false;
     state.active_pass = false;
-    state.telefonos =[];
-    state.direccion =[];
+    state.telefonos = [];
+    state.direccion = []; // Mantener consistencia con el nombre del campo
   }
 };
 export default {state, getters, mutations}

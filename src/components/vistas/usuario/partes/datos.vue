@@ -11,7 +11,7 @@
           <div class="col-xs-12 col-md-12">
             <div align="center" class="container-imgs">
               <div class="col-md-4 col-md-offset-4">
-                <div v-if="!usuario.avatar">
+                <div v-if="!imageAvatar">
                   <div :class="{'form-group container-imgs': true, 'form-group has-error': errors.has('avatar') }">
                     <label for="avatar">Avatar</label>
                     <input v-validate="'image|mimes:image/jpeg,image/png,image/jpg'"
@@ -27,22 +27,21 @@
                   </div>
                 </div>
                 <div align="center" class="container-imgs" v-else>
-                  
-                  <div class="col-md-12 col-sm-4 col-xs-4 text-center">
-                  </div>
-                  <div class="col-md-12 col-sm-4 col-xs-4 text-center">
-                    <img :src="getImageUrl(imageAvatar)"
-                        class="centrar-imagen imagen-previsualizar" style="width:100%;">
-                  </div>
-                  <div class="col-md-12 col-sm-4 col-xs-4 text-center">
-                  </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                    <v-btn  @click="removeImageAvatar" color="error">
-                      <i class="fa fa-trash pull-left" aria-hidden="true"></i>
-                      Quitar Avatar
-                    </v-btn>
-                    </div>
-                  </div>
+                   <!-- Imagen del avatar -->
+                   <div style="margin: 20px 0;">
+                     <img :src="imageAvatar" 
+                          alt="Avatar del usuario"
+                          style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #ddd;">
+                   </div>
+                   
+                   <!-- Botón para quitar avatar -->
+                   <div style="margin: 20px 0;">
+                     <v-btn @click="removeImageAvatar" color="error">
+                       <i class="fa fa-trash pull-left" aria-hidden="true"></i>
+                       Quitar Avatar
+                     </v-btn>
+                   </div>
+                 </div>
               </div>
             </div>
           </div>
@@ -394,23 +393,57 @@ export default {
       return null;
     },
     onFileChangeAvatar(e) {
+        console.log('🔍 AVATAR - onFileChangeAvatar iniciado');
+        console.log('🔍 AVATAR - Evento:', e);
+        console.log('🔍 AVATAR - Files:', e.target.files);
+        
         this.usuario.avatar = e.target.files[0];
+        console.log('🔍 AVATAR - usuario.avatar asignado:', this.usuario.avatar);
+        
         let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
+        if (!files.length) {
+          console.log('🔍 AVATAR - No hay archivos, retornando');
           return;
+        }
+        
+        console.log('🔍 AVATAR - Llamando createAvatar con:', files[0]);
         this.createAvatar(files[0]);
       },
       createAvatar(file) {
+        console.log('🔍 AVATAR - createAvatar iniciado con archivo:', file);
         let reader = new FileReader();
         let vm = this;
         reader.onload = (e) => {
+          console.log('🔍 AVATAR - FileReader onload ejecutado');
+          console.log('🔍 AVATAR - Resultado:', e.target.result);
           vm.imageAvatar = e.target.result;
+          console.log('🔍 AVATAR - imageAvatar asignado:', vm.imageAvatar);
+          console.log('🔍 AVATAR - Estado final - usuario.avatar:', vm.usuario.avatar);
+          console.log('🔍 AVATAR - Estado final - imageAvatar:', vm.imageAvatar);
+          
+          // Forzar actualización de la interfaz
+          vm.$forceUpdate();
+          console.log('🔍 AVATAR - $forceUpdate ejecutado');
+          
+          // Verificar el estado después de la actualización
+          setTimeout(() => {
+            console.log('🔍 AVATAR - Estado después de $forceUpdate:');
+            console.log('🔍 AVATAR - imageAvatar:', vm.imageAvatar);
+            console.log('🔍 AVATAR - !imageAvatar (condición v-if):', !vm.imageAvatar);
+          }, 100);
         };
         reader.readAsDataURL(file);
       },
       removeImageAvatar: function () {
+        console.log('🔍 AVATAR - removeImageAvatar iniciado');
+        console.log('🔍 AVATAR - Estado antes - usuario.avatar:', this.usuario.avatar);
+        console.log('🔍 AVATAR - Estado antes - imageAvatar:', this.imageAvatar);
+        
         this.usuario.avatar = '';
         this.imageAvatar = '';
+        
+        console.log('🔍 AVATAR - Estado después - usuario.avatar:', this.usuario.avatar);
+        console.log('🔍 AVATAR - Estado después - imageAvatar:', this.imageAvatar);
       },
     acceder() {
       if (this.modal) {
@@ -632,32 +665,46 @@ export default {
         
         // Cargar teléfonos
         if (this.getUsuario.telefonos && Array.isArray(this.getUsuario.telefonos)) {
-          console.log("Cargando teléfonos:", this.getUsuario.telefonos);
-          this.getUsuario.telefonos.forEach(tel => {
+          console.log("🔍 TELEFONOS - Cargando teléfonos:", this.getUsuario.telefonos);
+          console.log("🔍 TELEFONOS - Cantidad:", this.getUsuario.telefonos.length);
+          this.getUsuario.telefonos.forEach((tel, index) => {
+            console.log(`🔍 TELEFONOS - Teléfono ${index}:`, tel);
+            console.log(`🔍 TELEFONOS - Tipo: ${tel.v_tipo}`);
             if (tel.v_tipo == "Celular"){
+              console.log("🔍 TELEFONOS - Asignando a v_telefono_movil");
               this.usuario.v_telefono_movil = tel;
+              console.log("🔍 TELEFONOS - v_telefono_movil asignado:", this.usuario.v_telefono_movil);
             }
             else if (tel.v_tipo == "Fijo"){
+              console.log("🔍 TELEFONOS - Asignando a v_telefono_fijo");
               this.usuario.v_telefono_fijo = tel;
+              console.log("🔍 TELEFONOS - v_telefono_fijo asignado:", this.usuario.v_telefono_fijo);
             } 
           });
         } else {
-          console.log("No hay teléfonos o no es array:", this.getUsuario.telefonos);
+          console.log("🔍 TELEFONOS - No hay teléfonos o no es array:", this.getUsuario.telefonos);
+          console.log("🔍 TELEFONOS - Tipo de telefonos:", typeof this.getUsuario.telefonos);
         }
         
         this.usuario.d_fechanacimiento = this.getUsuario.d_fechanacimiento;
-        console.log("Fecha de nacimiento:", this.usuario.d_fechanacimiento);
+        console.log("🔍 FECHA - Fecha de nacimiento:", this.usuario.d_fechanacimiento);
         
         // Cargar dirección
-        if (this.getUsuario.direcciones && Array.isArray(this.getUsuario.direcciones)) {
-          console.log("Cargando direcciones:", this.getUsuario.direcciones);
-          this.getUsuario.direcciones.forEach(dire => {
+        if (this.getUsuario.direccion && Array.isArray(this.getUsuario.direccion)) {
+          console.log("🔍 DIRECCION - Cargando direcciones:", this.getUsuario.direccion);
+          console.log("🔍 DIRECCION - Cantidad:", this.getUsuario.direccion.length);
+          this.getUsuario.direccion.forEach((dire, index) => {
+            console.log(`🔍 DIRECCION - Dirección ${index}:`, dire);
+            console.log(`🔍 DIRECCION - Es principal: ${dire.b_principal}`);
             if (dire.b_principal == true){
+              console.log("🔍 DIRECCION - Asignando a v_direccion");
               this.usuario.v_direccion = dire;
+              console.log("🔍 DIRECCION - v_direccion asignado:", this.usuario.v_direccion);
             }
           });
         } else {
-          console.log("No hay direcciones o no es array:", this.getUsuario.direcciones);
+          console.log("🔍 DIRECCION - No hay direcciones o no es array:", this.getUsuario.direccion);
+          console.log("🔍 DIRECCION - Tipo de direccion:", typeof this.getUsuario.direccion);
         }
         
         // Cargar ubicación
@@ -669,6 +716,12 @@ export default {
         this.usuario.ciudad.text = this.getUsuario.v_nombre_ciudad;
         this.usuario.avatar = this.getUsuario.v_avatar;
         this.imageAvatar = this.getImageUrl(this.getUsuario.v_avatar);
+        
+        console.log("🔍 AVATAR - Carga inicial:");
+        console.log("🔍 AVATAR - getUsuario.v_avatar:", this.getUsuario.v_avatar);
+        console.log("🔍 AVATAR - usuario.avatar asignado:", this.usuario.avatar);
+        console.log("🔍 AVATAR - imageAvatar generado:", this.imageAvatar);
+        console.log("🔍 AVATAR - getImageUrl resultado:", this.getImageUrl(this.getUsuario.v_avatar));
         
         console.log("Ubicación cargada:", {
           pais: this.usuario.pais,
@@ -745,6 +798,18 @@ export default {
       }
     }
   ),
+  watch: {
+    imageAvatar: {
+      handler(newVal, oldVal) {
+        console.log('🔍 WATCHER - imageAvatar cambió:');
+        console.log('🔍 WATCHER - Valor anterior:', oldVal);
+        console.log('🔍 WATCHER - Valor nuevo:', newVal);
+        console.log('🔍 WATCHER - !imageAvatar (condición v-if):', !newVal);
+        console.log('🔍 WATCHER - Tipo de imageAvatar:', typeof newVal);
+      },
+      immediate: true
+    }
+  },
 };
 </script>
 <style scoped>

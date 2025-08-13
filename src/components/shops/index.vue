@@ -237,6 +237,16 @@
         });
       },
       cleanModal() {
+        // Solo cerrar el modal si no hay errores de validación activos
+        if (this.modalActive === 'store') {
+          // Verificar si hay errores en el formulario antes de cerrar
+          const modalElement = document.getElementById('modal');
+          if (modalElement && modalElement.classList.contains('has-validation-errors')) {
+            // No cerrar el modal si hay errores de validación
+            return;
+          }
+        }
+        
         // Usar el método seguro del mixin para cerrar el modal
         this.safeModalClose();
         

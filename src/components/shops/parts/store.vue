@@ -1,8 +1,18 @@
 <template>
   <form v-on:submit.prevent="registrar" class="modern-form">
+    <!-- Mensaje informativo sobre validaciones -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert alert-info modern-alert">
+          <i class="fa fa-info-circle"></i>
+          <strong>Importante:</strong> Completa todos los campos marcados con <span class="text-danger">*</span> antes de registrar la tienda. 
+          Los errores se mostrarán en tiempo real y el formulario no se enviará hasta que estén corregidos.
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-md-4">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_pais'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_pais" class="modern-label">País</label>
           <model-select 
             :options="paises" 
@@ -12,12 +22,16 @@
             v-on:input="seleccionarPais"
             data-placement="top" 
             title="Selecciona el país en que se encuentra la tienda"
+            v-validate="'required'"
+            data-vv-as="país"
             required>
           </model-select>
+          <span v-show="errors.has('v_pais')"
+                class="help-block text-center modern-error">{{ errors.first('v_pais')}}</span>
         </div>
       </div>
       <div class="col-xs-12 col-md-4">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_provincia'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_provincia" class="modern-label">Provincia</label>
           <model-select 
             :options="provincias" 
@@ -27,12 +41,16 @@
             v-on:input="seleccionarProvincia"
             data-placement="top" 
             title="Selecciona la provincia"
+            v-validate="'required'"
+            data-vv-as="provincia"
             required>
           </model-select>
+          <span v-show="errors.has('v_provincia')"
+                class="help-block text-center modern-error">{{ errors.first('v_provincia')}}</span>
         </div>
       </div>
       <div class="col-xs-12 col-md-4">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_ciudad'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_ciudad" class="modern-label">Ciudad</label>
           <model-select 
             :options="ciudades" 
@@ -41,8 +59,12 @@
             class="form-control modern-select"
             data-placement="top" 
             title="Selecciona la ciudad"
+            v-validate="'required'"
+            data-vv-as="ciudad"
             required>
           </model-select>
+          <span v-show="errors.has('v_ciudad')"
+                class="help-block text-center modern-error">{{ errors.first('v_ciudad')}}</span>
         </div>
       </div>
       <div class="col-xs-12 col-md-4">
@@ -62,7 +84,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-md-4">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_tipo_documento'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_tipo_documento" class="modern-label">Tipo de Documento</label>
           <model-select 
             :options="tipo_documentos" 
@@ -71,8 +93,12 @@
             class="form-control modern-select"
             data-placement="top"
             title="Selecciona el tipo de documento de identificación que posee la tienda"
+            v-validate="'required'"
+            data-vv-as="tipo de documento"
             required>
           </model-select>
+          <span v-show="errors.has('v_tipo_documento')"
+                class="help-block text-center modern-error">{{ errors.first('v_tipo_documento')}}</span>
         </div>
       </div>
 
@@ -80,18 +106,19 @@
         <div class="form-group modern-form-group">
           <label for="v_documento" class="modern-label">Documento</label>
           <div :class="(!errors.first('v_documento'))?'form-group':'form-group has-error'">
-            <input 
-              placeholder="Documento" 
-              name="v_documento" 
-              type="text" 
-              class="form-control modern-input"
-              data-placement="top" 
-              required 
-              id="v_documento"
-              title="Ingresa el número de documento de identificación"
-              data-vv-as="documento de identificación"
-              v-model="tienda.v_documento" 
-              v-validate="'required|min:3|max:25|numeric'">
+                      <input 
+            placeholder="Documento" 
+            name="v_documento" 
+            type="text" 
+            class="form-control modern-input"
+            data-placement="top" 
+            required 
+            id="v_documento"
+            title="Ingresa el número de documento de identificación"
+            data-vv-as="documento de identificación"
+            v-model="tienda.v_documento" 
+            v-validate="'required|min:3|max:25|numeric'"
+            @blur="validarCampo('v_documento')">
             <span v-show="errors.has('v_documento')"
                   class="help-block text-center modern-error">{{ errors.first('v_documento')}}</span>
           </div>
@@ -113,7 +140,8 @@
             v-model="tienda.v_nombre" 
             required 
             id="v_nombre"
-            title="Ingresa el nombre de la tienda">
+            title="Ingresa el nombre de la tienda"
+            @blur="validarCampo('v_nombre')">
           <span v-show="errors.has('v_nombre')"
                 class="help-block text-center modern-error">{{ errors.first('v_nombre')}}</span>
         </div>
@@ -131,7 +159,9 @@
             title="Ingresa el teléfono" 
             data-vv-as="teléfono"
             v-model="tienda.v_telefono_principal" 
-            v-validate="'min:5|max:25|numeric'">
+            v-validate="'required|min:5|max:25|numeric'"
+            @blur="validarCampo('v_telefono_principal')"
+            required>
           <span v-show="errors.has('v_telefono_principal')"
                 class="help-block text-center modern-error">{{ errors.first('v_telefono_principal')}}</span>
         </div>
@@ -147,9 +177,9 @@
             data-placement="top" 
             id="v_telefono_secundario"
             title="Ingresa el teléfono" 
-            data-vv-as="teléfono"
+            data-vv-as="teléfono secundario"
             v-model="tienda.v_telefono_secundario" 
-            v-validate="'min:5|max:25|numeric'">
+            v-validate="'min:10|max:25|numeric'">
           <span v-show="errors.has('v_telefono_secundario')"
                 class="help-block text-center modern-error">{{ errors.first('v_telefono_secundario')}}</span>
         </div>
@@ -157,7 +187,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-6">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_asesor'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_asesor" class="modern-label">Asesor</label>
           <model-select 
             :options="usuarios_asesores" 
@@ -166,12 +196,16 @@
             id="v_asesor"
             data-placement="top" 
             title="Selecciona el asesor encargado de la tienda"
+            v-validate="'required'"
+            data-vv-as="asesor"
             required>
           </model-select>
+          <span v-show="errors.has('v_asesor')"
+                class="help-block text-center modern-error">{{ errors.first('v_asesor')}}</span>
         </div>
       </div>
       <div class="col-xs-12 col-md-6">
-        <div class="form-group modern-form-group">
+        <div :class="(!errors.first('v_cliente'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
           <label for="v_cliente" class="modern-label">Cliente</label>
           <model-select 
             :options="usuarios_clientes" 
@@ -180,8 +214,12 @@
             id="v_cliente"
             data-placement="top" 
             title="Selecciona el cliente dueño o representante de la tienda"
+            v-validate="'required'"
+            data-vv-as="cliente"
             required>
           </model-select>
+          <span v-show="errors.has('v_cliente')"
+                class="help-block text-center modern-error">{{ errors.first('v_cliente')}}</span>
         </div>
       </div>
     </div>
@@ -200,7 +238,8 @@
             title="Ingresa la dirección principal de la tienda" 
             data-vv-as="dirección"
             v-model="tienda.v_direccion" 
-            v-validate="'required|min:5|max:255'">
+            v-validate="'required|min:5|max:255'"
+            @blur="validarCampo('v_direccion')">
           <span v-show="errors.has('v_direccion')"
                 class="help-block text-center modern-error">{{ errors.first('v_direccion')}}</span>
         </div>
@@ -217,13 +256,17 @@
           <label class="modern-day-label">Lunes</label>
           <input type="time" class="form-control modern-time-input" placeholder="Desde" v-model="tienda.horario_lunes_tienda_desde"
                  name="horario_lunes_tienda_desde" id="horario_lunes_tienda_desde"
-                 :disabled="tienda.horario_lunes_tienda_no_laborable">
+                 :disabled="tienda.horario_lunes_tienda_no_laborable"
+                 v-validate="'required_if:horario_lunes_tienda_no_laborable,false'"
+                 data-vv-as="horario lunes desde">
           <label for="laborable-lunes" class="modern-checkbox-label">
             <input type="checkbox" id="laborable-lunes" v-model="tienda.horario_lunes_tienda_no_laborable" class="modern-checkbox"> No laborable
           </label>
           <input type="time" class="form-control modern-time-input" placeholder="Hasta" v-model="tienda.horario_lunes_tienda_hasta"
                  name="horario_lunes_tienda_hasta" id="horario_lunes_tienda_hasta"
-                 :disabled="tienda.horario_lunes_tienda_no_laborable">
+                 :disabled="tienda.horario_lunes_tienda_no_laborable"
+                 v-validate="'required_if:horario_lunes_tienda_no_laborable,false'"
+                 data-vv-as="horario lunes hasta">
           <span v-show="errors.has('horario_lunes_tienda_desde')"
                 class="error-formulario modern-error">{{ errors.first('horario_lunes_tienda_desde')}}</span><br>
           <span v-show="errors.has('horario_lunes_tienda_hasta')"
@@ -341,7 +384,7 @@
           <label for="v_descripcion" class="modern-label">Descripción</label>
           <textarea class="form-control modern-textarea" id="v_descripcion" rows="3"
                     v-model="tienda.v_descripcion"
-                    name="v_descripcion" v-validate="'required|min:5'" data-vv-as="descripción"></textarea>
+                    name="v_descripcion" v-validate="'required|min:5|max:500'" data-vv-as="descripción"></textarea>
           <span v-show="errors.has('v_descripcion')"
                 class="help-block text-center modern-error">{{ errors.first('v_descripcion')}}</span>
         </div>
@@ -368,7 +411,8 @@
                    v-on:change="onFileChangeRut"
                    data-vv-as="imagen rut"
                    accept="image/*"
-                   id="v_rut">
+                   id="v_rut"
+                   required>
             <span v-show="errors.has('v_rut')"
                   class="help-block text-center modern-error">{{ errors.first('v_rut')}}
             </span>
@@ -394,7 +438,8 @@
                    v-on:change="onFileChangeCamaraComercio"
                    data-vv-as="imagen camara comercio"
                    accept="image/*"
-                   id="v_camara_comercio">
+                   id="v_camara_comercio"
+                   required>
             <span v-show="errors.has('v_camara_comercio')"
                   class="help-block text-center modern-error">{{ errors.first('v_camara_comercio')}}
             </span>
@@ -416,13 +461,14 @@
         <div v-if="!tienda.v_contrato">
           <div :class="{'form-group container-imgs': true, 'form-group has-error': errors.has('v_contrato') }">
             <label for="v_contrato" class="modern-label">Imagen Contrato</label>
-            <input v-validate="'required|image|mimes:image/jpeg,image/png,image/jpg'"
+            <input v-validate="'required|image|mimes:image/png,image/jpg'"
                    name="v_contrato"
                    type="file"
                    v-on:change="onFileChangeContrato"
                    data-vv-as="imagen contrato"
                    accept="image/*"
-                   id="v_contrato">
+                   id="v_contrato"
+                   required>
             <span v-show="errors.has('v_contrato')"
                   class="help-block text-center modern-error">{{ errors.first('v_contrato')}}
             </span>
@@ -448,7 +494,8 @@
                    v-on:change="onFileChangeLogo"
                    data-vv-as="imagen logo"
                    accept="image/*"
-                   id="v_logo">
+                   id="v_logo"
+                   required>
             <span v-show="errors.has('v_logo')"
                   class="help-block text-center modern-error">{{ errors.first('v_logo')}}
             </span>
@@ -470,13 +517,14 @@
         <div v-if="!tienda.v_portada">
           <div :class="{'form-group container-imgs': true, 'form-group has-error': errors.has('v_portada') }">
             <label for="v_portada" class="modern-label">Imagen Portada</label>
-            <input v-validate="'required|image|mimes:image/jpeg,image/png,image/jpg'"
+            <input v-validate="'required|image|mimes:image/png,image/jpg'"
                    name="v_portada"
                    type="file"
                    v-on:change="onFileChangePortada"
                    data-vv-as="imagen portada"
                    accept="image/*"
-                   id="v_portada">
+                   id="v_portada"
+                   required>
             <span v-show="errors.has('v_portada')"
                   class="help-block text-center modern-error">{{ errors.first('v_portada')}}
             </span>
@@ -496,6 +544,9 @@
     <div class="row">
       <div class="col-xs-12" align="center" style="margin: 10px 0 0 0">
         <div class="form-group">
+          <v-btn color="warning" type="button" @click="limpiarErrores" class="btn-margin-right">
+            <i class="fa fa-refresh pull-left"></i> Limpiar Errores
+          </v-btn>
           <v-btn color="primary" type="submit" id="submitButton" :disabled="deshabilitar"
                   data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Registrando">
             <i class="fa fa-user pull-left"></i> Registrar
@@ -606,14 +657,26 @@
       'getUsuario'
     ]), {
       deshabilitar() {
-        return !(!this.errors.has('v_documento') && !this.errors.has('v_nombre') && !this.errors.has('v_telefono_principal') && !this.errors.has('v_telefono_secundario')
-          && !this.errors.has('v_direccion') && !this.errors.has('v_rut') && !this.errors.has('v_camara_comercio') && !this.errors.has('v_contrato')
-          && !this.errors.has('v_logo') && !this.errors.has('v_portada')
+        return !(!this.errors.has('v_pais') && !this.errors.has('v_provincia') && !this.errors.has('v_ciudad') && 
+                 !this.errors.has('v_tipo_persona') && !this.errors.has('v_tipo_documento') && !this.errors.has('v_documento') && 
+                 !this.errors.has('v_nombre') && !this.errors.has('v_telefono_principal') && !this.errors.has('v_telefono_secundario') &&
+                 !this.errors.has('v_asesor') && !this.errors.has('v_cliente') && !this.errors.has('v_direccion') && 
+                 !this.errors.has('v_rut') && !this.errors.has('v_camara_comercio') && !this.errors.has('v_contrato') &&
+                 !this.errors.has('v_logo') && !this.errors.has('v_portada') && !this.errors.has('v_descripcion') && 
+                 !this.errors.has('v_resena') && !this.errors.has('horario_lunes_tienda_desde') && !this.errors.has('horario_lunes_tienda_hasta')
         );
       }
     }),
     watch: {
-      // Los watchers se eliminan porque causan conflictos con los estilos CSS
+      // Watcher para limpiar la marca de errores cuando se corrigen
+      'errors': {
+        handler(newErrors) {
+          if (newErrors && Object.keys(newErrors).length === 0) {
+            this.limpiarMarcaErrores();
+          }
+        },
+        deep: true
+      }
     },
     updated() {
       // Eliminar la aplicación de estilos dinámicos
@@ -767,73 +830,202 @@
         this.tienda.v_logo = '';
       },
       registrar() {
+        // Validar todos los campos requeridos antes de enviar
+        if (!this.validarFormularioCompleto()) {
+          this.$toastr('error', 'Por favor, completa todos los campos requeridos', 'Formulario incompleto');
+          return;
+        }
+
+        // Validar con vee-validate antes de enviar
         this.$validator.validateAll().then(() => {
-          let token = this.getUsuario.token;
-          let boton_registrar = $('#submitButton');
-          boton_registrar.button('loading');
-          let formData = new FormData();
-          formData.append('id_m_paises_fk', this.pais.value);
-          formData.append('id_m_provincias_fk', this.provincia.value);
-          formData.append('id_m_ciudades_fk', this.ciudad.value);
-          formData.append('v_nombre_pais', this.pais.text);
-          formData.append('v_nombre_provincia', this.provincia.text);
-          formData.append('v_nombre_ciudad', this.ciudad.text);
-          formData.append('id_m_tipos_documentos_fk', this.tipo_documento.value);
-          formData.append('v_documento', this.tienda.v_documento);
-          formData.append('v_tipo_persona', this.v_tipo_persona.value);
-          formData.append('v_nombre', this.tienda.v_nombre);
-          formData.append('v_telefono_principal', this.tienda.v_telefono_principal);
-          if (this.tienda.v_telefono_secundario)
-            formData.append('v_telefono_secundario', this.tienda.v_telefono_secundario);
-          formData.append('id_usuario_asesor_fk', this.usuario_asesor.value);
-          formData.append('id_usuario_cliente_fk', this.usuario_cliente.value);
-          formData.append('v_direccion', this.tienda.v_direccion);
-          formData.append('rut', this.tienda.v_rut);
-          formData.append('camara_comercio', this.tienda.v_camara_comercio);
-          formData.append('contrato', this.tienda.v_contrato);
-          formData.append('logo', this.tienda.v_logo);
-          formData.append('portada', this.tienda.v_portada);
-          formData.append('v_horario_lunes_tienda_desde', this.tienda.horario_lunes_tienda_desde);
-          formData.append('v_horario_lunes_tienda_hasta', this.tienda.horario_lunes_tienda_hasta);
-          formData.append('b_horario_lunes_tienda_no_laborable', this.tienda.horario_lunes_tienda_no_laborable);
-          formData.append('v_horario_martes_tienda_desde', this.tienda.horario_martes_tienda_desde);
-          formData.append('v_horario_martes_tienda_hasta', this.tienda.horario_martes_tienda_hasta);
-          formData.append('b_horario_martes_tienda_no_laborable', this.tienda.horario_martes_tienda_no_laborable);
-          formData.append('v_horario_miercoles_tienda_desde', this.tienda.horario_miercoles_tienda_desde);
-          formData.append('v_horario_miercoles_tienda_hasta', this.tienda.horario_miercoles_tienda_hasta);
-          formData.append('b_horario_miercoles_tienda_no_laborable', this.tienda.horario_miercoles_tienda_no_laborable);
-          formData.append('v_horario_jueves_tienda_desde', this.tienda.horario_jueves_tienda_desde);
-          formData.append('v_horario_jueves_tienda_hasta', this.tienda.horario_jueves_tienda_hasta);
-          formData.append('b_horario_jueves_tienda_no_laborable', this.tienda.horario_jueves_tienda_no_laborable);
-          formData.append('v_horario_viernes_tienda_desde', this.tienda.horario_viernes_tienda_desde);
-          formData.append('v_horario_viernes_tienda_hasta', this.tienda.horario_viernes_tienda_hasta);
-          formData.append('b_horario_viernes_tienda_no_laborable', this.tienda.horario_viernes_tienda_no_laborable);
-          formData.append('v_horario_sabado_tienda_desde', this.tienda.horario_sabado_tienda_desde);
-          formData.append('v_horario_sabado_tienda_hasta', this.tienda.horario_sabado_tienda_hasta);
-          formData.append('b_horario_sabado_tienda_no_laborable', this.tienda.horario_sabado_tienda_no_laborable);
-          formData.append('v_horario_domingo_tienda_desde', this.tienda.horario_domingo_tienda_desde);
-          formData.append('v_horario_domingo_tienda_hasta', this.tienda.horario_domingo_tienda_hasta);
-          formData.append('b_horario_domingo_tienda_no_laborable', this.tienda.horario_domingo_tienda_no_laborable);
-          formData.append('v_descripcion', this.tienda.v_descripcion);
-          formData.append('v_resena', this.tienda.v_resena);
-          let yo = this;
-          this.postMethodWithBearer('api/ecommerce/tiendas', formData, token)
-            .then(response => {
-              boton_registrar.button('reset');
-              yo.$toastr('success', response.body.mensaje, "Acción exitosa");
-              $('#modal').modal('hide');
-              yo.$emit('store');
-            }, errors => {
-              // NO cerrar el modal cuando hay errores
-              boton_registrar.button('reset');
-              this.mapErrorsResponses(this, errors);
-            });
+          // Si pasa todas las validaciones, proceder con el envío
+          this.enviarFormulario();
         }).catch(() => {
-          // NO cerrar el modal cuando hay errores de validación
-          let boton_registrar = $('#submitButton');
-          boton_registrar.button('reset');
-          this.$toastr('error', 'Por favor, corrige los errores en el formulario', 'Errores de validación');
+          // Mostrar resumen de errores
+          this.mostrarResumenErrores();
         });
+      },
+      // Método separado para enviar el formulario
+      enviarFormulario() {
+        let token = this.getUsuario.token;
+        let boton_registrar = $('#submitButton');
+        boton_registrar.button('loading');
+        let formData = new FormData();
+        formData.append('id_m_paises_fk', this.pais.value);
+        formData.append('id_m_provincias_fk', this.provincia.value);
+        formData.append('id_m_ciudades_fk', this.ciudad.value);
+        formData.append('v_nombre_pais', this.pais.text);
+        formData.append('v_nombre_provincia', this.provincia.text);
+        formData.append('v_nombre_ciudad', this.ciudad.text);
+        formData.append('id_m_tipos_documentos_fk', this.tipo_documento.value);
+        formData.append('v_documento', this.tienda.v_documento);
+        formData.append('v_tipo_persona', this.v_tipo_persona.value);
+        formData.append('v_nombre', this.tienda.v_nombre);
+        formData.append('v_telefono_principal', this.tienda.v_telefono_principal);
+        if (this.tienda.v_telefono_secundario)
+          formData.append('v_telefono_secundario', this.tienda.v_telefono_secundario);
+        formData.append('id_usuario_asesor_fk', this.usuario_asesor.value);
+        formData.append('id_usuario_cliente_fk', this.usuario_cliente.value);
+        formData.append('v_direccion', this.tienda.v_direccion);
+        formData.append('rut', this.tienda.v_rut);
+        formData.append('camara_comercio', this.tienda.v_camara_comercio);
+        formData.append('contrato', this.tienda.v_contrato);
+        formData.append('logo', this.tienda.v_logo);
+        formData.append('portada', this.tienda.v_portada);
+        formData.append('v_horario_lunes_tienda_desde', this.tienda.horario_lunes_tienda_desde);
+        formData.append('v_horario_lunes_tienda_hasta', this.tienda.horario_lunes_tienda_hasta);
+        formData.append('b_horario_lunes_tienda_no_laborable', this.tienda.horario_lunes_tienda_no_laborable);
+        formData.append('v_horario_martes_tienda_desde', this.tienda.horario_martes_tienda_desde);
+        formData.append('v_horario_martes_tienda_hasta', this.tienda.horario_martes_tienda_hasta);
+        formData.append('b_horario_martes_tienda_no_laborable', this.tienda.horario_martes_tienda_no_laborable);
+        formData.append('v_horario_miercoles_tienda_desde', this.tienda.horario_miercoles_tienda_desde);
+        formData.append('v_horario_miercoles_tienda_hasta', this.tienda.horario_miercoles_tienda_hasta);
+        formData.append('b_horario_miercoles_tienda_no_laborable', this.tienda.horario_miercoles_tienda_no_laborable);
+        formData.append('v_horario_jueves_tienda_desde', this.tienda.horario_jueves_tienda_desde);
+        formData.append('v_horario_jueves_tienda_hasta', this.tienda.horario_jueves_tienda_hasta);
+        formData.append('b_horario_jueves_tienda_no_laborable', this.tienda.horario_jueves_tienda_no_laborable);
+        formData.append('v_horario_viernes_tienda_desde', this.tienda.horario_viernes_tienda_desde);
+        formData.append('v_horario_viernes_tienda_hasta', this.tienda.horario_viernes_tienda_hasta);
+        formData.append('b_horario_viernes_tienda_no_laborable', this.tienda.horario_viernes_tienda_no_laborable);
+        formData.append('v_horario_sabado_tienda_desde', this.tienda.horario_sabado_tienda_desde);
+        formData.append('v_horario_sabado_tienda_hasta', this.tienda.horario_sabado_tienda_hasta);
+        formData.append('v_horario_sabado_tienda_no_laborable', this.tienda.horario_sabado_tienda_no_laborable);
+        formData.append('v_horario_domingo_tienda_desde', this.tienda.horario_domingo_tienda_desde);
+        formData.append('v_horario_domingo_tienda_hasta', this.tienda.horario_domingo_tienda_hasta);
+        formData.append('b_horario_domingo_tienda_no_laborable', this.tienda.horario_domingo_tienda_no_laborable);
+        formData.append('v_descripcion', this.tienda.v_descripcion);
+        formData.append('v_resena', this.tienda.v_resena);
+        let yo = this;
+        this.postMethodWithBearer('api/ecommerce/tiendas', formData, token)
+          .then(response => {
+            boton_registrar.button('reset');
+            yo.$toastr('success', response.body.mensaje, "Acción exitosa");
+            $('#modal').modal('hide');
+            yo.$emit('store');
+          }, errors => {
+            // NO cerrar el modal cuando hay errores del servidor
+            boton_registrar.button('reset');
+            this.mapErrorsResponses(this, errors);
+            // Mostrar mensaje específico para mantener el modal abierto
+            this.$toastr('error', 'Por favor, corrige los errores indicados y vuelve a intentar', 'Errores de validación');
+            // Marcar el modal como que tiene errores de validación
+            this.marcarModalConErrores();
+          });
+      },
+      // Método para mostrar resumen de errores
+      mostrarResumenErrores() {
+        const errores = this.errors.items;
+        if (errores.length > 0) {
+          let mensaje = 'Errores encontrados:\n';
+          errores.forEach(error => {
+            mensaje += `• ${error.msg}\n`;
+          });
+          this.$toastr('error', mensaje, 'Corrige los siguientes errores');
+          this.marcarModalConErrores();
+        }
+      },
+      // Nuevo método para validar el formulario completo antes de enviar
+      validarFormularioCompleto() {
+        // Validar campos de ubicación
+        if (!this.pais.value || !this.provincia.value || !this.ciudad.value) {
+          this.$toastr('error', 'Debes seleccionar país, provincia y ciudad', 'Ubicación requerida');
+          return false;
+        }
+
+        // Validar tipo de persona y documento
+        if (!this.v_tipo_persona.value || !this.tipo_documento.value) {
+          this.$toastr('error', 'Debes seleccionar tipo de registro y tipo de documento', 'Tipo de registro requerido');
+          return false;
+        }
+
+        // Validar campos obligatorios de la tienda
+        if (!this.tienda.v_documento || !this.tienda.v_nombre || !this.tienda.v_direccion) {
+          this.$toastr('error', 'Debes completar documento, nombre y dirección de la tienda', 'Datos básicos requeridos');
+          return false;
+        }
+
+        // Validar teléfono principal
+        if (!this.tienda.v_telefono_principal) {
+          this.$toastr('error', 'El teléfono principal es obligatorio', 'Teléfono requerido');
+          return false;
+        }
+
+        // Validar teléfono secundario si se proporciona
+        if (this.tienda.v_telefono_secundario && this.tienda.v_telefono_secundario.length < 10) {
+          this.$toastr('error', 'El teléfono secundario debe tener al menos 10 caracteres', 'Teléfono secundario inválido');
+          return false;
+        }
+
+        // Validar asesor y cliente
+        if (!this.usuario_asesor.value || !this.usuario_cliente.value) {
+          this.$toastr('error', 'Debes seleccionar asesor y cliente', 'Asesor y cliente requeridos');
+          return false;
+        }
+
+        // Validar descripción y reseña
+        if (!this.tienda.v_descripcion || !this.tienda.v_resena) {
+          this.$toastr('error', 'Debes completar descripción y reseña de la tienda', 'Descripción requerida');
+          return false;
+        }
+
+        // Validar imágenes obligatorias
+        if (!this.tienda.v_rut || !this.tienda.v_camara_comercio || !this.tienda.v_contrato || !this.tienda.v_logo || !this.tienda.v_portada) {
+          this.$toastr('error', 'Debes subir todas las imágenes requeridas (RUT, Cámara de Comercio, Contrato, Logo y Portada)', 'Imágenes requeridas');
+          return false;
+        }
+
+        // Validar horarios (al menos un día debe tener horarios válidos)
+        if (!this.validarHorarios()) {
+          this.$toastr('error', 'Debes configurar al menos un día con horarios válidos', 'Horarios requeridos');
+          return false;
+        }
+
+        return true;
+      },
+      // Nuevo método para validar horarios
+      validarHorarios() {
+        const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        let hayHorariosValidos = false;
+
+        for (let dia of dias) {
+          const noLaborable = this.tienda[`horario_${dia}_tienda_no_laborable`];
+          const desde = this.tienda[`horario_${dia}_tienda_desde`];
+          const hasta = this.tienda[`horario_${dia}_tienda_hasta`];
+
+          if (!noLaborable && desde && hasta) {
+            hayHorariosValidos = true;
+            break;
+          }
+        }
+
+        return hayHorariosValidos;
+      },
+      // Método para marcar el modal cuando hay errores de validación
+      marcarModalConErrores() {
+        const modalElement = document.getElementById('modal');
+        if (modalElement) {
+          modalElement.classList.add('has-validation-errors');
+        }
+      },
+      // Método para limpiar la marca de errores cuando se corrigen
+      limpiarMarcaErrores() {
+        const modalElement = document.getElementById('modal');
+        if (modalElement) {
+          modalElement.classList.remove('has-validation-errors');
+        }
+      },
+      // Método para validar un campo específico en tiempo real
+      validarCampo(campo) {
+        this.$validator.validate(campo).then(() => {
+          // Campo válido
+        }).catch(() => {
+          // Campo inválido - ya se muestra el error automáticamente
+        });
+      },
+      // Método para limpiar todos los errores de validación
+      limpiarErrores() {
+        this.$validator.reset();
+        this.limpiarMarcaErrores();
       },
     },
     components: {ModelSelect}
@@ -1186,6 +1378,32 @@
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
   transform: translateY(-1px);
+}
+
+/* Estilos para el mensaje informativo */
+.modern-alert {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border: 1px solid #2196f3;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 25px;
+  color: #1565c0;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+}
+
+.modern-alert i {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.modern-alert strong {
+  font-weight: 600;
+}
+
+/* Estilos para los botones */
+.btn-margin-right {
+  margin-right: 15px;
 }
 
 /* Estilos para las imágenes */
