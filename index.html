@@ -11,9 +11,151 @@
   <link rel="shortcut icon" href="favicon.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-  <link rel="stylesheet" href="/dist/style.css">
-  <!-- CSS DE EMERGENCIA PARA VUE-FORM-WIZARD -->
-  <link rel="stylesheet" href="src/assets/css/wizard-emergency.css">
+  <link rel="stylesheet" href="dist/style.css">
+  <!-- CSS DEL WIZARD - SOLUCIÓN DE EMERGENCIA -->
+  <style>
+  /* Estilos críticos del wizard para producción */
+  .vue-form-wizard {
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    background: #ffffff !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .vue-form-wizard .wizard-header {
+    text-align: center !important;
+    padding: 30px 20px !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-bottom: 1px solid #e1e8ed !important;
+  }
+  
+  .vue-form-wizard .wizard-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-subtitle {
+    font-size: 18px !important;
+    color: #6c757d !important;
+    font-weight: 400 !important;
+  }
+  
+  .vue-form-wizard .wizard-nav {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 30px 20px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e1e8ed !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 0 25px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item .wizard-nav-link {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ecf0f1 !important;
+    color: #95a5a6 !important;
+    font-size: 24px !important;
+    border: 4px solid transparent !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item.active .wizard-nav-link {
+    background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+    color: #ffffff !important;
+    border-color: #d35400 !important;
+    transform: scale(1.15) !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item .wizard-nav-text {
+    margin-top: 15px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #6c757d !important;
+    text-align: center !important;
+    max-width: 140px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item.active .wizard-nav-text {
+    color: #fe7501 !important;
+    font-weight: 700 !important;
+  }
+  
+  .vue-form-wizard .wizard-content {
+    padding: 40px 30px !important;
+    background: #ffffff !important;
+    min-height: 350px !important;
+  }
+  
+  .vue-form-wizard .wizard-card-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 25px 30px !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-top: 1px solid #e1e8ed !important;
+  }
+  
+  .wizard-btn, .wizard-btn-next {
+    padding: 14px 28px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .wizard-btn:hover, .wizard-btn-next:hover {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+    transform: translateY(-2px) !important;
+  }
+  
+  .tab-content {
+    padding: 25px !important;
+    background: #ffffff !important;
+  }
+  
+  .form-group {
+    margin-bottom: 20px !important;
+  }
+  
+  .form-group label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+  }
+  
+  .form-group input, .form-group select {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #e1e8ed !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background: #ffffff !important;
+  }
+  
+  .form-group input:focus, .form-group select:focus {
+    border-color: #fe7501 !important;
+    box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
+    outline: none !important;
+  }
+  </style>
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153483186-1"></script>
 <script>
@@ -44,7 +186,7 @@
 </script>
 <script src="https://www.google-analytics.com/analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
-<script src="/dist/build.js"></script>
+<script src="dist/build.js"></script>
 <script src="https://unpkg.com/vue-meta@1.5.0/lib/vue-meta.min.js"></script>
 </body>
 </html>
