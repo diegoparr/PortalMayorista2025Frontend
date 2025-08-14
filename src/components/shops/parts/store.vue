@@ -7,6 +7,10 @@
           <i class="fa fa-info-circle"></i>
           <strong>Importante:</strong> Completa todos los campos marcados con <span class="text-danger">*</span> antes de registrar la tienda. 
           Los errores se mostrarán en tiempo real y el formulario no se enviará hasta que estén corregidos.
+          <br><br>
+          <strong>📸 Imágenes:</strong> Tamaño máximo 2MB por archivo. Las imágenes se comprimirán automáticamente para optimizar el envío.
+          <br>
+          <small><i class="fa fa-lightbulb-o"></i> <strong>Tip:</strong> Para mejores resultados, usa imágenes de alta calidad que se comprimirán automáticamente.</small>
         </div>
       </div>
     </div>
@@ -548,7 +552,7 @@
             <i class="fa fa-refresh pull-left"></i> Limpiar Errores
           </v-btn>
           <v-btn color="primary" type="submit" id="submitButton" :disabled="deshabilitar"
-                  data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Registrando">
+                  data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Comprimiendo y registrando...">
             <i class="fa fa-user pull-left"></i> Registrar
           </v-btn>
         </div>
@@ -740,11 +744,13 @@
           }, errors => this.mapErrorsResponses(this, errors));
       },
       onFileChangeRut(e) {
-        this.tienda.v_rut = event.target.files[0];
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImageRut(files[0]);
+        if (this.validarArchivo(e.target.files[0], 'RUT')) {
+          this.tienda.v_rut = e.target.files[0];
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImageRut(files[0]);
+        }
       },
       createImageRut(file) {
         let reader = new FileReader();
@@ -756,13 +762,16 @@
       },
       removeImageRut: function (e) {
         this.tienda.v_rut = '';
+        this.imageRut = '';
       },
       onFileChangeCamaraComercio(e) {
-        this.tienda.v_camara_comercio = event.target.files[0];
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImageCamaraComercio(files[0]);
+        if (this.validarArchivo(e.target.files[0], 'Cámara de Comercio')) {
+          this.tienda.v_camara_comercio = e.target.files[0];
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImageCamaraComercio(files[0]);
+        }
       },
       createImageCamaraComercio(file) {
         let reader = new FileReader();
@@ -774,13 +783,16 @@
       },
       removeImageCamaraComercio: function (e) {
         this.tienda.v_camara_comercio = '';
+        this.imageCamaraComercio = '';
       },
       onFileChangeContrato(e) {
-        this.tienda.v_contrato = event.target.files[0];
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImageContrato(files[0]);
+        if (this.validarArchivo(e.target.files[0], 'Contrato')) {
+          this.tienda.v_contrato = e.target.files[0];
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImageContrato(files[0]);
+        }
       },
       createImageContrato(file) {
         let reader = new FileReader();
@@ -792,13 +804,16 @@
       },
       removeImageContrato: function (e) {
         this.tienda.v_contrato = '';
+        this.imageContrato = '';
       },
       onFileChangePortada(e) {
-        this.tienda.v_portada = event.target.files[0];
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImagePortada(files[0]);
+        if (this.validarArchivo(e.target.files[0], 'Portada')) {
+          this.tienda.v_portada = e.target.files[0];
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImagePortada(files[0]);
+        }
       },
       createImagePortada(file) {
         let reader = new FileReader();
@@ -810,13 +825,16 @@
       },
       removeImagePortada: function (e) {
         this.tienda.v_portada = '';
+        this.imagePortada = '';
       },
       onFileChangeLogo(e) {
-        this.tienda.v_logo = event.target.files[0];
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImageLogo(files[0]);
+        if (this.validarArchivo(e.target.files[0], 'Logo')) {
+          this.tienda.v_logo = e.target.files[0];
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImageLogo(files[0]);
+        }
       },
       createImageLogo(file) {
         let reader = new FileReader();
@@ -828,6 +846,70 @@
       },
       removeImageLogo: function (e) {
         this.tienda.v_logo = '';
+        this.imageLogo = '';
+      },
+      // Nuevo método para validar archivos
+      validarArchivo(file, tipo) {
+        const maxSizeMB = 2; // 2MB máximo
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+        
+        if (!file) {
+          this.$toastr('error', `Debes seleccionar un archivo para ${tipo}`, 'Archivo requerido');
+          return false;
+        }
+        
+        if (file.size > maxSizeBytes) {
+          this.$toastr('error', `El archivo ${tipo} es demasiado grande. Máximo ${maxSizeMB}MB permitido.`, 'Archivo muy grande');
+          return false;
+        }
+        
+        // Validar tipo de archivo
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!allowedTypes.includes(file.type)) {
+          this.$toastr('error', `El archivo ${tipo} debe ser una imagen (JPG, PNG)`, 'Tipo de archivo inválido');
+          return false;
+        }
+        
+        // Mostrar información sobre el archivo
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        this.$toastr('info', `${tipo}: ${fileSizeMB}MB - Se comprimirá automáticamente`, 'Archivo válido');
+        
+        return true;
+      },
+      // Nuevo método para comprimir imágenes
+      async comprimirImagen(file, maxWidth = 800, quality = 0.8) {
+        return new Promise((resolve) => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const img = new Image();
+          
+          img.onload = () => {
+            // Calcular nuevas dimensiones manteniendo proporción
+            let { width, height } = img;
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Dibujar imagen redimensionada
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir a blob con calidad especificada
+            canvas.toBlob((blob) => {
+              // Crear nuevo archivo con nombre original
+              const compressedFile = new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              });
+              resolve(compressedFile);
+            }, 'image/jpeg', quality);
+          };
+          
+          img.src = URL.createObjectURL(file);
+        });
       },
       registrar() {
         // Validar todos los campos requeridos antes de enviar
@@ -846,32 +928,41 @@
         });
       },
       // Método separado para enviar el formulario
-      enviarFormulario() {
+      async enviarFormulario() {
         let token = this.getUsuario.token;
         let boton_registrar = $('#submitButton');
         boton_registrar.button('loading');
-        let formData = new FormData();
-        formData.append('id_m_paises_fk', this.pais.value);
-        formData.append('id_m_provincias_fk', this.provincia.value);
-        formData.append('id_m_ciudades_fk', this.ciudad.value);
-        formData.append('v_nombre_pais', this.pais.text);
-        formData.append('v_nombre_provincia', this.provincia.text);
-        formData.append('v_nombre_ciudad', this.ciudad.text);
-        formData.append('id_m_tipos_documentos_fk', this.tipo_documento.value);
-        formData.append('v_documento', this.tienda.v_documento);
-        formData.append('v_tipo_persona', this.v_tipo_persona.value);
-        formData.append('v_nombre', this.tienda.v_nombre);
-        formData.append('v_telefono_principal', this.tienda.v_telefono_principal);
-        if (this.tienda.v_telefono_secundario)
-          formData.append('v_telefono_secundario', this.tienda.v_telefono_secundario);
-        formData.append('id_usuario_asesor_fk', this.usuario_asesor.value);
-        formData.append('id_usuario_cliente_fk', this.usuario_cliente.value);
-        formData.append('v_direccion', this.tienda.v_direccion);
-        formData.append('rut', this.tienda.v_rut);
-        formData.append('camara_comercio', this.tienda.v_camara_comercio);
-        formData.append('contrato', this.tienda.v_contrato);
-        formData.append('logo', this.tienda.v_logo);
-        formData.append('portada', this.tienda.v_portada);
+        
+        try {
+          // Comprimir todas las imágenes antes de enviar
+          const rutComprimido = await this.comprimirImagen(this.tienda.v_rut, 800, 0.7);
+          const camaraComercioComprimida = await this.comprimirImagen(this.tienda.v_camara_comercio, 800, 0.7);
+          const contratoComprimido = await this.comprimirImagen(this.tienda.v_contrato, 800, 0.7);
+          const logoComprimido = await this.comprimirImagen(this.tienda.v_logo, 600, 0.8);
+          const portadaComprimida = await this.comprimirImagen(this.tienda.v_portada, 1000, 0.7);
+          
+          let formData = new FormData();
+          formData.append('id_m_paises_fk', this.pais.value);
+          formData.append('id_m_provincias_fk', this.provincia.value);
+          formData.append('id_m_ciudades_fk', this.ciudad.value);
+          formData.append('v_nombre_pais', this.pais.text);
+          formData.append('v_nombre_provincia', this.provincia.text);
+          formData.append('v_nombre_ciudad', this.ciudad.text);
+          formData.append('id_m_tipos_documentos_fk', this.tipo_documento.value);
+          formData.append('v_documento', this.tienda.v_documento);
+          formData.append('v_tipo_persona', this.v_tipo_persona.value);
+          formData.append('v_nombre', this.tienda.v_nombre);
+          formData.append('v_telefono_principal', this.tienda.v_telefono_principal);
+          if (this.tienda.v_telefono_secundario)
+            formData.append('v_telefono_secundario', this.tienda.v_telefono_secundario);
+          formData.append('id_usuario_asesor_fk', this.usuario_asesor.value);
+          formData.append('id_usuario_cliente_fk', this.usuario_cliente.value);
+          formData.append('v_direccion', this.tienda.v_direccion);
+          formData.append('rut', rutComprimido);
+          formData.append('camara_comercio', camaraComercioComprimida);
+          formData.append('contrato', contratoComprimido);
+          formData.append('logo', logoComprimido);
+          formData.append('portada', portadaComprimida);
         formData.append('v_horario_lunes_tienda_desde', this.tienda.horario_lunes_tienda_desde);
         formData.append('v_horario_lunes_tienda_hasta', this.tienda.horario_lunes_tienda_hasta);
         formData.append('b_horario_lunes_tienda_no_laborable', this.tienda.horario_lunes_tienda_no_laborable);
@@ -895,6 +986,7 @@
         formData.append('b_horario_domingo_tienda_no_laborable', this.tienda.horario_domingo_tienda_no_laborable);
         formData.append('v_descripcion', this.tienda.v_descripcion);
         formData.append('v_resena', this.tienda.v_resena);
+        
         let yo = this;
         this.postMethodWithBearer('api/ecommerce/tiendas', formData, token)
           .then(response => {
@@ -911,6 +1003,12 @@
             // Marcar el modal como que tiene errores de validación
             this.marcarModalConErrores();
           });
+          
+        } catch (error) {
+          boton_registrar.button('reset');
+          console.error('Error al comprimir imágenes:', error);
+          this.$toastr('error', 'Error al procesar las imágenes. Por favor, verifica que sean válidas.', 'Error de procesamiento');
+        }
       },
       // Método para mostrar resumen de errores
       mostrarResumenErrores() {
@@ -973,6 +1071,12 @@
           this.$toastr('error', 'Debes subir todas las imágenes requeridas (RUT, Cámara de Comercio, Contrato, Logo y Portada)', 'Imágenes requeridas');
           return false;
         }
+        
+        // Mostrar información sobre el tamaño total de archivos
+        const totalSize = this.calcularTamanioTotalArchivos();
+        if (totalSize > 10) { // Si es mayor a 10MB
+          this.$toastr('warning', `Tamaño total de archivos: ${totalSize.toFixed(2)}MB. Las imágenes se comprimirán automáticamente.`, 'Archivos grandes detectados');
+        }
 
         // Validar horarios (al menos un día debe tener horarios válidos)
         if (!this.validarHorarios()) {
@@ -999,6 +1103,25 @@
         }
 
         return hayHorariosValidos;
+      },
+      // Método para calcular el tamaño total de archivos
+      calcularTamanioTotalArchivos() {
+        let totalSize = 0;
+        const archivos = [
+          this.tienda.v_rut,
+          this.tienda.v_camara_comercio,
+          this.tienda.v_contrato,
+          this.tienda.v_logo,
+          this.tienda.v_portada
+        ];
+        
+        archivos.forEach(archivo => {
+          if (archivo && archivo.size) {
+            totalSize += archivo.size / (1024 * 1024); // Convertir a MB
+          }
+        });
+        
+        return totalSize;
       },
       // Método para marcar el modal cuando hay errores de validación
       marcarModalConErrores() {
