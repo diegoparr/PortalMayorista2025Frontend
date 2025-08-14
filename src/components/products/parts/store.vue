@@ -1665,6 +1665,341 @@ tab-content {
   background: #ffffff !important;
 }
 
+/* ESTILOS CRÍTICOS DEL WIZARD - Se aplican directamente */
+.wizard-header {
+  text-align: center !important;
+  padding: 30px 20px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.wizard-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 15px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wizard-subtitle {
+  font-size: 18px !important;
+  color: #6c757d !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.wizard-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 30px 20px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  position: relative !important;
+}
+
+.wizard-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 25px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wizard-nav-item .wizard-nav-link {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ecf0f1 !important;
+  color: #95a5a6 !important;
+  font-size: 24px !important;
+  text-decoration: none !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 4px solid transparent !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wizard-nav-item.active .wizard-nav-link {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border-color: #d35400 !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-link {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+  border-color: #229954 !important;
+  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
+}
+
+.wizard-nav-item .wizard-nav-text {
+  margin-top: 15px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-align: center !important;
+  max-width: 140px !important;
+  line-height: 1.3 !important;
+}
+
+.wizard-nav-item.active .wizard-nav-text {
+  color: #fe7501 !important;
+  font-weight: 700 !important;
+  transform: scale(1.05) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-text {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
+}
+
+.wizard-content {
+  padding: 40px 30px !important;
+  background: #ffffff !important;
+  min-height: 350px !important;
+}
+
+.wizard-card-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 25px 30px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid #e1e8ed !important;
+}
+
+.wizard-btn {
+  padding: 14px 28px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wizard-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.wizard-btn:not(:disabled):hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+.wizard-btn-prev {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
+  color: #ffffff !important;
+}
+
+.wizard-btn-prev:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%) !important;
+}
+
+.wizard-btn-next {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+}
+
+.wizard-btn-next:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+}
+
+.wizard-btn-finish {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+}
+
+.wizard-btn-finish:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2ecc71 0%, #229954 100%) !important;
+}
+
+/* ESTILOS ESPECÍFICOS PARA LOS ELEMENTOS DEL WIZARD */
+/* Estilos para el mensaje verde */
+.alert-success,
+.alert-info,
+.wizard-content .alert {
+  background-color: #d4edda !important;
+  border-color: #c3e6cb !important;
+  color: #155724 !important;
+  padding: 15px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+
+/* Estilos para los campos del formulario */
+.wizard-content .form-group,
+.tab-content .form-group {
+  margin-bottom: 20px !important;
+}
+
+.wizard-content .form-group label,
+.tab-content .form-group label {
+  display: block !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+}
+
+.wizard-content .form-group input,
+.wizard-content .form-group select,
+.tab-content .form-group input,
+.tab-content .form-group select {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  background: #ffffff !important;
+  transition: all 0.3s ease !important;
+}
+
+.wizard-content .form-group input:focus,
+.wizard-content .form-group select:focus,
+.tab-content .form-group input:focus,
+.tab-content .form-group select:focus {
+  border-color: #fe7501 !important;
+  box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
+  outline: none !important;
+}
+
+/* Estilos para el checkbox */
+.wizard-content .checkbox,
+.tab-content .checkbox {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-top: 15px !important;
+}
+
+.wizard-content .checkbox input[type="checkbox"],
+.tab-content .checkbox input[type="checkbox"] {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.wizard-content .checkbox label,
+.tab-content .checkbox label {
+  margin: 0 !important;
+  font-weight: 500 !important;
+  color: #6c757d !important;
+}
+
+/* Estilos para el breadcrumb */
+.wizard-content .breadcrumb,
+.tab-content .breadcrumb {
+  background: transparent !important;
+  padding: 0 !important;
+  margin-bottom: 20px !important;
+  border: none !important;
+  list-style: none !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+.wizard-content .breadcrumb li,
+.tab-content .breadcrumb li {
+  font-size: 14px !important;
+}
+
+.wizard-content .breadcrumb li a,
+.tab-content .breadcrumb li a {
+  color: #fe7501 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+}
+
+.wizard-content .breadcrumb li a:hover,
+.tab-content .breadcrumb li a:hover {
+  color: #e67e22 !important;
+  background: rgba(254, 117, 1, 0.1) !important;
+  text-decoration: none !important;
+}
+
+/* Estilos para iconos y elementos visuales */
+.wizard-nav-item .wizard-nav-link i,
+.wizard-nav-item .wizard-nav-link .fa,
+.wizard-nav-item .wizard-nav-link .wizard-icon {
+  font-size: 24px !important;
+  color: inherit !important;
+}
+
+.wizard-nav-item.active .wizard-nav-link i,
+.wizard-nav-item.active .wizard-nav-link .fa,
+.wizard-nav-item.active .wizard-nav-link .wizard-icon {
+  color: #ffffff !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-link i,
+.wizard-nav-item.completed .wizard-nav-link .fa,
+.wizard-nav-item.completed .wizard-nav-link .wizard-icon {
+  color: #ffffff !important;
+}
+
+/* Estilos para el contenido del wizard */
+.wizard-content .tab-content {
+  padding: 25px !important;
+  background: #ffffff !important;
+}
+
+.wizard-content .tab-content h5 {
+  color: #6c757d !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  margin: 20px 0 !important;
+}
+
+/* Estilos para el botón de siguiente */
+.wizard-card-footer .wizard-btn-next,
+.wizard-card-footer .wizard-btn {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 14px 28px !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wizard-card-footer .wizard-btn-next:hover,
+.wizard-card-footer .wizard-btn:hover {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
 /* Estilos responsivos */
 @media (max-width: 768px) {
   .vue-form-wizard .wizard-nav {
