@@ -648,16 +648,6 @@
 
   export default {
     mixins: [ImageHandler],
-    created() {
-      console.log('🔍 [WIZARD DEBUG] Componente creado - Entorno:', process.env.NODE_ENV);
-      console.log('🔍 [WIZARD DEBUG] Vue version:', Vue.version);
-      console.log('🔍 [WIZARD DEBUG] Componente montado correctamente');
-      
-      // Log de verificación de estilos
-      setTimeout(() => {
-        this.verificarEstilosWizard();
-      }, 1000);
-    },
     data() {
       return {
         siguienteTab: false,
@@ -755,18 +745,10 @@
       this.cargarCategorias(null);
     },
     mounted() {
-      console.log('🔍 [WIZARD DEBUG] Componente montado - DOM listo');
-      
       let yo = this;
       $('#modal').on('hidden.bs.modal', function (e) {
-        console.log('🔍 [WIZARD DEBUG] Modal cerrado');
         yo.$emit('modal_close');
       });
-      
-      // Verificar estilos después de que el DOM esté completamente listo
-      setTimeout(() => {
-        this.verificarEstilosWizard();
-      }, 2000);
     },
     methods: Object.assign({}, mapMutations([]), {
       crearValores() {
@@ -1012,31 +994,20 @@
           }, errors => yo.getAppServices().mapErrorsResponses(yo, errors));
       },
       cambioWizard(from, to) {
-        console.log('🔍 [WIZARD DEBUG] Cambio de paso:', { from, to });
-        console.log('🔍 [WIZARD DEBUG] Estado actual:', {
-          siguienteTab: this.siguienteTab,
-          seleccionoCategoria: this.seleccionoCategoria,
-          cargandoData: this.cargandoData
-        });
-        
         let yo = this;
         let token = this.getUsuario.token;
         switch (to) {
           case 0:
-            console.log('🔍 [WIZARD DEBUG] Paso 0 - Configurando siguienteTab:', this.seleccionoCategoria);
             this.siguienteTab = this.seleccionoCategoria;
             break;
           case 1:
-            console.log('🔍 [WIZARD DEBUG] Paso 1 - Cargando catálogos');
             this.cargandoData = true;
             this.getDataCatalogo(1);
             break;
           case 2:
-            console.log('🔍 [WIZARD DEBUG] Paso 2 - Cargando características');
             this.cargandoData = true;
             this.getAppService().getMethodsWithBearer("api/ecommerce/caracteristicas", token, 'all', 1, "'valores_caracteristicas'", "['id_m_categorias_fk','=','" + this.categoria.value + "']")
               .then(response => {
-                console.log('🔍 [WIZARD DEBUG] Características cargadas:', response.body);
                 yo.cargandoData = false;
                 if (response.body.length > 0) {
                   let data = response.body;
@@ -1125,173 +1096,40 @@
         return this.valor_caracteristica !== null;
       },
       mostrarMultiple() {
-        return this.v_tipo && this.v_tipo.value === 'multiple';
+        console.log('this.v_tipo.value')
+        return this.v_tipo.value === 'multiple';
       },
-      verificarEstilosWizard() {
-        console.log('🔍 [WIZARD DEBUG] === VERIFICACIÓN DE ESTILOS ===');
-        
-        // Verificar si el componente vue-form-wizard existe
-        const wizardElement = document.querySelector('.vue-form-wizard, form-wizard');
-        console.log('🔍 [WIZARD DEBUG] Elemento wizard encontrado:', wizardElement);
-        
-        if (wizardElement) {
-          console.log('🔍 [WIZARD DEBUG] Clases del wizard:', wizardElement.className);
-          console.log('🔍 [WIZARD DEBUG] Estilos computados del wizard:', {
-            backgroundColor: window.getComputedStyle(wizardElement).backgroundColor,
-            borderRadius: window.getComputedStyle(wizardElement).borderRadius,
-            boxShadow: window.getComputedStyle(wizardElement).boxShadow
-          });
-          
-          // Verificar header
-          const header = wizardElement.querySelector('.wizard-header');
-          console.log('🔍 [WIZARD DEBUG] Header encontrado:', header);
-          
-          // Verificar navegación
-          const nav = wizardElement.querySelector('.wizard-nav');
-          console.log('🔍 [WIZARD DEBUG] Navegación encontrada:', nav);
-          
-          // Verificar pasos
-          const navItems = wizardElement.querySelectorAll('.wizard-nav-item');
-          console.log('🔍 [WIZARD DEBUG] Pasos encontrados:', navItems.length);
-          
-          // Verificar botones
-          const buttons = wizardElement.querySelectorAll('.wizard-btn, .wizard-btn-next');
-          console.log('🔍 [WIZARD DEBUG] Botones encontrados:', buttons.length);
-          
-          // Verificar CSS cargado
-          const styles = Array.from(document.styleSheets);
-          const wizardStyles = styles.filter(sheet => 
-            sheet.href && sheet.href.includes('wizard') || 
-            sheet.innerText && sheet.innerText.includes('wizard')
-          );
-          console.log('🔍 [WIZARD DEBUG] Hojas de estilo del wizard:', wizardStyles.length);
-          
-        } else {
-          console.log('❌ [WIZARD DEBUG] NO se encontró el elemento wizard');
-        }
-        
-        // Verificar estilos inline
-        const inlineStyles = document.querySelectorAll('style');
-        console.log('🔍 [WIZARD DEBUG] Estilos inline encontrados:', inlineStyles.length);
-        
-        // Verificar estilos externos
-        const externalStyles = document.querySelectorAll('link[rel="stylesheet"]');
-        console.log('🔍 [WIZARD DEBUG] Estilos externos encontrados:', externalStyles.length);
-        
-        console.log('🔍 [WIZARD DEBUG] === FIN VERIFICACIÓN ===');
-      }
     }),
     components: {ModelSelect, MultiSelect, VueEditor, vueDropzone: vue2Dropzone, Loader},
   }
 </script>
+<style scoped>
+/* Estilos específicos para el form-wizard para asegurar que se carguen en producción */
 
-<style>
-/* ESTILOS CRÍTICOS DEL WIZARD - VERSIÓN PRODUCCIÓN */
-/* Estos estilos se aplican directamente y tienen prioridad máxima */
-
-/* ESTILOS DEL WIZARD PRINCIPAL - PRODUCCIÓN */
-.vue-form-wizard,
-form-wizard {
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  background: #ffffff !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  margin: 20px !important;
-  padding: 0 !important;
-  display: block !important;
+/* Estilos del wizard principal */
+.vue-form-wizard {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* Header del wizard */
 .vue-form-wizard .wizard-header {
-  text-align: center !important;
-  padding: 30px 20px !important;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-bottom: 1px solid #e1e8ed !important;
-  border-radius: 8px 8px 0 0 !important;
+  text-align: center;
+  padding: 20px 0;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
 }
 
-/* Estilos para el título del wizard */
-.wizard-title,
 .vue-form-wizard .wizard-title {
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: #2c3e50 !important;
-  margin-bottom: 15px !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
 }
 
-/* Estilos para el subtítulo del wizard */
-.wizard-subtitle,
 .vue-form-wizard .wizard-subtitle {
-  font-size: 18px !important;
-  color: #6c757d !important;
-  font-weight: 400 !important;
-  line-height: 1.5 !important;
-}
-
-/* CONTENIDO DEL WIZARD */
-.wizard-content,
-.vue-form-wizard .wizard-content {
-  padding: 40px 30px !important;
-  background: #ffffff !important;
-  min-height: 350px !important;
-}
-
-/* FOOTER DEL WIZARD */
-.wizard-card-footer,
-.vue-form-wizard .wizard-card-footer {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  padding: 25px 30px !important;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-top: 1px solid #e1e8ed !important;
-}
-
-/* BOTONES DEL WIZARD - CRÍTICOS */
-.wizard-btn,
-.vue-form-wizard .wizard-btn,
-.wizard-btn-next,
-.wizard-btn-prev,
-.wizard-btn-finish {
-  padding: 14px 28px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  text-decoration: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.wizard-btn-next,
-.wizard-btn {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-}
-
-.wizard-btn-next:hover,
-.wizard-btn:hover {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
-}
-
-.wizard-btn-prev {
-  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
-  color: #ffffff !important;
-}
-
-.wizard-btn-finish {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
-  color: #ffffff !important;
+  font-size: 16px;
+  color: #7f8c8d;
+  font-weight: 400;
 }
 
 /* Navegación del wizard */
@@ -1422,34 +1260,8 @@ form-wizard {
 }
 
 .vue-form-wizard .wizard-btn-next {
-  background: #fe7501 !important;
-  color: #ffffff !important;
-}
-
-/* Estilos específicos para el botón Siguiente */
-.wizard-btn-next,
-.wizard-btn {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 12px 24px !important;
-  border-radius: 6px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  text-decoration: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.wizard-btn-next:hover,
-.wizard-btn:hover {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+  background: #fe7501;
+  color: #ffffff;
 }
 
 .vue-form-wizard .wizard-btn-next:hover:not(:disabled) {
@@ -1472,69 +1284,7 @@ form-wizard {
 
 /* Estilos específicos para los pasos */
 .tab-content {
-  padding: 20px 0 !important;
-}
-
-/* Estilos para los pasos del wizard */
-.wizard-nav-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  margin: 0 25px !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-.wizard-nav-item .wizard-nav-link {
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ecf0f1 !important;
-  color: #95a5a6 !important;
-  font-size: 24px !important;
-  text-decoration: none !important;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  border: 4px solid transparent !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-}
-
-.wizard-nav-item.active .wizard-nav-link {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-  border-color: #d35400 !important;
-  transform: scale(1.15) !important;
-  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-link {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
-  color: #ffffff !important;
-  border-color: #229954 !important;
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
-}
-
-.wizard-nav-item .wizard-nav-text {
-  margin-top: 15px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #6c757d !important;
-  text-align: center !important;
-  max-width: 140px !important;
-  line-height: 1.3 !important;
-}
-
-.wizard-nav-item.active .wizard-nav-text {
-  color: #fe7501 !important;
-  font-weight: 700 !important;
-  transform: scale(1.05) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-text {
-  color: #27ae60 !important;
-  font-weight: 700 !important;
+  padding: 20px 0;
 }
 
 .tab-content .breadcrumb {
@@ -1618,31 +1368,8 @@ form-wizard {
 }
 
 .form-control:focus {
-  border-color: #fe7501 !important;
-  box-shadow: 0 0 0 3px rgba(254, 117, 1, 0.1) !important;
-}
-
-/* Estilos para campos de entrada del wizard */
-.wizard-content input,
-.wizard-content .form-control,
-.tab-content input,
-.tab-content .form-control {
-  border-radius: 8px !important;
-  border: 2px solid #e1e8ed !important;
-  transition: all 0.3s ease !important;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  width: 100% !important;
-  background: #ffffff !important;
-}
-
-.wizard-content input:focus,
-.wizard-content .form-control:focus,
-.tab-content input:focus,
-.tab-content .form-control:focus {
-  border-color: #fe7501 !important;
-  box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
-  transform: translateY(-1px) !important;
+  border-color: #fe7501;
+  box-shadow: 0 0 0 3px rgba(254, 117, 1, 0.1);
 }
 
 /* Estilos para la paginación */
@@ -1730,41 +1457,9 @@ form-wizard {
 
 /* Estilos para el modal del wizard */
 .modal-content {
-  border-radius: 12px !important;
-  border: none !important;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
-  overflow: hidden !important;
-}
-
-/* Estilos específicos para el modal del wizard */
-#modal .modal-content {
-  border-radius: 12px !important;
-  border: none !important;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
-  overflow: hidden !important;
-}
-
-#modal .modal-header {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-bottom: 1px solid #e1e8ed !important;
-  padding: 25px 30px !important;
-}
-
-#modal .modal-title {
-  color: #2c3e50 !important;
-  font-weight: 700 !important;
-  font-size: 22px !important;
-}
-
-#modal .modal-body {
-  padding: 0 !important;
-  background: #ffffff !important;
-}
-
-#modal .modal-footer {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-top: 1px solid #e1e8ed !important;
-  padding: 20px 30px !important;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -1782,458 +1477,6 @@ form-wizard {
   background: #f8f9fa;
   border-top: 1px solid #e1e8ed;
   border-radius: 0 0 8px 8px;
-}
-
-/* Estilos de respaldo para asegurar que se apliquen */
-form-wizard {
-  display: block !important;
-  background: #ffffff !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  margin: 20px !important;
-  padding: 0 !important;
-}
-
-tab-content {
-  display: block !important;
-  padding: 25px !important;
-  background: #ffffff !important;
-}
-
-/* ESTILOS CRÍTICOS DEL WIZARD - PRODUCCIÓN */
-/* HEADER DEL WIZARD */
-.wizard-header,
-.vue-form-wizard .wizard-header {
-  text-align: center !important;
-  padding: 30px 20px !important;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-bottom: 1px solid #e1e8ed !important;
-  border-radius: 8px 8px 0 0 !important;
-}
-
-/* TÍTULO Y SUBTÍTULO */
-.wizard-title,
-.vue-form-wizard .wizard-title {
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: #2c3e50 !important;
-  margin-bottom: 15px !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-}
-
-.wizard-subtitle,
-.vue-form-wizard .wizard-subtitle {
-  font-size: 18px !important;
-  color: #6c757d !important;
-  font-weight: 400 !important;
-  line-height: 1.5 !important;
-}
-
-/* NAVEGACIÓN DEL WIZARD */
-.wizard-nav,
-.vue-form-wizard .wizard-nav {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 30px 20px !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid #e1e8ed !important;
-  position: relative !important;
-}
-
-.wizard-nav-item,
-.vue-form-wizard .wizard-nav-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  margin: 0 25px !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-.wizard-nav-item .wizard-nav-link,
-.vue-form-wizard .wizard-nav-item .wizard-nav-link {
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ecf0f1 !important;
-  color: #95a5a6 !important;
-  font-size: 24px !important;
-  text-decoration: none !important;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  border: 4px solid transparent !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-}
-
-.wizard-nav-item.active .wizard-nav-link,
-.vue-form-wizard .wizard-nav-item.active .wizard-nav-link {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-  border-color: #d35400 !important;
-  transform: scale(1.15) !important;
-  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-link,
-.vue-form-wizard .wizard-nav-item.completed .wizard-nav-link {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
-  color: #ffffff !important;
-  border-color: #229954 !important;
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
-}
-
-.wizard-nav-item .wizard-nav-text,
-.vue-form-wizard .wizard-nav-item .wizard-nav-text {
-  margin-top: 15px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #6c757d !important;
-  text-align: center !important;
-  max-width: 140px !important;
-  line-height: 1.3 !important;
-}
-
-.wizard-nav-item.active .wizard-nav-text,
-.vue-form-wizard .wizard-nav-item.active .wizard-nav-text {
-  color: #fe7501 !important;
-  font-weight: 700 !important;
-  transform: scale(1.05) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-text,
-.vue-form-wizard .wizard-nav-item.completed .wizard-nav-text {
-  color: #27ae60 !important;
-  font-weight: 700 !important;
-}
-
-.wizard-title {
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: #2c3e50 !important;
-  margin-bottom: 15px !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-}
-
-.wizard-subtitle {
-  font-size: 18px !important;
-  color: #6c757d !important;
-  font-weight: 400 !important;
-  line-height: 1.5 !important;
-}
-
-.wizard-nav {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 30px 20px !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid #e1e8ed !important;
-  position: relative !important;
-}
-
-.wizard-nav-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  margin: 0 25px !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-.wizard-nav-item .wizard-nav-link {
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ecf0f1 !important;
-  color: #95a5a6 !important;
-  font-size: 24px !important;
-  text-decoration: none !important;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  border: 4px solid transparent !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-}
-
-.wizard-nav-item.active .wizard-nav-link {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-  border-color: #d35400 !important;
-  transform: scale(1.15) !important;
-  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-link {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
-  color: #ffffff !important;
-  border-color: #229954 !important;
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
-}
-
-.wizard-nav-item .wizard-nav-text {
-  margin-top: 15px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #6c757d !important;
-  text-align: center !important;
-  max-width: 140px !important;
-  line-height: 1.3 !important;
-}
-
-.wizard-nav-item.active .wizard-nav-text {
-  color: #fe7501 !important;
-  font-weight: 700 !important;
-  transform: scale(1.05) !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-text {
-  color: #27ae60 !important;
-  font-weight: 700 !important;
-}
-
-.wizard-content {
-  padding: 40px 30px !important;
-  background: #ffffff !important;
-  min-height: 350px !important;
-}
-
-.wizard-card-footer {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  padding: 25px 30px !important;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-top: 1px solid #e1e8ed !important;
-}
-
-.wizard-btn {
-  padding: 14px 28px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  text-decoration: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.wizard-btn:disabled {
-  opacity: 0.6 !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-}
-
-.wizard-btn:not(:disabled):hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
-}
-
-.wizard-btn-prev {
-  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
-  color: #ffffff !important;
-}
-
-.wizard-btn-prev:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%) !important;
-}
-
-.wizard-btn-next {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-}
-
-.wizard-btn-next:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
-}
-
-.wizard-btn-finish {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
-  color: #ffffff !important;
-}
-
-.wizard-btn-finish:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2ecc71 0%, #229954 100%) !important;
-}
-
-/* ESTILOS ESPECÍFICOS PARA LOS ELEMENTOS DEL WIZARD */
-/* Estilos para el mensaje verde */
-.alert-success,
-.alert-info,
-.wizard-content .alert {
-  background-color: #d4edda !important;
-  border-color: #c3e6cb !important;
-  color: #155724 !important;
-  padding: 15px !important;
-  margin-bottom: 20px !important;
-  border: 1px solid transparent !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-}
-
-/* Estilos para los campos del formulario */
-.wizard-content .form-group,
-.tab-content .form-group {
-  margin-bottom: 20px !important;
-}
-
-.wizard-content .form-group label,
-.tab-content .form-group label {
-  display: block !important;
-  margin-bottom: 8px !important;
-  font-weight: 600 !important;
-  color: #2c3e50 !important;
-  font-size: 14px !important;
-}
-
-.wizard-content .form-group input,
-.wizard-content .form-group select,
-.tab-content .form-group input,
-.tab-content .form-group select {
-  width: 100% !important;
-  padding: 12px 16px !important;
-  border: 2px solid #e1e8ed !important;
-  border-radius: 8px !important;
-  font-size: 14px !important;
-  background: #ffffff !important;
-  transition: all 0.3s ease !important;
-}
-
-.wizard-content .form-group input:focus,
-.wizard-content .form-group select:focus,
-.tab-content .form-group input:focus,
-.tab-content .form-group select:focus {
-  border-color: #fe7501 !important;
-  box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
-  outline: none !important;
-}
-
-/* Estilos para el checkbox */
-.wizard-content .checkbox,
-.tab-content .checkbox {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  margin-top: 15px !important;
-}
-
-.wizard-content .checkbox input[type="checkbox"],
-.tab-content .checkbox input[type="checkbox"] {
-  width: auto !important;
-  margin: 0 !important;
-}
-
-.wizard-content .checkbox label,
-.tab-content .checkbox label {
-  margin: 0 !important;
-  font-weight: 500 !important;
-  color: #6c757d !important;
-}
-
-/* Estilos para el breadcrumb */
-.wizard-content .breadcrumb,
-.tab-content .breadcrumb {
-  background: transparent !important;
-  padding: 0 !important;
-  margin-bottom: 20px !important;
-  border: none !important;
-  list-style: none !important;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 10px !important;
-}
-
-.wizard-content .breadcrumb li,
-.tab-content .breadcrumb li {
-  font-size: 14px !important;
-}
-
-.wizard-content .breadcrumb li a,
-.tab-content .breadcrumb li a {
-  color: #fe7501 !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-  font-weight: 500 !important;
-  transition: all 0.3s ease !important;
-  padding: 5px 10px !important;
-  border-radius: 4px !important;
-}
-
-.wizard-content .breadcrumb li a:hover,
-.tab-content .breadcrumb li a:hover {
-  color: #e67e22 !important;
-  background: rgba(254, 117, 1, 0.1) !important;
-  text-decoration: none !important;
-}
-
-/* Estilos para iconos y elementos visuales */
-.wizard-nav-item .wizard-nav-link i,
-.wizard-nav-item .wizard-nav-link .fa,
-.wizard-nav-item .wizard-nav-link .wizard-icon {
-  font-size: 24px !important;
-  color: inherit !important;
-}
-
-.wizard-nav-item.active .wizard-nav-link i,
-.wizard-nav-item.active .wizard-nav-link .fa,
-.wizard-nav-item.active .wizard-nav-link .wizard-icon {
-  color: #ffffff !important;
-}
-
-.wizard-nav-item.completed .wizard-nav-link i,
-.wizard-nav-item.completed .wizard-nav-link .fa,
-.wizard-nav-item.completed .wizard-nav-link .wizard-icon {
-  color: #ffffff !important;
-}
-
-/* Estilos para el contenido del wizard */
-.wizard-content .tab-content {
-  padding: 25px !important;
-  background: #ffffff !important;
-}
-
-.wizard-content .tab-content h5 {
-  color: #6c757d !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  text-align: center !important;
-  margin: 20px 0 !important;
-}
-
-/* Estilos para el botón de siguiente */
-.wizard-card-footer .wizard-btn-next,
-.wizard-card-footer .wizard-btn {
-  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 14px 28px !important;
-  border-radius: 8px !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  text-decoration: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.wizard-card-footer .wizard-btn-next:hover,
-.wizard-card-footer .wizard-btn:hover {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Estilos responsivos */
@@ -2258,3 +1501,4 @@ tab-content {
   }
 }
 </style>
+
