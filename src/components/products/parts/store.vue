@@ -648,6 +648,16 @@
 
   export default {
     mixins: [ImageHandler],
+    created() {
+      console.log('🔍 [WIZARD DEBUG] Componente creado - Entorno:', process.env.NODE_ENV);
+      console.log('🔍 [WIZARD DEBUG] Vue version:', Vue.version);
+      console.log('🔍 [WIZARD DEBUG] Componente montado correctamente');
+      
+      // Log de verificación de estilos
+      setTimeout(() => {
+        this.verificarEstilosWizard();
+      }, 1000);
+    },
     data() {
       return {
         siguienteTab: false,
@@ -745,10 +755,18 @@
       this.cargarCategorias(null);
     },
     mounted() {
+      console.log('🔍 [WIZARD DEBUG] Componente montado - DOM listo');
+      
       let yo = this;
       $('#modal').on('hidden.bs.modal', function (e) {
+        console.log('🔍 [WIZARD DEBUG] Modal cerrado');
         yo.$emit('modal_close');
       });
+      
+      // Verificar estilos después de que el DOM esté completamente listo
+      setTimeout(() => {
+        this.verificarEstilosWizard();
+      }, 2000);
     },
     methods: Object.assign({}, mapMutations([]), {
       crearValores() {
@@ -994,20 +1012,31 @@
           }, errors => yo.getAppServices().mapErrorsResponses(yo, errors));
       },
       cambioWizard(from, to) {
+        console.log('🔍 [WIZARD DEBUG] Cambio de paso:', { from, to });
+        console.log('🔍 [WIZARD DEBUG] Estado actual:', {
+          siguienteTab: this.siguienteTab,
+          seleccionoCategoria: this.seleccionoCategoria,
+          cargandoData: this.cargandoData
+        });
+        
         let yo = this;
         let token = this.getUsuario.token;
         switch (to) {
           case 0:
+            console.log('🔍 [WIZARD DEBUG] Paso 0 - Configurando siguienteTab:', this.seleccionoCategoria);
             this.siguienteTab = this.seleccionoCategoria;
             break;
           case 1:
+            console.log('🔍 [WIZARD DEBUG] Paso 1 - Cargando catálogos');
             this.cargandoData = true;
             this.getDataCatalogo(1);
             break;
           case 2:
+            console.log('🔍 [WIZARD DEBUG] Paso 2 - Cargando características');
             this.cargandoData = true;
             this.getAppService().getMethodsWithBearer("api/ecommerce/caracteristicas", token, 'all', 1, "'valores_caracteristicas'", "['id_m_categorias_fk','=','" + this.categoria.value + "']")
               .then(response => {
+                console.log('🔍 [WIZARD DEBUG] Características cargadas:', response.body);
                 yo.cargandoData = false;
                 if (response.body.length > 0) {
                   let data = response.body;
@@ -1098,6 +1127,59 @@
       mostrarMultiple() {
         return this.v_tipo && this.v_tipo.value === 'multiple';
       },
+      verificarEstilosWizard() {
+        console.log('🔍 [WIZARD DEBUG] === VERIFICACIÓN DE ESTILOS ===');
+        
+        // Verificar si el componente vue-form-wizard existe
+        const wizardElement = document.querySelector('.vue-form-wizard, form-wizard');
+        console.log('🔍 [WIZARD DEBUG] Elemento wizard encontrado:', wizardElement);
+        
+        if (wizardElement) {
+          console.log('🔍 [WIZARD DEBUG] Clases del wizard:', wizardElement.className);
+          console.log('🔍 [WIZARD DEBUG] Estilos computados del wizard:', {
+            backgroundColor: window.getComputedStyle(wizardElement).backgroundColor,
+            borderRadius: window.getComputedStyle(wizardElement).borderRadius,
+            boxShadow: window.getComputedStyle(wizardElement).boxShadow
+          });
+          
+          // Verificar header
+          const header = wizardElement.querySelector('.wizard-header');
+          console.log('🔍 [WIZARD DEBUG] Header encontrado:', header);
+          
+          // Verificar navegación
+          const nav = wizardElement.querySelector('.wizard-nav');
+          console.log('🔍 [WIZARD DEBUG] Navegación encontrada:', nav);
+          
+          // Verificar pasos
+          const navItems = wizardElement.querySelectorAll('.wizard-nav-item');
+          console.log('🔍 [WIZARD DEBUG] Pasos encontrados:', navItems.length);
+          
+          // Verificar botones
+          const buttons = wizardElement.querySelectorAll('.wizard-btn, .wizard-btn-next');
+          console.log('🔍 [WIZARD DEBUG] Botones encontrados:', buttons.length);
+          
+          // Verificar CSS cargado
+          const styles = Array.from(document.styleSheets);
+          const wizardStyles = styles.filter(sheet => 
+            sheet.href && sheet.href.includes('wizard') || 
+            sheet.innerText && sheet.innerText.includes('wizard')
+          );
+          console.log('🔍 [WIZARD DEBUG] Hojas de estilo del wizard:', wizardStyles.length);
+          
+        } else {
+          console.log('❌ [WIZARD DEBUG] NO se encontró el elemento wizard');
+        }
+        
+        // Verificar estilos inline
+        const inlineStyles = document.querySelectorAll('style');
+        console.log('🔍 [WIZARD DEBUG] Estilos inline encontrados:', inlineStyles.length);
+        
+        // Verificar estilos externos
+        const externalStyles = document.querySelectorAll('link[rel="stylesheet"]');
+        console.log('🔍 [WIZARD DEBUG] Estilos externos encontrados:', externalStyles.length);
+        
+        console.log('🔍 [WIZARD DEBUG] === FIN VERIFICACIÓN ===');
+      }
     }),
     components: {ModelSelect, MultiSelect, VueEditor, vueDropzone: vue2Dropzone, Loader},
   }
