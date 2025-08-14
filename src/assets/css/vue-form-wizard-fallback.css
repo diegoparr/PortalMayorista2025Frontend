@@ -1,0 +1,507 @@
+/* 
+ * Archivo CSS de respaldo para vue-form-wizard
+ * Este archivo asegura que los estilos se carguen correctamente en producción
+ * Incluir este archivo en el HTML principal como respaldo
+ */
+
+/* Estilos del wizard principal */
+.vue-form-wizard {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Header del wizard */
+.vue-form-wizard .wizard-header {
+  text-align: center !important;
+  padding: 30px 20px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+}
+
+.vue-form-wizard .wizard-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 15px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.vue-form-wizard .wizard-subtitle {
+  font-size: 18px !important;
+  color: #6c757d !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+/* Navegación del wizard */
+.vue-form-wizard .wizard-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 30px 20px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  position: relative !important;
+}
+
+.vue-form-wizard .wizard-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 25px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.vue-form-wizard .wizard-nav-item .wizard-nav-link {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ecf0f1 !important;
+  color: #95a5a6 !important;
+  font-size: 24px !important;
+  text-decoration: none !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 4px solid transparent !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.vue-form-wizard .wizard-nav-item.active .wizard-nav-link {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border-color: #d35400 !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
+}
+
+.vue-form-wizard .wizard-nav-item.completed .wizard-nav-link {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+  border-color: #229954 !important;
+  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
+}
+
+.vue-form-wizard .wizard-nav-item .wizard-nav-text {
+  margin-top: 15px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-align: center !important;
+  max-width: 140px !important;
+  line-height: 1.3 !important;
+}
+
+.vue-form-wizard .wizard-nav-item.active .wizard-nav-text {
+  color: #fe7501 !important;
+  font-weight: 700 !important;
+  transform: scale(1.05) !important;
+}
+
+.vue-form-wizard .wizard-nav-item.completed .wizard-nav-text {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
+}
+
+/* Líneas conectoras entre pasos */
+.vue-form-wizard .wizard-nav-item:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 35px !important;
+  left: 60px !important;
+  width: 50px !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, #ecf0f1 0%, #d5dbdb 100%) !important;
+  z-index: 1 !important;
+  border-radius: 2px !important;
+}
+
+.vue-form-wizard .wizard-nav-item.completed:not(:last-child)::after {
+  background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%) !important;
+  box-shadow: 0 1px 4px rgba(39, 174, 96, 0.3) !important;
+}
+
+/* Contenido del wizard */
+.vue-form-wizard .wizard-content {
+  padding: 40px 30px !important;
+  background: #ffffff !important;
+  min-height: 350px !important;
+}
+
+/* Footer del wizard */
+.vue-form-wizard .wizard-card-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 25px 30px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid #e1e8ed !important;
+}
+
+.vue-form-wizard .wizard-btn {
+  padding: 14px 28px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.vue-form-wizard .wizard-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.vue-form-wizard .wizard-btn:not(:disabled):hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+.vue-form-wizard .wizard-btn-prev {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-prev:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%) !important;
+}
+
+.vue-form-wizard .wizard-btn-next {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-next:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+}
+
+.vue-form-wizard .wizard-btn-finish {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-finish:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2ecc71 0%, #229954 100%) !important;
+}
+
+/* Iconos del wizard */
+.wizard-icon {
+  font-size: 18px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.vue-form-wizard .wizard-btn:hover .wizard-icon {
+  transform: scale(1.1) !important;
+}
+
+/* Estilos específicos para los pasos */
+.tab-content {
+  padding: 25px 0 !important;
+}
+
+.tab-content .breadcrumb {
+  background: transparent !important;
+  padding: 0 !important;
+  margin-bottom: 25px !important;
+  border: none !important;
+}
+
+.tab-content .breadcrumb li {
+  font-size: 14px !important;
+}
+
+.tab-content .breadcrumb li a {
+  color: #fe7501 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.tab-content .breadcrumb li a:hover {
+  color: #e67e22 !important;
+  text-decoration: underline !important;
+  transform: translateX(2px) !important;
+}
+
+/* Estilos para las cajas de productos */
+.shadow-box-products {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.shadow-box-products:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Estilos para los botones de Vuetify */
+.v-btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.v-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+.v-btn--info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+  border-color: #138496 !important;
+}
+
+.v-btn--primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  border-color: #0056b3 !important;
+}
+
+.v-btn--success {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+  border-color: #1e7e34 !important;
+}
+
+.v-btn--warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%) !important;
+  border-color: #e0a800 !important;
+  color: #212529 !important;
+}
+
+.v-btn--error {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+  border-color: #c82333 !important;
+}
+
+/* Estilos para el loader */
+.loader {
+  text-align: center !important;
+  padding: 50px !important;
+  color: #6c757d !important;
+}
+
+/* Estilos para los formularios */
+.form-group {
+  margin-bottom: 25px !important;
+}
+
+.form-control {
+  border-radius: 8px !important;
+  border: 2px solid #e1e8ed !important;
+  transition: all 0.3s ease !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+}
+
+.form-control:focus {
+  border-color: #fe7501 !important;
+  box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Estilos para la paginación */
+.pagination {
+  margin: 25px 0 !important;
+}
+
+.pagination li a {
+  color: #fe7501 !important;
+  border-color: #e1e8ed !important;
+  border-radius: 6px !important;
+  margin: 0 2px !important;
+  transition: all 0.3s ease !important;
+}
+
+.pagination li.active a {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  border-color: #e67e22 !important;
+  box-shadow: 0 2px 8px rgba(254, 117, 1, 0.3) !important;
+}
+
+.pagination li a:hover {
+  color: #e67e22 !important;
+  border-color: #e67e22 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Estilos para las imágenes de productos */
+.img-product {
+  height: 160px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.shadow-box-products:hover .img-product {
+  transform: scale(1.05) !important;
+}
+
+/* Estilos para las cajas de características */
+.box-hipertienda {
+  border-radius: 10px !important;
+  border: 1px solid #e1e8ed !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
+.box-hipertienda .box-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  padding: 20px !important;
+}
+
+.box-hipertienda .box-title {
+  margin: 0 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+}
+
+.box-hipertienda .box-body {
+  padding: 25px !important;
+}
+
+/* Estilos para los enlaces de categorías */
+.categories-links {
+  color: #fe7501 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+}
+
+.categories-links:hover {
+  color: #e67e22 !important;
+  background: rgba(254, 117, 1, 0.1) !important;
+  text-decoration: none !important;
+}
+
+/* Estilos para los mensajes de error */
+.help-block {
+  color: #dc3545 !important;
+  font-size: 13px !important;
+  margin-top: 8px !important;
+  font-weight: 500 !important;
+}
+
+.form-group.has-error .form-control {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+}
+
+/* Estilos para los botones de características */
+.btn-caracteristica {
+  margin: 6px !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-caracteristica:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* Estilos para el modal del wizard */
+.modal-content {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+  overflow: hidden !important;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  padding: 25px 30px !important;
+}
+
+.modal-title {
+  color: #2c3e50 !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+}
+
+.modal-footer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid #e1e8ed !important;
+  padding: 20px 30px !important;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .vue-form-wizard .wizard-nav {
+    flex-direction: column !important;
+    gap: 25px !important;
+    padding: 20px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item:not(:last-child)::after {
+    display: none !important;
+  }
+  
+  .vue-form-wizard .wizard-content {
+    padding: 25px 20px !important;
+  }
+  
+  .vue-form-wizard .wizard-card-footer {
+    flex-direction: column !important;
+    gap: 20px !important;
+    text-align: center !important;
+    padding: 20px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item {
+    margin: 0 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item .wizard-nav-link {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 20px !important;
+  }
+  
+  .vue-form-wizard .wizard-title {
+    font-size: 24px !important;
+  }
+  
+  .vue-form-wizard .wizard-subtitle {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .vue-form-wizard .wizard-header {
+    padding: 20px 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-content {
+    padding: 20px 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-nav-item .wizard-nav-text {
+    font-size: 12px !important;
+    max-width: 100px !important;
+  }
+}

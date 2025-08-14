@@ -11,7 +11,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import "plugins/vue-toastr";
 @import "loader";
-@import "../../node_modules/vue-form-wizard/dist/vue-form-wizard.min.css";
+// @import "../../node_modules/vue-form-wizard/dist/vue-form-wizard.min.css"; // Comentado para usar estilos locales
+@import "vue-form-wizard";
 @import "comentarios";
 @import "modulo-tienda";
 @import "cabezera-vistas";
