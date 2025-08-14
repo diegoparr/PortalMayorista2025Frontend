@@ -1096,28 +1096,53 @@
         return this.valor_caracteristica !== null;
       },
       mostrarMultiple() {
-        console.log('this.v_tipo.value')
-        return this.v_tipo.value === 'multiple';
+        return this.v_tipo && this.v_tipo.value === 'multiple';
       },
     }),
     components: {ModelSelect, MultiSelect, VueEditor, vueDropzone: vue2Dropzone, Loader},
   }
 </script>
 
-<style scoped>
+<style>
 /* Estilos específicos para el form-wizard para asegurar que se carguen en producción */
 
 /* Estilos del wizard principal */
 .vue-form-wizard {
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  margin: 20px !important;
+  padding: 0 !important;
 }
 
 /* Header del wizard */
 .vue-form-wizard .wizard-header {
-  text-align: center;
-  padding: 20px 0;
-  background: #f8f9fa;
-  border-radius: 8px 8px 0 0;
+  text-align: center !important;
+  padding: 30px 20px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+/* Estilos para el título del wizard */
+.wizard-title,
+.vue-form-wizard .wizard-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 15px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Estilos para el subtítulo del wizard */
+.wizard-subtitle,
+.vue-form-wizard .wizard-subtitle {
+  font-size: 18px !important;
+  color: #6c757d !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
 }
 
 .vue-form-wizard .wizard-title {
@@ -1261,8 +1286,34 @@
 }
 
 .vue-form-wizard .wizard-btn-next {
-  background: #fe7501;
-  color: #ffffff;
+  background: #fe7501 !important;
+  color: #ffffff !important;
+}
+
+/* Estilos específicos para el botón Siguiente */
+.wizard-btn-next,
+.wizard-btn {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wizard-btn-next:hover,
+.wizard-btn:hover {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
 }
 
 .vue-form-wizard .wizard-btn-next:hover:not(:disabled) {
@@ -1285,7 +1336,69 @@
 
 /* Estilos específicos para los pasos */
 .tab-content {
-  padding: 20px 0;
+  padding: 20px 0 !important;
+}
+
+/* Estilos para los pasos del wizard */
+.wizard-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 25px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wizard-nav-item .wizard-nav-link {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ecf0f1 !important;
+  color: #95a5a6 !important;
+  font-size: 24px !important;
+  text-decoration: none !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 4px solid transparent !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wizard-nav-item.active .wizard-nav-link {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border-color: #d35400 !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-link {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+  border-color: #229954 !important;
+  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
+}
+
+.wizard-nav-item .wizard-nav-text {
+  margin-top: 15px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-align: center !important;
+  max-width: 140px !important;
+  line-height: 1.3 !important;
+}
+
+.wizard-nav-item.active .wizard-nav-text {
+  color: #fe7501 !important;
+  font-weight: 700 !important;
+  transform: scale(1.05) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-text {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
 }
 
 .tab-content .breadcrumb {
@@ -1369,8 +1482,31 @@
 }
 
 .form-control:focus {
-  border-color: #fe7501;
-  box-shadow: 0 0 0 3px rgba(254, 117, 1, 0.1);
+  border-color: #fe7501 !important;
+  box-shadow: 0 0 0 3px rgba(254, 117, 1, 0.1) !important;
+}
+
+/* Estilos para campos de entrada del wizard */
+.wizard-content input,
+.wizard-content .form-control,
+.tab-content input,
+.tab-content .form-control {
+  border-radius: 8px !important;
+  border: 2px solid #e1e8ed !important;
+  transition: all 0.3s ease !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  background: #ffffff !important;
+}
+
+.wizard-content input:focus,
+.wizard-content .form-control:focus,
+.tab-content input:focus,
+.tab-content .form-control:focus {
+  border-color: #fe7501 !important;
+  box-shadow: 0 0 0 4px rgba(254, 117, 1, 0.15) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* Estilos para la paginación */
@@ -1458,9 +1594,41 @@
 
 /* Estilos para el modal del wizard */
 .modal-content {
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+  overflow: hidden !important;
+}
+
+/* Estilos específicos para el modal del wizard */
+#modal .modal-content {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+  overflow: hidden !important;
+}
+
+#modal .modal-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  padding: 25px 30px !important;
+}
+
+#modal .modal-title {
+  color: #2c3e50 !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+}
+
+#modal .modal-body {
+  padding: 0 !important;
+  background: #ffffff !important;
+}
+
+#modal .modal-footer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid #e1e8ed !important;
+  padding: 20px 30px !important;
 }
 
 .modal-header {
@@ -1478,6 +1646,23 @@
   background: #f8f9fa;
   border-top: 1px solid #e1e8ed;
   border-radius: 0 0 8px 8px;
+}
+
+/* Estilos de respaldo para asegurar que se apliquen */
+form-wizard {
+  display: block !important;
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  margin: 20px !important;
+  padding: 0 !important;
+}
+
+tab-content {
+  display: block !important;
+  padding: 25px !important;
+  background: #ffffff !important;
 }
 
 /* Estilos responsivos */
