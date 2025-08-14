@@ -1104,10 +1104,12 @@
 </script>
 
 <style>
-/* Estilos específicos para el form-wizard para asegurar que se carguen en producción */
+/* ESTILOS CRÍTICOS DEL WIZARD - VERSIÓN PRODUCCIÓN */
+/* Estos estilos se aplican directamente y tienen prioridad máxima */
 
-/* Estilos del wizard principal */
-.vue-form-wizard {
+/* ESTILOS DEL WIZARD PRINCIPAL - PRODUCCIÓN */
+.vue-form-wizard,
+form-wizard {
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   background: #ffffff !important;
   border-radius: 8px !important;
@@ -1115,6 +1117,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
   margin: 20px !important;
   padding: 0 !important;
+  display: block !important;
 }
 
 /* Header del wizard */
@@ -1145,17 +1148,68 @@
   line-height: 1.5 !important;
 }
 
-.vue-form-wizard .wizard-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 10px;
+/* CONTENIDO DEL WIZARD */
+.wizard-content,
+.vue-form-wizard .wizard-content {
+  padding: 40px 30px !important;
+  background: #ffffff !important;
+  min-height: 350px !important;
 }
 
-.vue-form-wizard .wizard-subtitle {
-  font-size: 16px;
-  color: #7f8c8d;
-  font-weight: 400;
+/* FOOTER DEL WIZARD */
+.wizard-card-footer,
+.vue-form-wizard .wizard-card-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 25px 30px !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid #e1e8ed !important;
+}
+
+/* BOTONES DEL WIZARD - CRÍTICOS */
+.wizard-btn,
+.vue-form-wizard .wizard-btn,
+.wizard-btn-next,
+.wizard-btn-prev,
+.wizard-btn-finish {
+  padding: 14px 28px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wizard-btn-next,
+.wizard-btn {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+}
+
+.wizard-btn-next:hover,
+.wizard-btn:hover {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+.wizard-btn-prev {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
+  color: #ffffff !important;
+}
+
+.wizard-btn-finish {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
 }
 
 /* Navegación del wizard */
@@ -1665,13 +1719,113 @@ tab-content {
   background: #ffffff !important;
 }
 
-/* ESTILOS CRÍTICOS DEL WIZARD - Se aplican directamente */
-.wizard-header {
+/* ESTILOS CRÍTICOS DEL WIZARD - PRODUCCIÓN */
+/* HEADER DEL WIZARD */
+.wizard-header,
+.vue-form-wizard .wizard-header {
   text-align: center !important;
   padding: 30px 20px !important;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
   border-bottom: 1px solid #e1e8ed !important;
   border-radius: 8px 8px 0 0 !important;
+}
+
+/* TÍTULO Y SUBTÍTULO */
+.wizard-title,
+.vue-form-wizard .wizard-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 15px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wizard-subtitle,
+.vue-form-wizard .wizard-subtitle {
+  font-size: 18px !important;
+  color: #6c757d !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+/* NAVEGACIÓN DEL WIZARD */
+.wizard-nav,
+.vue-form-wizard .wizard-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 30px 20px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  position: relative !important;
+}
+
+.wizard-nav-item,
+.vue-form-wizard .wizard-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 25px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wizard-nav-item .wizard-nav-link,
+.vue-form-wizard .wizard-nav-item .wizard-nav-link {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ecf0f1 !important;
+  color: #95a5a6 !important;
+  font-size: 24px !important;
+  text-decoration: none !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 4px solid transparent !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wizard-nav-item.active .wizard-nav-link,
+.vue-form-wizard .wizard-nav-item.active .wizard-nav-link {
+  background: linear-gradient(135deg, #fe7501 0%, #e67e22 100%) !important;
+  color: #ffffff !important;
+  border-color: #d35400 !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 4px 20px rgba(254, 117, 1, 0.4) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-link,
+.vue-form-wizard .wizard-nav-item.completed .wizard-nav-link {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+  border-color: #229954 !important;
+  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4) !important;
+}
+
+.wizard-nav-item .wizard-nav-text,
+.vue-form-wizard .wizard-nav-item .wizard-nav-text {
+  margin-top: 15px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-align: center !important;
+  max-width: 140px !important;
+  line-height: 1.3 !important;
+}
+
+.wizard-nav-item.active .wizard-nav-text,
+.vue-form-wizard .wizard-nav-item.active .wizard-nav-text {
+  color: #fe7501 !important;
+  font-weight: 700 !important;
+  transform: scale(1.05) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-text,
+.vue-form-wizard .wizard-nav-item.completed .wizard-nav-text {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
 }
 
 .wizard-title {
