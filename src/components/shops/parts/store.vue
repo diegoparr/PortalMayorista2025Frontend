@@ -1,19 +1,6 @@
 <template>
   <form v-on:submit.prevent="registrar" class="modern-form">
-    <!-- Mensaje informativo sobre validaciones -->
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="alert alert-info modern-alert">
-          <i class="fa fa-info-circle"></i>
-          <strong>Importante:</strong> Completa todos los campos marcados con <span class="text-danger">*</span> antes de registrar la tienda. 
-          Los errores se mostrarán en tiempo real y el formulario no se enviará hasta que estén corregidos.
-          <br><br>
-          <strong>📸 Imágenes:</strong> Tamaño máximo 2MB por archivo. Las imágenes se comprimirán automáticamente para optimizar el envío.
-          <br>
-          <small><i class="fa fa-lightbulb-o"></i> <strong>Tip:</strong> Para mejores resultados, usa imágenes de alta calidad que se comprimirán automáticamente.</small>
-        </div>
-      </div>
-    </div>
+
     <div class="row">
       <div class="col-xs-12 col-md-4">
         <div :class="(!errors.first('v_pais'))?'form-group modern-form-group':'form-group modern-form-group has-error'">
@@ -548,9 +535,6 @@
     <div class="row">
       <div class="col-xs-12" align="center" style="margin: 10px 0 0 0">
         <div class="form-group">
-          <v-btn color="warning" type="button" @click="limpiarErrores" class="btn-margin-right">
-            <i class="fa fa-refresh pull-left"></i> Limpiar Errores
-          </v-btn>
           <v-btn color="primary" type="submit" id="submitButton" :disabled="deshabilitar"
                   data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Comprimiendo y registrando...">
             <i class="fa fa-user pull-left"></i> Registrar
@@ -655,6 +639,7 @@
         tipo_documentos: [],
         usuarios_asesores: [],
         usuarios_clientes: [],
+        tieneErroresDeValidacion: false,
       }
     },
     computed: Object.assign({}, mapGetters([
@@ -688,7 +673,32 @@
     mounted() {
       let yo = this;
       $('#modal').on('hidden.bs.modal', function (e) {
-        yo.$emit('modal_close');
+        // Solo cerrar el modal si no hay errores de validación
+        if (!yo.tieneErroresDeValidacion) {
+          yo.$emit('modal_close');
+        } else {
+          // Prevenir que se cierre el modal si hay errores
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      });
+      
+      // Prevenir cierre del modal con ESC o clic fuera si hay errores
+      $('#modal').on('keydown.dismiss.bs.modal', function (e) {
+        if (e.keyCode === 27 && yo.tieneErroresDeValidacion) { // ESC key
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      });
+      
+      $('#modal').on('click.dismiss.bs.modal', function (e) {
+        if (yo.tieneErroresDeValidacion) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
       });
     },
     created() {
@@ -997,11 +1007,15 @@
           }, errors => {
             // NO cerrar el modal cuando hay errores del servidor
             boton_registrar.button('reset');
-            this.mapErrorsResponses(this, errors);
+            
+            // Marcar que hay errores de validación ANTES de procesar la respuesta
+            this.marcarModalConErrores();
+            
+            // Procesar errores sin cerrar el modal
+            this.procesarErroresServidor(errors);
+            
             // Mostrar mensaje específico para mantener el modal abierto
             this.$toastr('error', 'Por favor, corrige los errores indicados y vuelve a intentar', 'Errores de validación');
-            // Marcar el modal como que tiene errores de validación
-            this.marcarModalConErrores();
           });
           
         } catch (error) {
@@ -1123,8 +1137,30 @@
         
         return totalSize;
       },
+      // Método para procesar errores del servidor sin cerrar el modal
+      procesarErroresServidor(errors) {
+        console.log('Procesando errores del servidor:', errors);
+        
+        if (errors.status === 422) {
+          // Errores de validación del servidor
+          for (let err in errors.body.errors) {
+            errors.body.errors[err].forEach(function (value) {
+              this.$toastr('error', value, 'Error de validación');
+            }.bind(this));
+          }
+        } else if (errors.status === 401) {
+          this.$toastr('error', "Las credenciales ingresadas no son correctas. Verifica y vuelve a intentarlo.", "Credenciales Inválidas");
+        } else if (errors.status === 413) {
+          this.$toastr('error', "Los archivos son demasiado grandes. Se comprimirán automáticamente en el próximo intento.", "Archivos muy grandes");
+        } else {
+          let message = errors.body.mensaje || errors.body.message || "Error desconocido del servidor";
+          this.$toastr('error', message, "Error del servidor");
+        }
+      },
+
       // Método para marcar el modal cuando hay errores de validación
       marcarModalConErrores() {
+        this.tieneErroresDeValidacion = true;
         const modalElement = document.getElementById('modal');
         if (modalElement) {
           modalElement.classList.add('has-validation-errors');
@@ -1132,6 +1168,7 @@
       },
       // Método para limpiar la marca de errores cuando se corrigen
       limpiarMarcaErrores() {
+        this.tieneErroresDeValidacion = false;
         const modalElement = document.getElementById('modal');
         if (modalElement) {
           modalElement.classList.remove('has-validation-errors');
@@ -1503,35 +1540,52 @@
   transform: translateY(-1px);
 }
 
-/* Estilos para el mensaje informativo */
-.modern-alert {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  border: 1px solid #2196f3;
-  border-radius: 8px;
-  padding: 15px 20px;
-  margin-bottom: 25px;
-  color: #1565c0;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
-}
 
-.modern-alert i {
-  margin-right: 8px;
-  font-size: 16px;
-}
 
-.modern-alert strong {
-  font-weight: 600;
-}
 
-/* Estilos para los botones */
-.btn-margin-right {
-  margin-right: 15px;
-}
 
 /* Estilos para las imágenes */
 .container-imgs {
   margin-bottom: 20px;
+}
+
+/* Estilos para cuando hay errores de validación */
+.modal.has-validation-errors {
+  background-color: rgba(231, 76, 60, 0.05);
+}
+
+.modal.has-validation-errors .modal-content {
+  border: 2px solid #e74c3c;
+  box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
+}
+
+.modal.has-validation-errors .modal-header {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+}
+
+.modal.has-validation-errors .modal-header .close {
+  color: white;
+  opacity: 0.8;
+}
+
+.modal.has-validation-errors .modal-header .close:hover {
+  opacity: 1;
+}
+
+/* Indicador visual de errores */
+.modal.has-validation-errors::before {
+  content: "⚠️ Errores de validación detectados";
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #e74c3c;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
 }
 
 .img-previsualizar {
