@@ -151,9 +151,10 @@ export default {
       showCancelButton: true,
       confirmButtonText: 'Si, eliminalo!',
       cancelButtonText: 'No, cancelalo!',
-      confirmButtonClass: 'btn btn-success btn-flat btn-sweet',
-      cancelButtonClass: 'btn btn-danger btn-flat btn-sweet',
-      buttonsStyling: false
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      buttonsStyling: true,
+      reverseButtons: true
     });
   }
 }

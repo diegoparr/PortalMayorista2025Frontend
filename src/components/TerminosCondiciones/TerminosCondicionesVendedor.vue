@@ -64,16 +64,45 @@
            posse pertinacia no, ex dolor contentiones mea. Nec omnium utamur dignissim ne. Mundi lucilius salutandi
            an sea, ne sea aeque iudico comprehensam. Populo delicatissimi ad pri. Ex vitae accusam vivendum pro.
          </p>-->
-        <template>
-          <!--<pdf src="http://api-ecommerce.test/example.pdf"></pdf>-->
-          <pdf
-            v-for="i in numPages"
-            :key="i"
-            :src="src"
-            :page="i"
-            style="display: inline-block; width: 100%"
-          ></pdf>
-        </template>
+        <div class="modal-body">
+          <div v-if="loading" class="text-center">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+            <p>Cargando términos y condiciones...</p>
+          </div>
+          
+          <div v-else-if="error" class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle"></i>
+            No se pudo cargar el documento. Por favor, contacta al administrador.
+          </div>
+          
+          <div v-else class="terminos-content">
+            <h4>Términos y Condiciones de Uso</h4>
+            
+            <h5>1. Aceptación de los Términos</h5>
+            <p>Al acceder y utilizar esta plataforma, usted acepta estar sujeto a estos términos y condiciones de uso.</p>
+            
+            <h5>2. Uso de la Plataforma</h5>
+            <p>La plataforma está destinada para la compra y venta de productos. Los usuarios deben utilizar la plataforma de manera responsable y conforme a la ley.</p>
+            
+            <h5>3. Cuentas de Usuario</h5>
+            <p>Los usuarios son responsables de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades que ocurran bajo su cuenta.</p>
+            
+            <h5>4. Productos y Servicios</h5>
+            <p>Los vendedores son responsables de la veracidad de la información de sus productos y del cumplimiento de las leyes aplicables.</p>
+            
+            <h5>5. Pagos y Transacciones</h5>
+            <p>Las transacciones se procesan de manera segura. La plataforma no se hace responsable por disputas entre compradores y vendedores.</p>
+            
+            <h5>6. Privacidad</h5>
+            <p>Respetamos su privacidad y protegemos sus datos personales de acuerdo con nuestra política de privacidad.</p>
+            
+            <h5>7. Modificaciones</h5>
+            <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios serán notificados a los usuarios.</p>
+            
+            <h5>8. Contacto</h5>
+            <p>Para preguntas sobre estos términos, contacte a: soporte@lahipertienda.com</p>
+          </div>
+        </div>
 
         <div class="modal-footer">
           <v-btn type="button" color="error" data-dismiss="modal"
@@ -96,8 +125,9 @@
       return {
         src: null,
         numPages: 0,
-        loading: true,
-        error: false
+        loading: false,
+        error: false,
+        showHtmlContent: false
       }
     },
     components: {
@@ -105,20 +135,14 @@
     },
     name: "terminos-condiciones",
     mounted() {
-      // Crear el loading task dentro del mounted para evitar problemas
-      const loadingTask = pdf.createLoadingTask('https://cdn.mozilla.net/pdfjs/tracemonkey.pdf');
+      // Usar un PDF de ejemplo válido o mostrar contenido HTML
+      this.loading = false;
+      this.error = false;
+      this.src = null;
+      this.numPages = 0;
       
-      loadingTask.promise.then(pdf => {
-        this.numPages = pdf.numPages;
-        this.src = loadingTask;
-        this.loading = false;
-      }).catch(error => {
-        console.error('Error cargando PDF:', error);
-        this.error = true;
-        this.loading = false;
-        // Usar una URL alternativa o mostrar un mensaje de error
-        this.src = null;
-      });
+      // Mostrar términos y condiciones en HTML en lugar de PDF
+      this.showHtmlContent = true;
     },
     methods: Object.assign({}, mapMutations([
       'setUsuarioDestroy'
@@ -148,3 +172,60 @@
     })
   }
 </script>
+
+<style scoped>
+.terminos-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.terminos-content h4 {
+  color: #ff6633;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #ff6633;
+  padding-bottom: 10px;
+}
+
+.terminos-content h5 {
+  color: #333;
+  font-weight: 600;
+  margin: 20px 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.terminos-content p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.alert {
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeaa7;
+}
+
+.text-center {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.fa-spinner {
+  color: #ff6633;
+  margin-bottom: 15px;
+}
+</style>

@@ -280,10 +280,10 @@
                 </div>
                 
                 <v-btn large color="orange" class="add-to-cart-btn" 
-                       :disabled="variacionSeleccionada === null && nombres.length > 0"
+                       :disabled="!puedeAgregarAlCarrito"
                        v-on:click="agregar(producto,1)">
                   <v-icon>add_shopping_cart</v-icon>
-                  &nbsp;Añadir al carrito
+                  &nbsp;{{ textoBotonCarrito }}
                 </v-btn>
               </v-card>
             </v-flex>
@@ -463,12 +463,26 @@
 
         },
         onSelect(item, valor, key) {
+          console.log('=== DEBUG ON SELECT ===');
+          console.log('item:', item);
+          console.log('valor:', valor);
+          console.log('key:', key);
+          
           this.items[item] = valor;
           this.arreglo[key] = item;
+          
+          console.log('items actualizados:', this.items);
+          console.log('arreglo actualizado:', this.arreglo);
+          console.log('nombres.length:', this.nombres.length);
+          console.log('arreglo.length:', this.arreglo.length);
 
           if (this.arreglo.length === this.nombres.length) {
+            console.log('Todas las características seleccionadas, buscando inventario...');
             this.buscarInventario();
+          } else {
+            console.log('Faltan características por seleccionar');
           }
+          console.log('=== FIN DEBUG ON SELECT ===');
         },
         variacionesVerificar(variacionesPr) {
           return Object.keys(variacionesPr).length !== 0;
@@ -481,24 +495,64 @@
           this.idVariacion = null;
           this.variacionSeleccionada = null;
           let yo = this;
+          
+          // Debug: Mostrar información de depuración
+          console.log('=== DEBUG BUSCAR INVENTARIO ===');
+          console.log('items seleccionados:', this.items);
+          console.log('arreglo:', this.arreglo);
+          console.log('nombres:', this.nombres);
+          console.log('variaciones disponibles:', this.variaciones);
+          console.log('variaciones length:', this.variaciones ? this.variaciones.length : 'undefined');
+          console.log('variaciones tipo:', typeof this.variaciones);
+          console.log('variaciones keys:', this.variaciones ? Object.keys(this.variaciones) : 'undefined');
+          
+          // Verificar si hay variaciones disponibles
+          if (!this.variaciones || this.variaciones.length === 0) {
+            console.log('⚠️ No hay variaciones disponibles para este producto');
+            console.log('Esto puede significar que:');
+            console.log('1. El producto no tiene variaciones configuradas en el backend');
+            console.log('2. Las variaciones no se están cargando correctamente');
+            console.log('3. El producto no tiene características múltiples con variaciones');
+            return;
+          }
+          
           this.variaciones.every(function (variacion) {
             let counter = 0;
+            let totalCaracteristicas = yo.arreglo.length;
+            
+            console.log('Verificando variación:', variacion);
+            console.log('Valores de la variación:', variacion.valores);
+            
             variacion.valores.every(function (value, key) {
-              if (value.v_valor === yo.items[yo.arreglo[key]])
+              let caracteristicaNombre = yo.arreglo[key];
+              let valorSeleccionado = yo.items[caracteristicaNombre];
+              
+              console.log(`Comparando: ${value.v_valor} === ${valorSeleccionado} (${caracteristicaNombre})`);
+              
+              if (value.v_valor === valorSeleccionado) {
                 counter++;
-              if (counter === yo.arreglo.length) {
+                console.log(`Match encontrado! Counter: ${counter}/${totalCaracteristicas}`);
+              }
+              
+              if (counter === totalCaracteristicas) {
                 yo.idVariacion = value.id_m_variacion_productos_fk;
+                console.log('Variación encontrada! ID:', yo.idVariacion);
                 return false;
               }
               else return true
             });
+            
             if (yo.idVariacion !== null && variacion.id_m_variacion_productos === yo.idVariacion) {
               yo.variacionSeleccionada = variacion;
+              console.log('Variación seleccionada:', yo.variacionSeleccionada);
               return false
             }
             else
               return true
           })
+          
+          console.log('Resultado final - variacionSeleccionada:', this.variacionSeleccionada);
+          console.log('=== FIN DEBUG ===');
         },
         agregar(item, cantidad) {
           if (this.variacionSeleccionada !== null) {
@@ -564,6 +618,14 @@
               this.caracteristicasUnicas = [];
               this.caracteristicas = response.body.producto.caracteristicas;
               this.variaciones = response.body.variaciones;
+              
+              // Debug: Verificar variaciones
+              console.log('=== DEBUG CARGA DE VARIACIONES ===');
+              console.log('Response body:', response.body);
+              console.log('Variaciones del response:', response.body.variaciones);
+              console.log('Variaciones asignadas:', this.variaciones);
+              console.log('Tipo de variaciones:', typeof this.variaciones);
+              console.log('=== FIN DEBUG CARGA ===');
               this.caracteristicas.forEach(item => {
                 if (item.v_tipo === 'multiple')
                   this.caracteristicasMultiples.push(item);
@@ -620,6 +682,14 @@
                 this.productos_relacionados = response.body.productos_relacionados;
                 this.caracteristicas = response.body.producto.caracteristicas;
                 this.variaciones = response.body.variaciones;
+                
+                // Debug: Verificar variaciones (no autenticado)
+                console.log('=== DEBUG CARGA DE VARIACIONES (NO AUTENTICADO) ===');
+                console.log('Response body:', response.body);
+                console.log('Variaciones del response:', response.body.variaciones);
+                console.log('Variaciones asignadas:', this.variaciones);
+                console.log('Tipo de variaciones:', typeof this.variaciones);
+                console.log('=== FIN DEBUG CARGA (NO AUTENTICADO) ===');
                 this.caracteristicasMultiples = [];
                 this.caracteristicasUnicas = [];
                 this.caracteristicas.forEach(item => {
@@ -827,7 +897,41 @@
 
     computed: Object.assign({}, mapGetters([
       'getUsuario', 'Seguir', 'cartProducts'
-    ]), {}),
+    ]), {
+      puedeAgregarAlCarrito() {
+        // Si no hay características múltiples, siempre se puede agregar
+        if (this.nombres.length === 0) {
+          return true;
+        }
+        
+        // Si hay características múltiples pero no hay variaciones en el backend,
+        // permitir agregar al carrito (producto simple con características de display)
+        if (!this.variaciones || this.variaciones.length === 0) {
+          console.log('⚠️ Producto con características múltiples pero sin variaciones - permitiendo agregar al carrito');
+          return true;
+        }
+        
+        // Si hay características múltiples y variaciones, debe haber una variación seleccionada
+        return this.variacionSeleccionada !== null;
+      },
+      
+      textoBotonCarrito() {
+        if (this.nombres.length === 0) {
+          return 'Añadir al carrito';
+        }
+        
+        // Si hay características pero no hay variaciones, permitir agregar
+        if (!this.variaciones || this.variaciones.length === 0) {
+          return 'Añadir al carrito';
+        }
+        
+        if (this.variacionSeleccionada === null) {
+          return 'Selecciona las opciones';
+        }
+        
+        return 'Añadir al carrito';
+      }
+    }),
 
     destroyed() {
       let yo = this;

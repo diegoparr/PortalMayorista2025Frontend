@@ -23,6 +23,7 @@ import messagesES from "vee-validate/dist/locale/es";
 import {store} from "./store/store";
 import helpers from './helpers';
 import VueSweetAlert from 'vue-sweetalert';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import VueFormWizard from 'vue-form-wizard';
 import SocialSharing from 'vue-social-sharing';
 import Tabs from 'vue-tabs-component';

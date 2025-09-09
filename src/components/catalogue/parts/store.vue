@@ -1,345 +1,349 @@
 <template>
-  <form-wizard title="Bienvenido al asistente de creación de plantillas"
-               color="#fe7501" v-on:on-change="cambioWizard"
-               nextButtonText="Siguiente" backButtonText="Atrás" finishButtonText="Registrar"
-               subtitle="Completa cada paso para finalizar el proceso" :startIndex="0">
+  <div class="catalogue-store-modal">
+    <!-- Header del Modal -->
+    <div class="modal-header-custom">
+      <div class="header-content">
+        <div class="header-icon">
+          <i class="fa fa-plus-circle"></i>
+        </div>
+        <div class="header-text">
+          <h2 class="modal-title">Crear Nueva Plantilla</h2>
+          <p class="modal-subtitle">Asistente paso a paso para crear plantillas de catálogo</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wizard Content -->
+    <div class="wizard-container">
+      <form-wizard title=""
+                   color="#ff6633" 
+                   v-on:on-change="cambioWizard"
+                   nextButtonText="Siguiente" 
+                   backButtonText="Atrás" 
+                   finishButtonText="Registrar Plantilla"
+                   subtitle="" 
+                   :startIndex="0">
     <tab-content title="Selecciona la categoría" icon="fa fa-shopping-bag">
-      <div class="row">
-        <div class="col-xs-12">
+      <div class="wizard-step-content">
+        <div class="step-header">
+          <h3 class="step-title">
+            <i class="fa fa-shopping-bag"></i>
+            Selección de Categoría
+          </h3>
+          <p class="step-description">Elige la categoría principal para tu plantilla de catálogo</p>
+        </div>
+        
+        <div class="breadcrumb-container">
           <ol class="breadcrumb">
-            <li v-for="(categoriaSeleccionada,i) in categoriasSeleccionadas">
-              <a v-on:click="cambiar(i)" class="categories-links">{{categoriaSeleccionada.texto}}</a>
+            <li v-for="(categoriaSeleccionada,i) in categoriasSeleccionadas" :key="i">
+              <a v-on:click="cambiar(i)" class="breadcrumb-link">{{categoriaSeleccionada.texto}}</a>
             </li>
           </ol>
         </div>
-        <div class="col-xs-12 col-md-7">
-          <loader v-if="cargandoData"></loader>
-          <model-select v-else-if="hayCategorias" :options="categorias" id="v_ciudad" v-model="categoria"
-                        class="form-control" v-on:input="seleccionarCategoria"
-
-                        data-placement="left" title="Selecciona la tienda"
+        
+        <div class="form-section">
+          <div class="form-group-wrapper">
+            <div class="form-group">
+              <label for="v_ciudad">
+                <i class="fa fa-tags"></i>
+                Categoría
+              </label>
+              <loader v-if="cargandoData" class="loading-inline"></loader>
+              <model-select v-else-if="hayCategorias" 
+                           :options="categorias" 
+                           id="v_ciudad" 
+                           v-model="categoria"
+                           class="form-control modern-select" 
+                           v-on:input="seleccionarCategoria"
+                           data-placement="left" 
+                           title="Selecciona la categoría"
                         required>
           </model-select>
-          <h5 v-else class="text-center">No hay mas categorias</h5>
+              <div v-else class="empty-state">
+                <i class="fa fa-info-circle"></i>
+                <p>No hay más categorías disponibles</p>
         </div>
       </div>
+              </div>
+              </div>
+            </div>
     </tab-content>
     <tab-content title="Ingresa los datos de la plantilla" icon="fa fa-cubes">
-      <loader v-if="cargandoData"></loader>
-      <!--TODO: Cuando hay catalogo en la categoria-->
-     <!-- <template v-else-if="hayCatalogos && !cargandoData">
-        <loader v-if="cargandoDataCatalogo"></loader>
-        &lt;!&ndash;TODO: Mostrar todo en el catalogo de la categoria&ndash;&gt;
-        <div class="row" v-else-if="!seleccionoCatalogo">
-          <div class="col-xs-12 col-sm-3 col-md-3" v-for="catalogo in paginationCatalogos.data">
-            <div class="box box-hipertienda shadow-box-products">
-              <div class="box-header with-border">
-                <h3 class="box-title">{{catalogo.v_nombre}}</h3>
-              </div>
-              <div class="box-body">
-                <img :src="getImageUrl(catalogo.v_imagen_portada)" class="img-responsive img-product"
-                     v-on:click="seleccionarCatalogo(catalogo)" style="cursor: pointer;">
-              </div>
-            </div>
+      <div class="wizard-step-content">
+        <div class="step-header">
+          <h3 class="step-title">
+            <i class="fa fa-cubes"></i>
+            Datos de la Plantilla
+          </h3>
+          <p class="step-description">Completa la información básica de tu plantilla de catálogo</p>
           </div>
-        </div>
-        &lt;!&ndash;TODO: paginador del catalogo&ndash;&gt;
-        <div class="row" v-if="!seleccionoCatalogo">
-          <div class="col-xs-6 col-xs-offset-4 text-center">
-            <ul class="pagination pagination-sm no-margin pull-left">
-              <li v-if="paginationCatalogos.current_page > 1">
-                <a href="" aria-label="Anterior"
-                   @click.prevent="getDataCatalogo(paginationCatalogos.current_page - 1)">«</a>
-              </li>
-              <li v-for="pagina in pagesNumberCatalogo"
-                  :class="[ pagina == isActivedCatalogo ? 'active' : '']">
-                <a href="#"
-                   @click.prevent="getDataCatalogo(pagina)">{{ pagina }}</a>
-              </li>
-              <li v-if="paginationCatalogos.current_page < paginationCatalogos.last_page">
-                <a href="#" aria-label="Siguiente"
-                   @click.prevent="getDataCatalogo(paginationCatalogos.current_page + 1)">
-                  <span aria-hidden="true">»</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        &lt;!&ndash;TODO: Boton para crear un nuevo catalogo&ndash;&gt;
-        <div class="row" v-if="!seleccionoCatalogo">
-          <div class="col-xs-12 text-center">
-            <button class="btn btn-primary"
-                    @click.prevent="crearNuevoCatalogo">
-              <i class="wizard-icon fa fa-cubes"></i>
-              Registrar uno nuevo
-            </button>
-          </div>
-        </div>
-        &lt;!&ndash;TODO: Cuando selecciona el catalogo&ndash;&gt;
-        <div class="row" v-if="seleccionoCatalogo">
-          <div class="row">
-            <div class="col-xs-12 col-md-8">
-              <div :class="(!errors.first('v_nombre'))?'form-group':'form-group has-error'">
-                <label for="v_nombre">Nombre</label>
-                <template v-if="catalogoNuevo">
-                  <input placeholder="Nombre del Catalogo" name="v_nombre" type="text" class="form-control"
-                          data-placement="left" required id="c_v_nombre"
-                         title="Ingresa el nombre del catalogo que deseas registrar" data-vv-as="nombre del catalogo"
-                         v-model="catalogo.v_nombre" v-validate="'required|min:5|max:255'">
-                </template>
+        
+        <loader v-if="cargandoData" class="loading-full"></loader>
+        
                 <template v-else>
-                  <input placeholder="Nombre del Catalogo" name="v_nombre" type="text" class="form-control"
-                          data-placement="left" required id="c_v_nombre"
-                         title="Ingresa el nombre del catalogo que deseas registrar" data-vv-as="nombre del catalogo"
-                         v-model="catalogo.v_nombre" v-validate="'required|min:5|max:255'">
-                </template>
-                <span v-show="errors.has('v_nombre')"
-                      class="help-block text-center">{{ errors.first('v_nombre')}}</span>
+          <div class="form-section">
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="v_nombre">
+                  <i class="fa fa-tag"></i>
+                  Nombre de la Plantilla
+                </label>
+                <input placeholder="Nombre de la Plantilla" 
+                       name="v_nombre" 
+                       type="text" 
+                       class="form-control modern-input"
+                       data-placement="left" 
+                       required 
+                       id="v_nombre"
+                       title="Ingresa el nombre de la plantilla que deseas registrar" 
+                       data-vv-as="nombre de la plantilla"
+                       v-model="catalogo.v_nombre" 
+                       v-validate="'required|min:5|max:255'">
+                <span v-show="errors.has('v_nombre')" class="error-message">
+                  <i class="fa fa-exclamation-triangle"></i>
+                  {{ errors.first('v_nombre')}}
+                </span>
               </div>
             </div>
-            <div class="col-xs-12 col-md-4">
-              <div :class="(!errors.first('v_codigo'))?'form-group':'form-group has-error'">
-                <label for="v_codigo">Código</label>
-                <input placeholder="Código" name="v_codigo" type="text" class="form-control"
-                        data-placement="left" required id="c_v_codigo"
-                       title="Código interno del catalogo" data-vv-as="código"
-                       v-model="catalogo.v_codigo" v-validate="'required|min:2|max:255|alpha_num'">
-                <span v-show="errors.has('v_codigo')"
-                      class="help-block text-center">{{ errors.first('v_codigo')}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 col-md-4">
-              <div :class="(!errors.first('n_precio'))?'form-group':'form-group has-error'">
-                <label for="c_n_precio">Precio</label>
-                <input placeholder="Precio del catalogo" name="n_precio" type="text" class="form-control"
-                        data-placement="left" required id="c_n_precio"
-                       title="Indica el precio actual de tu catalogo" data-vv-as="precio"
-                       v-model="catalogo.n_precio" v-validate="'required|min:1|max:999999999|decimal:2'">
-                <span v-show="errors.has('n_precio')"
-                      class="help-block text-center">{{ errors.first('n_precio')}}</span>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-              <div :class="(!errors.first('n_existencia'))?'form-group':'form-group has-error'">
-                <label for="c_n_existencia">Existencia</label>
-                <input placeholder="Existencia actual del catalogo" name="n_existencia" type="text"
-                       class="form-control" data-vv-as="existencia"
-                        data-placement="left" required id="c_n_existencia"
-                       title="Indica la cantidad de existencia disponible que posees sobre el catalogo"
-                       v-model="catalogo.n_existencia" v-validate="'required|min:1|max:999999999|numeric'">
-                <span v-show="errors.has('n_existencia')"
-                      class="help-block text-center">{{ errors.first('n_existencia')}}</span>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-              <div :class="(!errors.first('n_stock_min'))?'form-group':'form-group has-error'">
-                <label for="c_n_stock_min">Stock Mínimo</label>
-                <input placeholder="Código" name="n_stock_min" type="text" class="form-control"
-                        data-placement="left" required id="c_n_stock_min"
-                       title="Especifica la cantidad mínimo de existencia que debe existir de tu catalogo en la plataforma"
-                       data-vv-as="stock mínimo"
-                       v-model="catalogo.n_stock_min" v-validate="'required|min:1|max:999999999|numeric'">
-                <span v-show="errors.has('n_stock_min')"
-                      class="help-block text-center">{{ errors.first('n_stock_min')}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <label for="v_descripcion">Descripción</label>
-              <vue-editor v-model="catalogo.v_descripcion" :editorToolbar="customToolbar"
-                          placeholder="Descripción del Catalogo"></vue-editor>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 margin-top-dragdrop-container">
-              <label for="c_dropzone">Imagenes del Catalogo</label>
-              <vue-dropzone ref="myVueDropzone" id="c_dropzone" :options="dropzoneOptions"
-                            v-on:vdropzone-success="obtenerImagene"></vue-dropzone>
-            </div>
-          </div>
-        </div>
-      </template>-->
-      <!--TODO: Cuando no hay catalogo en la categoria-->
-      <template v-else>
-        <div class="row">
-          <div class="row" v-show="!hayCatalogos">
 
-          </div>
-          <div class="row">
-            <div class="col-xs-12 col-md-12">
-              <div :class="(!errors.first('v_nombre'))?'form-group':'form-group has-error'">
-                <label for="v_nombre">Nombre</label>
-                <input placeholder="Nombre de la Plantilla" name="v_nombre" type="text" class="form-control"
-                        data-placement="left" required id="v_nombre"
-                       title="Ingresa el nombre de la plantilla que deseas registrar" data-vv-as="nombre de la plantilla"
-                       v-model="catalogo.v_nombre" v-validate="'required|min:5|max:255'">
-                <span v-show="errors.has('v_nombre')"
-                      class="help-block text-center">{{ errors.first('v_nombre')}}</span>
-              </div>
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="v_descripcion">
+                  <i class="fa fa-file-text"></i>
+                  Descripción
+                </label>
+                <vue-editor ref="vueEditor"
+                           :key="editorKey"
+                           id="v_descripcion" 
+                           v-model="catalogo.v_descripcion" 
+                           :editorToolbar="customToolbar"
+                           placeholder="Descripción detallada de la plantilla..."
+                           :class="['modern-editor']"
+                           :editorOptions="editorOptions"
+                           @ready="onEditorReady">
+                </vue-editor>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xs-12">
-              <label for="v_descripcion">Descripción</label>
-              <vue-editor id="v_descripcion" v-model="catalogo.v_descripcion" :editorToolbar="customToolbar"
-                          placeholder="Descripción de la Plantilla"></vue-editor>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 margin-top-dragdrop-container">
-              <label for="v_descripcion">Imagenes de la Plantilla</label>
-              <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"
-                            v-on:vdropzone-success="obtenerImagene"></vue-dropzone>
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="dropzone">
+                  <i class="fa fa-images"></i>
+                  Imágenes de la Plantilla
+                </label>
+                <vue-dropzone ref="myVueDropzone" 
+                             id="dropzone" 
+                             :options="dropzoneOptions"
+                             v-on:vdropzone-success="obtenerImagene"
+                             class="modern-dropzone">
+                </vue-dropzone>
+                <p class="dropzone-help">
+                  <i class="fa fa-info-circle"></i>
+                  Arrastra y suelta las imágenes aquí o haz clic para seleccionar archivos
+                </p>
             </div>
           </div>
         </div>
       </template>
+      </div>
     </tab-content>
     <tab-content title="Características de la Plantilla" icon="fa fa-search">
-      <loader v-if="cargandoData"></loader>
+      <div class="wizard-step-content">
+        <div class="step-header">
+          <h3 class="step-title">
+            <i class="fa fa-search"></i>
+            Características de la Plantilla
+          </h3>
+          <p class="step-description">Define las características específicas de tu plantilla</p>
+        </div>
+        
+        <loader v-if="cargandoData" class="loading-full"></loader>
+        
       <!--Cuando hay caracteristicas en la categoria-->
       <template v-else-if="hayCaracteristicas && !cargandoData">
-        <div class="row">
-          <div class="table-responsive no-padding">
-            <table class="table table-hover">
-              <tbody>
-              <tr>
-                <th class="text-center">Nombre</th>
-                <th class="text-center">Valor</th>
-                <th class="text-center">Opciones</th>
-              </tr>
-              <tr v-for="(caracteristica,i) in caracteristicasApi">
-                <td class="text-center">{{caracteristica.v_nombre}}</td>
-                <td class="text-center">
-                  <input type="text" class="form-control" :placeholder="caracteristica.v_nombre"
-                         :id="'inputCaracteristica'+i">
-                </td>
-                <td>
-                  <button class="btn btn-primary" :id="'btnCaracteristica'+i"
-                          v-on:click="llenarCaracteristica(caracteristica,i)"><i
-                    class="fa fa-check" aria-hidden="true"></i></button>
-                  <button class="btn btn-warning" v-on:click="reiniciarCaracteristica(caracteristica,i)"><i
-                    class="fa fa-refresh" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-5">
-            <div :class="(!errors.first('v_nombre_caracteristica'))?'form-group':'form-group has-error'">
-              <label for="n_v_nombre_caracteristica">Nombre</label>
-              <input placeholder="Nombre de la Caracteristica" name="v_nombre_caracteristica" type="text"
-                     class="form-control" v-model="nombre_caracteristica"
-                      data-placement="left" required id="n_v_nombre_caracteristica"
-                     title="Ingresa el nombre de la caracteristica que deseas registrar" data-vv-as="caracteristica"
-                     v-validate="'required|min:5|max:255'">
-              <span v-show="errors.has('v_nombre_caracteristica')"
-                    class="help-block">{{ errors.first('v_nombre_caracteristica')}}</span>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6">
-            <div :class="(!errors.first('valor_caracteristica'))?'form-group':'form-group has-error'">
-              <label for="n_valor_caracteristica">Valor</label>
-              <input placeholder="Valor" name="valor_caracteristica" type="text"
-                     class="form-control" v-model="valor_caracteristica"
-                      data-placement="left" required id="n_valor_caracteristica"
-                     title="Ingresa el valor de la caracteristica que deseas registrar" data-vv-as="valor"
-                     v-validate="'required|min:2|max:255'">
-              <span v-show="errors.has('valor_caracteristica')"
-                    class="help-block">{{ errors.first('valor_caracteristica')}}</span>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-1 text-center">
-            <button class="btn btn-success margin-top-button-plus" :disabled="!deshabilitarButtonPlus"
-                    v-on:click="crearCaracteristica">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              <span id="NtextButtonCaracteristica">Registrar Caracteristica</span>
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="table-responsive no-padding">
-            <table class="table table-hover">
-              <tbody>
-              <tr>
-                <th class="text-center">Nombre</th>
-                <th class="text-center">Valor</th>
-                <th class="text-center">Opciones</th>
-              </tr>
-              <tr v-for="caracteristica in caracteristicas">
-                <td class="text-center">{{caracteristica.nombre}}</td>
-                <td class="text-center">{{caracteristica.valor}}</td>
-                <td class="text-center">
-                  <button class="btn btn-primary"
-                          v-on:click="eliminarCaracteristica(caracteristica.nombre)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </template>
-      <!--Cuando no hay caracteristicas en la categoria-->
-      <template v-else>
-        <div class="row" v-show="!hayCaracteristicas">
-          <div class="col-xs-12" align="center">
-            <h4 class="font-green" style="color:green;">
-              No existen características sobre esa categoría, sé el primero!
+          <div class="characteristics-section">
+            <h4 class="section-subtitle">
+              <i class="fa fa-list"></i>
+              Características Existentes
             </h4>
+            <div class="characteristics-grid">
+              <div v-for="(caracteristica,i) in caracteristicasApi" :key="i" class="characteristic-card">
+                <div class="characteristic-header">
+                  <h5 class="characteristic-name">{{caracteristica.v_nombre}}</h5>
+                </div>
+                <div class="characteristic-input">
+                  <input type="text" 
+                         class="form-control modern-input" 
+                         :placeholder="caracteristica.v_nombre"
+                         :id="'inputCaracteristica'+i">
           </div>
+                <div class="characteristic-actions">
+                  <button class="btn btn-success btn-sm" 
+                          :id="'btnCaracteristica'+i"
+                          v-on:click="llenarCaracteristica(caracteristica,i)">
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button class="btn btn-warning btn-sm" 
+                          v-on:click="reiniciarCaracteristica(caracteristica,i)">
+                    <i class="fa fa-refresh"></i>
+                  </button>
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-11">
-            <div :class="(!errors.first('v_nombre_caracteristica'))?'form-group':'form-group has-error'">
-              <label for="v_nombre_caracteristica">Nombre</label>
-              <input placeholder="Nombre de la Caracteristica" name="v_nombre_caracteristica" type="text"
-                     class="form-control" v-model="nombre_caracteristica"
-                      data-placement="left" required id="v_nombre_caracteristica"
-                     title="Ingresa el nombre de la caracteristica que deseas registrar" data-vv-as="caracteristica"
-                     v-validate="'required|min:5|max:255'">
-              <span v-show="errors.has('v_nombre_caracteristica')"
-                    class="help-block">{{ errors.first('v_nombre_caracteristica')}}</span>
+              </div>
             </div>
           </div>
 
-          <div class="col-xs-12 col-md-1 text-center">
-            <button class="btn btn-success margin-top-button-plus" :disabled="!deshabilitarButtonPlus"
+          <div class="add-characteristic-section">
+            <h4 class="section-subtitle">
+              <i class="fa fa-plus"></i>
+              Agregar Nueva Característica
+            </h4>
+            <div class="form-row">
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label for="n_v_nombre_caracteristica">
+                    <i class="fa fa-tag"></i>
+                    Nombre
+                  </label>
+                  <input placeholder="Nombre de la Característica" 
+                         name="v_nombre_caracteristica" 
+                         type="text"
+                         class="form-control modern-input" 
+                         v-model="nombre_caracteristica"
+                         data-placement="left" 
+                         required 
+                         id="n_v_nombre_caracteristica"
+                         title="Ingresa el nombre de la característica que deseas registrar" 
+                         data-vv-as="característica"
+                     v-validate="'required|min:5|max:255'">
+                  <span v-show="errors.has('v_nombre_caracteristica')" class="error-message">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ errors.first('v_nombre_caracteristica')}}
+                  </span>
+            </div>
+          </div>
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label for="n_valor_caracteristica">
+                    <i class="fa fa-key"></i>
+                    Valor
+                  </label>
+                  <input placeholder="Valor de la Característica" 
+                         name="valor_caracteristica" 
+                         type="text"
+                         class="form-control modern-input" 
+                         v-model="valor_caracteristica"
+                         data-placement="left" 
+                         required 
+                         id="n_valor_caracteristica"
+                         title="Ingresa el valor de la característica que deseas registrar" 
+                         data-vv-as="valor"
+                     v-validate="'required|min:2|max:255'">
+                  <span v-show="errors.has('valor_caracteristica')" class="error-message">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ errors.first('valor_caracteristica')}}
+                  </span>
+            </div>
+          </div>
+              <div class="form-group-wrapper">
+                <button class="btn btn-primary btn-add" 
+                        :disabled="!deshabilitarButtonPlus"
                     v-on:click="crearCaracteristica">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              <span id="textButtonCaracteristica">Registrar Caracteristica</span>
+                  <i class="fa fa-plus"></i>
+                  Agregar
             </button>
           </div>
         </div>
-        <div class="row">
-          <div class="table-responsive no-padding">
-            <table class="table table-hover">
-              <tbody>
-              <tr>
-                <th class="text-center">Nombre</th>
-                <th class="text-center">Opciones</th>
-              </tr>
-              <tr v-for="caracteristica in caracteristicas">
-                <td class="text-center">{{caracteristica.nombre}}</td>
-                <td class="text-center">
-                  <button class="btn btn-primary"
+          </div>
+
+          <div class="characteristics-list" v-if="caracteristicas.length > 0">
+            <h4 class="section-subtitle">
+              <i class="fa fa-check-circle"></i>
+              Características Agregadas
+            </h4>
+            <div class="characteristics-table">
+              <div v-for="caracteristica in caracteristicas" :key="caracteristica.nombre" class="characteristic-item">
+                <div class="characteristic-info">
+                  <span class="characteristic-name">{{caracteristica.nombre}}</span>
+                  <span class="characteristic-value">{{caracteristica.valor}}</span>
+                </div>
+                <button class="btn btn-danger btn-sm"
                           v-on:click="eliminarCaracteristica(caracteristica.nombre)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  <i class="fa fa-trash"></i>
                   </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+              </div>
           </div>
         </div>
       </template>
+        
+      <!--Cuando no hay caracteristicas en la categoria-->
+      <template v-else>
+          <div class="empty-characteristics">
+            <div class="empty-icon">
+              <i class="fa fa-info-circle"></i>
+          </div>
+            <h4>No existen características para esta categoría</h4>
+            <p>Sé el primero en agregar características específicas para esta categoría</p>
+        </div>
+          
+          <div class="add-characteristic-section">
+            <h4 class="section-subtitle">
+              <i class="fa fa-plus"></i>
+              Agregar Nueva Característica
+            </h4>
+            <div class="form-row">
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label for="v_nombre_caracteristica">
+                    <i class="fa fa-tag"></i>
+                    Nombre
+                  </label>
+                  <input placeholder="Nombre de la Característica" 
+                         name="v_nombre_caracteristica" 
+                         type="text"
+                         class="form-control modern-input" 
+                         v-model="nombre_caracteristica"
+                         data-placement="left" 
+                         required 
+                         id="v_nombre_caracteristica"
+                         title="Ingresa el nombre de la característica que deseas registrar" 
+                         data-vv-as="característica"
+                     v-validate="'required|min:5|max:255'">
+                  <span v-show="errors.has('v_nombre_caracteristica')" class="error-message">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ errors.first('v_nombre_caracteristica')}}
+                  </span>
+            </div>
+          </div>
+              <div class="form-group-wrapper">
+                <button class="btn btn-primary btn-add" 
+                        :disabled="!deshabilitarButtonPlus"
+                    v-on:click="crearCaracteristica">
+                  <i class="fa fa-plus"></i>
+                  Agregar
+            </button>
+          </div>
+        </div>
+          </div>
+          
+          <div class="characteristics-list" v-if="caracteristicas.length > 0">
+            <h4 class="section-subtitle">
+              <i class="fa fa-check-circle"></i>
+              Características Agregadas
+            </h4>
+            <div class="characteristics-table">
+              <div v-for="caracteristica in caracteristicas" :key="caracteristica.nombre" class="characteristic-item">
+                <div class="characteristic-info">
+                  <span class="characteristic-name">{{caracteristica.nombre}}</span>
+                </div>
+                <button class="btn btn-danger btn-sm"
+                          v-on:click="eliminarCaracteristica(caracteristica.nombre)">
+                  <i class="fa fa-trash"></i>
+                  </button>
+              </div>
+          </div>
+        </div>
+      </template>
+      </div>
     </tab-content>
     <template slot="footer" slot-scope="props">
       <div class=wizard-footer-left>
@@ -358,6 +362,8 @@
       </div>
     </template>
   </form-wizard>
+    </div>
+  </div>
 </template>
 <script>
   import {mapGetters, mapMutations} from 'vuex';
@@ -400,6 +406,11 @@
           [{'header': [1, 2, 3, 4, 5, 6, false]}],
           [{'align': []}],
         ],
+        editorOptions: {
+          modules: {
+            markdownShortcuts: false
+          }
+        },
         catalogo: {
           v_nombre: null,
           v_descripcion: null,
@@ -435,25 +446,64 @@
         caracteristicasApi: [],
         caracteristicasUnicas: [],
         caracteristicasMultiples: [],
-        registrarWizard: false
+        registrarWizard: false,
+        editorKey: 'editor-store',
+        editorReady: false
       }
     },
     props: ['tienda'],
     created() {
       $(function () {
-        $('[]').tooltip()
+        $('[data-placement]').tooltip()
       });
       this.cargarCategorias(null);
     },
     mounted() {
       let yo = this;
+      
       $('#modal').on('hidden.bs.modal', function (e) {
+        // Limpiar el editor Quill para evitar conflictos
+        yo.cleanEditor();
         yo.$emit('modal_close');
       });
+      
+      // El editor se inicializa automáticamente cuando se monta el componente
+    },
+    beforeDestroy() {
+      // Limpiar el editor antes de destruir el componente
+      this.cleanEditor();
     },
     methods: Object.assign({}, mapMutations([]), {
       getAppService() {
         return AppService;
+      },
+      // Método para limpiar el editor Quill
+      cleanEditor() {
+        if (this.$refs.vueEditor && this.$refs.vueEditor.quill) {
+          this.$refs.vueEditor.quill = null;
+        }
+        this.editorReady = false;
+      },
+      
+      // Método para inicializar el editor
+      initializeEditor() {
+        // El editor se inicializa automáticamente con el callback onEditorReady
+        // No necesitamos lógica compleja aquí
+      },
+      
+      // Callback cuando el editor está listo
+      onEditorReady() {
+        this.editorReady = true;
+      },
+      
+      // Resetear el editor para nueva plantilla
+      resetEditor() {
+        this.catalogo.v_descripcion = '';
+        // Limpiar el editor y permitir que se reinicialice
+        this.cleanEditor();
+        this.$nextTick(() => {
+          this.editorReady = false;
+        });
       },
       crearCaracteristica() {
         this.caracteristicas.push({
@@ -610,6 +660,7 @@
       cambioWizard(from, to) {
         let yo = this;
         let token = this.getUsuario.token;
+        
         switch (to) {
           case 0:
             this.siguienteTab = this.seleccionoCategoria;
@@ -660,7 +711,7 @@
         return this.registrarWizard;
       },
       deshabilitarButtonPlus() {
-        return this.nombre_caracteristica !== null && this.tipo !== null && !this.errors.has('v_tipo');
+        return this.nombre_caracteristica !== null && this.nombre_caracteristica.trim() !== '' && !this.errors.has('v_nombre_caracteristica');
       },
       isActivedCatalogo: function () {
         return this.paginationCatalogos.current_page;
@@ -686,3 +737,522 @@
     components: {ModelSelect, VueEditor, vueDropzone: vue2Dropzone, Loader},
   }
 </script>
+
+<style scoped>
+/* Modal Principal */
+.catalogue-store-modal {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+/* Header del Modal */
+.modal-header-custom {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%);
+  color: white;
+  padding: 25px 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header-custom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6633, #ff8c42, #ff6633);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.header-icon i {
+  font-size: 20px;
+  color: white;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-subtitle {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Wizard Container */
+.wizard-container {
+  padding: 30px;
+}
+
+/* Wizard Step Content */
+.wizard-step-content {
+  min-height: 400px;
+}
+
+.step-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.step-title i {
+  color: #ff6633;
+  font-size: 18px;
+}
+
+.step-description {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb-container {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #ff6633;
+}
+
+.breadcrumb {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '>';
+  margin: 0 10px;
+  color: #666;
+}
+
+.breadcrumb-link {
+  color: #ff6633;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  background: #ff6633;
+  color: white;
+  text-decoration: none;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-group-wrapper {
+  margin-bottom: 20px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-group-wrapper:hover {
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group label i {
+  color: #ff6633;
+  font-size: 12px;
+}
+
+/* Modern Inputs */
+.modern-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.modern-input:focus {
+  border-color: #ff6633;
+  box-shadow: 0 0 0 3px rgba(255, 102, 51, 0.1);
+  outline: none;
+}
+
+.modern-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+/* Error Messages */
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+/* Loading States */
+.loading-full {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loading-inline {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-state i {
+  font-size: 48px;
+  color: #ddd;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Dropzone */
+.modern-dropzone {
+  border: 2px dashed #ff6633 !important;
+  border-radius: 12px !important;
+  background: #fff5f2 !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-dropzone:hover {
+  border-color: #e55a2b !important;
+  background: #fff0eb !important;
+}
+
+.dropzone-help {
+  margin-top: 10px;
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Editor */
+.modern-editor {
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px;
+  transition: opacity 0.3s ease;
+}
+
+/* Prevenir parpadeo del editor */
+.modern-editor .ql-editor {
+  min-height: 150px;
+}
+
+.modern-editor .ql-toolbar {
+  border-bottom: 1px solid #e1e5e9;
+}
+
+/* Estado de carga del editor */
+.modern-editor.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Placeholder del editor */
+.editor-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.editor-placeholder i {
+  color: #ff6633;
+  font-size: 16px;
+}
+
+/* Characteristics Section */
+.characteristics-section {
+  margin-bottom: 30px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-subtitle i {
+  color: #ff6633;
+  font-size: 14px;
+}
+
+.characteristics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.characteristic-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.characteristic-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.characteristic-header {
+  margin-bottom: 15px;
+}
+
+.characteristic-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.characteristic-input {
+  margin-bottom: 15px;
+}
+
+.characteristic-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Add Characteristic Section */
+.add-characteristic-section {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b 0%, #d44a1a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 102, 51, 0.3);
+}
+
+.btn-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Characteristics List */
+.characteristics-list {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.characteristics-table {
+  padding: 0;
+}
+
+.characteristic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.characteristic-item:last-child {
+  border-bottom: none;
+}
+
+.characteristic-item:hover {
+  background: #f8f9fa;
+}
+
+.characteristic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.characteristic-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.characteristic-value {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Empty Characteristics */
+.empty-characteristics {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.empty-characteristics .empty-icon {
+  font-size: 64px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.empty-characteristics h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.empty-characteristics p {
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wizard-container {
+    padding: 20px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .characteristics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .breadcrumb {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .breadcrumb li:not(:last-child)::after {
+    display: none;
+  }
+}
+</style>

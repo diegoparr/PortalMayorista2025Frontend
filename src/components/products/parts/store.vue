@@ -1,8 +1,44 @@
 <template>
-  <form-wizard title="Bienvenido al asistente de creación de productos"
-               color="#fe7501" v-on:on-change="cambioWizard"
-               nextButtonText="Siguiente" backButtonText="Atrás" finishButtonText="Registrar"
-               subtitle="Completa cada paso para finalizar el proceso" :startIndex="0">
+  <div class="product-creation-wizard">
+    <!-- Header del Wizard -->
+    <div class="wizard-header">
+      <div class="wizard-title">
+        <i class="fa fa-box"></i>
+        Crear Nuevo Producto
+      </div>
+      <div class="wizard-subtitle">
+        Completa cada paso para finalizar el proceso de creación
+      </div>
+    </div>
+
+    <!-- Navegación del Wizard -->
+    <div class="wizard-nav">
+      <div class="wizard-nav-item" :class="{ 'active': currentStep === 0, 'completed': currentStep > 0 }">
+        <div class="wizard-nav-link">
+          <i class="fa fa-shopping-bag"></i>
+        </div>
+        <div class="wizard-nav-text">Categoría</div>
+      </div>
+      <div class="wizard-nav-item" :class="{ 'active': currentStep === 1, 'completed': currentStep > 1 }">
+        <div class="wizard-nav-link">
+          <i class="fa fa-cubes"></i>
+        </div>
+        <div class="wizard-nav-text">Catálogo</div>
+      </div>
+      <div class="wizard-nav-item" :class="{ 'active': currentStep === 2, 'completed': currentStep > 2 }">
+        <div class="wizard-nav-link">
+          <i class="fa fa-search"></i>
+        </div>
+        <div class="wizard-nav-text">Características</div>
+      </div>
+    </div>
+
+    <!-- Contenido del Wizard -->
+    <div class="wizard-content">
+      <form-wizard title=""
+                   color="#ff6633" v-on:on-change="cambioWizard"
+                   nextButtonText="Siguiente" backButtonText="Atrás" finishButtonText="Registrar"
+                   subtitle="" :startIndex="0">
     <tab-content title="Selecciona la categoría" icon="fa fa-shopping-bag">
       <div class="row">
         <div class="col-xs-12">
@@ -633,7 +669,9 @@
         </wizard-button>
       </div>
     </template>
-  </form-wizard>
+      </form-wizard>
+    </div>
+  </div>
 </template>
 <script>
   import {mapGetters, mapMutations} from 'vuex';
@@ -650,6 +688,7 @@
     mixins: [ImageHandler],
     data() {
       return {
+        currentStep: 0,
         siguienteTab: false,
         cargandoData: false,
         hayCategorias: true,
@@ -994,6 +1033,7 @@
           }, errors => yo.getAppServices().mapErrorsResponses(yo, errors));
       },
       cambioWizard(from, to) {
+        this.currentStep = to;
         let yo = this;
         let token = this.getUsuario.token;
         switch (to) {
@@ -1104,113 +1144,153 @@
   }
 </script>
 <style scoped>
-/* Estilos específicos para el form-wizard para asegurar que se carguen en producción */
-
-/* Estilos del wizard principal */
-.vue-form-wizard {
+/* Contenedor principal del wizard */
+.product-creation-wizard {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* Header del wizard */
-.vue-form-wizard .wizard-header {
+.wizard-header {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%);
+  color: white;
+  padding: 30px;
   text-align: center;
-  padding: 20px 0;
-  background: #f8f9fa;
-  border-radius: 8px 8px 0 0;
 }
 
-.vue-form-wizard .wizard-title {
-  font-size: 24px;
+.wizard-title {
+  font-size: 2rem;
   font-weight: 600;
-  color: #2c3e50;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-.vue-form-wizard .wizard-subtitle {
-  font-size: 16px;
-  color: #7f8c8d;
-  font-weight: 400;
+.wizard-title i {
+  font-size: 2.2rem;
+  opacity: 0.9;
+}
+
+.wizard-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 300;
 }
 
 /* Navegación del wizard */
-.vue-form-wizard .wizard-nav {
+.wizard-nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
-  background: #ffffff;
+  padding: 30px;
+  background: #f8f9fa;
   border-bottom: 1px solid #e1e8ed;
+  gap: 40px;
 }
 
-.vue-form-wizard .wizard-nav-item {
+.wizard-nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 20px;
   position: relative;
+  transition: all 0.3s ease;
 }
 
-.vue-form-wizard .wizard-nav-item .wizard-nav-link {
-  width: 60px;
-  height: 60px;
+.wizard-nav-item .wizard-nav-link {
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #ecf0f1;
   color: #95a5a6;
-  font-size: 20px;
+  font-size: 24px;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 3px solid transparent;
+  border: 4px solid transparent;
+  position: relative;
+  z-index: 2;
 }
 
-.vue-form-wizard .wizard-nav-item.active .wizard-nav-link {
-  background: #fe7501;
+.wizard-nav-item.active .wizard-nav-link {
+  background: #ff6633;
   color: #ffffff;
-  border-color: #e67e22;
+  border-color: #e55a2b;
   transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(255, 102, 51, 0.3);
 }
 
-.vue-form-wizard .wizard-nav-item.completed .wizard-nav-link {
+.wizard-nav-item.completed .wizard-nav-link {
   background: #27ae60;
   color: #ffffff;
   border-color: #2ecc71;
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
 }
 
-.vue-form-wizard .wizard-nav-item .wizard-nav-text {
-  margin-top: 10px;
+.wizard-nav-item .wizard-nav-text {
+  margin-top: 15px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #7f8c8d;
   text-align: center;
   max-width: 120px;
+  transition: all 0.3s ease;
 }
 
-.vue-form-wizard .wizard-nav-item.active .wizard-nav-text {
-  color: #fe7501;
-  font-weight: 600;
+.wizard-nav-item.active .wizard-nav-text {
+  color: #ff6633;
+  font-weight: 700;
 }
 
-.vue-form-wizard .wizard-nav-item.completed .wizard-nav-text {
+.wizard-nav-item.completed .wizard-nav-text {
   color: #27ae60;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Líneas conectoras entre pasos */
-.vue-form-wizard .wizard-nav-item:not(:last-child)::after {
+.wizard-nav-item:not(:last-child)::after {
   content: '';
   position: absolute;
-  top: 30px;
+  top: 35px;
   left: 50px;
   width: 40px;
-  height: 2px;
+  height: 4px;
   background: #ecf0f1;
   z-index: 1;
+  border-radius: 2px;
 }
 
-.vue-form-wizard .wizard-nav-item.completed:not(:last-child)::after {
+.wizard-nav-item.completed:not(:last-child)::after {
   background: #27ae60;
+}
+
+/* Contenido del wizard */
+.wizard-content {
+  padding: 0;
+  background: #ffffff;
+  min-height: 400px;
+}
+
+/* Estilos del form-wizard interno */
+.vue-form-wizard {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  box-shadow: none;
+  border: none;
+}
+
+/* Ocultar el header y nav del form-wizard interno */
+.vue-form-wizard .wizard-header {
+  display: none;
+}
+
+.vue-form-wizard .wizard-nav {
+  display: none;
 }
 
 /* Contenido del wizard */
@@ -1228,53 +1308,62 @@
   padding: 20px 30px;
   background: #f8f9fa;
   border-top: 1px solid #e1e8ed;
-  border-radius: 0 0 8px 8px;
 }
 
 .vue-form-wizard .wizard-btn {
-  padding: 12px 24px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .vue-form-wizard .wizard-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .vue-form-wizard .wizard-btn-prev {
-  background: #95a5a6;
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
   color: #ffffff;
 }
 
 .vue-form-wizard .wizard-btn-prev:hover:not(:disabled) {
-  background: #7f8c8d;
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(127, 140, 141, 0.3);
 }
 
 .vue-form-wizard .wizard-btn-next {
-  background: #fe7501;
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%);
   color: #ffffff;
 }
 
 .vue-form-wizard .wizard-btn-next:hover:not(:disabled) {
-  background: #e67e22;
+  background: linear-gradient(135deg, #e55a2b 0%, #d44d1f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 102, 51, 0.3);
 }
 
 .vue-form-wizard .wizard-btn-finish {
-  background: #27ae60;
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
   color: #ffffff;
 }
 
 .vue-form-wizard .wizard-btn-finish:hover:not(:disabled) {
-  background: #2ecc71;
+  background: linear-gradient(135deg, #2ecc71 0%, #58d68d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
 }
 
 /* Iconos del wizard */
@@ -1481,13 +1570,32 @@
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
-  .vue-form-wizard .wizard-nav {
-    flex-direction: column;
-    gap: 20px;
+  .wizard-header {
+    padding: 20px;
   }
   
-  .vue-form-wizard .wizard-nav-item:not(:last-child)::after {
+  .wizard-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .wizard-subtitle {
+    font-size: 1rem;
+  }
+  
+  .wizard-nav {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .wizard-nav-item:not(:last-child)::after {
     display: none;
+  }
+  
+  .wizard-content {
+    padding: 0;
   }
   
   .vue-form-wizard .wizard-content {
@@ -1498,6 +1606,12 @@
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    padding: 15px;
+  }
+  
+  .vue-form-wizard .wizard-btn {
+    padding: 12px 20px;
+    font-size: 12px;
   }
 }
 </style>

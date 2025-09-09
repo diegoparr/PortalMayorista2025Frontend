@@ -1,107 +1,164 @@
 <template>
   <div class="shop-update-modal">
     <loader v-if="!peticionesCompletas"></loader>
-    <form v-on:submit.prevent="actualizar" v-else>
-      <div class="form-row mb-3">
-        <div class="col-md-4 mb-3">
-          <label for="v_pais">País</label>
-          <model-select :options="paises" id="v_pais" v-model="pais" class="form-control"
+    <form v-on:submit.prevent="actualizar" v-else class="modern-form">
+      <!-- Header del Modal -->
+      <div class="modal-header-custom">
+        <div class="header-icon">
+          <i class="fa fa-edit"></i>
+        </div>
+        <div class="header-content">
+          <h2 class="shop-title">Editar Tienda</h2>
+          <p class="shop-subtitle">Modifica la información de la tienda</p>
+        </div>
+      </div>
+
+      <!-- Información de Ubicación -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fa fa-map-marker-alt"></i>
+          Ubicación
+        </h3>
+        <div class="form-grid">
+          <div class="form-group-modern">
+            <label for="v_pais" class="modern-label">
+              <i class="fa fa-globe"></i>
+              País
+            </label>
+            <model-select :options="paises" id="v_pais" v-model="pais" class="modern-select"
                          v-on:input="seleccionarPais"
                         data-placement="left" title="Selecciona el país en que se encuentra la tienda"
                         placeholder="Selecciona un país"
                         required>
           </model-select>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_provincia">Provincia</label>
-          <model-select :options="provincias" id="v_provincia" v-model="provincia" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_provincia" class="modern-label">
+              <i class="fa fa-map"></i>
+              Provincia
+            </label>
+            <model-select :options="provincias" id="v_provincia" v-model="provincia" class="modern-select"
                          v-on:input="seleccionarProvincia"
                         data-placement="left" title="Selecciona la provincia"
                         placeholder="Selecciona una provincia"
                         required>
           </model-select>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_ciudad">Ciudad</label>
-          <model-select :options="ciudades" id="v_ciudad" v-model="ciudad" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_ciudad" class="modern-label">
+              <i class="fa fa-city"></i>
+              Ciudad
+            </label>
+            <model-select :options="ciudades" id="v_ciudad" v-model="ciudad" class="modern-select"
                         data-placement="left" title="Selecciona la ciudad"
                         placeholder="Selecciona una ciudad"
                         required>
           </model-select>
         </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="col-md-4 mb-3">
-          <label for="v_tipo_persona">Tipo de Registro</label>
-          <model-select v-on:input="seleccionarTipoEmpresa" :options="tipoPersonas" id="v_tipo_persona" v-model="v_tipo_persona" class="form-control"
+      </div>
+      <!-- Información de la Tienda -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fa fa-store"></i>
+          Información de la Tienda
+        </h3>
+        <div class="form-grid">
+          <div class="form-group-modern">
+            <label for="v_tipo_persona" class="modern-label">
+              <i class="fa fa-user-tag"></i>
+              Tipo de Registro
+            </label>
+            <model-select v-on:input="seleccionarTipoEmpresa" :options="tipoPersonas" id="v_tipo_persona" v-model="v_tipo_persona" class="modern-select"
                         data-placement="left"
                         title="Selecciona el tipo de Persona"
                         placeholder="Selecciona tipo de registro"
                         required>
           </model-select>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_tipo_documento">Tipo de Documento</label>
-          <model-select :options="tipo_documentos" id="v_tipo_documento" v-model="tipo_documento" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_tipo_documento" class="modern-label">
+              <i class="fa fa-id-card"></i>
+              Tipo de Documento
+            </label>
+            <model-select :options="tipo_documentos" id="v_tipo_documento" v-model="tipo_documento" class="modern-select"
                         data-placement="left"
                         title="Selecciona el tipo de documento de identificación que posee la tienda"
                         placeholder="Selecciona tipo de documento"
                         required>
           </model-select>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_documento">Documento</label>
-          <input placeholder="Número de documento" name="v_documento" type="text" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_documento" class="modern-label">
+              <i class="fa fa-hashtag"></i>
+              Número de Documento
+            </label>
+            <input placeholder="Número de documento" name="v_documento" type="text" class="modern-input"
                   data-placement="left" required id="v_documento"
                  title="Ingresa el número de documento de identificación"
                  data-vv-as="documento de identificación"
                  v-model="shop.v_documento" v-validate="'required|min:3|max:25|numeric'">
           <span v-show="errors.has('v_documento')"
-                class="help-block text-center">{{ errors.first('v_documento')}}</span>
+                  class="modern-error">{{ errors.first('v_documento')}}</span>
         </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="col-md-4 mb-3">
-          <label for="v_nombre">Nombre de la Tienda</label>
-          <input placeholder="Nombre de la Tienda" name="v_nombre" type="text" class="form-control"
+        <div class="form-grid">
+          <div class="form-group-modern">
+            <label for="v_nombre" class="modern-label">
+              <i class="fa fa-store"></i>
+              Nombre de la Tienda
+            </label>
+            <input placeholder="Nombre de la Tienda" name="v_nombre" type="text" class="modern-input"
                   data-placement="left" v-validate="'required|alpha_spaces|min:2|max:100'"
                  data-vv-as="nombre de la tienda" v-model="shop.v_nombre" required id="v_nombre"
                  title="Ingresa el nombre de la tienda" v-on:change="nombreActualizar">
           <span v-show="errors.has('v_nombre')"
-                class="help-block text-center">{{ errors.first('v_nombre')}}</span>
+                  class="modern-error">{{ errors.first('v_nombre')}}</span>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_telefono_principal">Teléfono Principal</label>
-          <input placeholder="Teléfono principal" name="v_telefono_principal" type="text" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_telefono_principal" class="modern-label">
+              <i class="fa fa-phone"></i>
+              Teléfono Principal
+            </label>
+            <input placeholder="Teléfono principal" name="v_telefono_principal" type="text" class="modern-input"
                   data-placement="left" id="v_telefono_principal"
                  title="Ingresa el teléfono" data-vv-as="teléfono" v-on:change="telefonoPrincipal"
                  v-model="shop.v_telefono_principal" v-validate="'min:5|max:25|numeric'">
           <span v-show="errors.has('v_telefono_principal')"
-                class="help-block text-center">{{ errors.first('v_telefono_principal')}}</span>
+                  class="modern-error">{{ errors.first('v_telefono_principal')}}</span>
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="v_telefono_secundario">Teléfono Secundario</label>
-          <input placeholder="Teléfono Secundario" name="v_telefono_secundario" type="text" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_telefono_secundario" class="modern-label">
+              <i class="fa fa-mobile-alt"></i>
+              Teléfono Secundario
+            </label>
+            <input placeholder="Teléfono Secundario" name="v_telefono_secundario" type="text" class="modern-input"
                   data-placement="left" id="v_telefono_secundario"
                  title="Ingresa el teléfono" data-vv-as="teléfono" v-on:change="telefonoSecundario"
                  v-model="shop.v_telefono_secundario" v-validate="'min:5|max:25|numeric'">
           <span v-show="errors.has('v_telefono_secundario')"
-                class="help-block text-center">{{ errors.first('v_telefono_secundario')}}</span>
+                  class="modern-error">{{ errors.first('v_telefono_secundario')}}</span>
         </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="col-md-6 mb-3">
-          <label for="v_asesor">Asesor</label>
-          <model-select :options="usuarios_asesores" v-model="usuario_asesor" class="form-control"
+        <div class="form-grid">
+          <div class="form-group-modern">
+            <label for="v_asesor" class="modern-label">
+              <i class="fa fa-user-tie"></i>
+              Asesor
+            </label>
+            <model-select :options="usuarios_asesores" v-model="usuario_asesor" class="modern-select"
                          id="v_asesor"
                         data-placement="left" title="Selecciona el asesor encargado de la tienda"
                         placeholder="Selecciona asesor"
                         required>
           </model-select>
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="v_cliente">Cliente</label>
-          <model-select :options="usuarios_clientes" v-model="usuario_cliente" class="form-control"
+          <div class="form-group-modern">
+            <label for="v_cliente" class="modern-label">
+              <i class="fa fa-user"></i>
+              Cliente
+            </label>
+            <model-select :options="usuarios_clientes" v-model="usuario_cliente" class="modern-select"
                          id="v_cliente"
                         data-placement="left" title="Selecciona el cliente dueño o representante de la tienda"
                         placeholder="Selecciona cliente"
@@ -109,177 +166,293 @@
           </model-select>
         </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="col-md-12 mb-3">
-          <label for="v_direccion">Dirección</label>
-          <input placeholder="Dirección" name="v_direccion" type="text" class="form-control"
+        <div class="form-group-modern full-width">
+          <label for="v_direccion" class="modern-label">
+            <i class="fa fa-map-marker-alt"></i>
+            Dirección
+          </label>
+          <input placeholder="Dirección" name="v_direccion" type="text" class="modern-input"
                   data-placement="left" required id="v_direccion" v-on:change="direccionPrincipal"
                  title="Ingresa la dirección principal de la tienda" data-vv-as="dirección"
                  v-model="shop.v_direccion" v-validate="'required|min:5|max:255'">
           <span v-show="errors.has('v_direccion')"
-                class="help-block text-center">{{ errors.first('v_direccion')}}</span>
+                class="modern-error">{{ errors.first('v_direccion')}}</span>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 text-center mt-4 mb-2">
-          <h5><strong>Horario de Atención de la Tienda</strong></h5>
+      <!-- Horarios de Atención -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fa fa-clock"></i>
+          Horarios de Atención
+        </h3>
+        <div class="schedule-grid">
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_lunes_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Lunes</h4>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Lunes</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_lunes_tienda_desde"
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_lunes_tienda_desde"
                    name="horario_lunes_tienda_desde" id="horario_lunes_tienda_desde"
                    :disabled="shop.b_horario_lunes_tienda_no_laborable">
-            <label for="laborable-lunes">
-              <input type="checkbox" id="laborable-lunes" v-model="shop.b_horario_lunes_tienda_no_laborable"> No laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_lunes_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_lunes_tienda_hasta"
                    name="horario_lunes_tienda_hasta" id="horario_lunes_tienda_hasta"
                    :disabled="shop.b_horario_lunes_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-lunes" v-model="shop.b_horario_lunes_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_lunes_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_lunes_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_lunes_tienda_desde')}}</span>
             <span v-show="errors.has('horario_lunes_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_lunes_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_lunes_tienda_hasta')}}</span>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Martes</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_martes_tienda_desde"
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_martes_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Martes</h4>
+            </div>
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_martes_tienda_desde"
                    name="horario_martes_tienda_desde" id="horario_martes_tienda_desde"
                    :disabled="shop.b_horario_martes_tienda_no_laborable">
-            <label for="laborable-martes">
-              <input type="checkbox" id="laborable-martes" v-model="shop.b_horario_martes_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_martes_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_martes_tienda_hasta"
                    name="horario_martes_tienda_hasta" id="horario_martes_tienda_hasta"
                    :disabled="shop.b_horario_martes_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-martes" v-model="shop.b_horario_martes_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_martes_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_martes_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_martes_tienda_desde')}}</span>
             <span v-show="errors.has('horario_martes_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_martes_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_martes_tienda_hasta')}}</span>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Miercoles</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_miercoles_tienda_desde"
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_miercoles_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Miércoles</h4>
+            </div>
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_miercoles_tienda_desde"
                    name="horario_miercoles_tienda_desde" id="horario_miercoles_tienda_desde"
                    :disabled="shop.b_horario_miercoles_tienda_no_laborable">
-            <label for="laborable-miercoles">
-              <input type="checkbox" id="laborable-miercoles" v-model="shop.b_horario_miercoles_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_miercoles_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_miercoles_tienda_hasta"
                    name="horario_miercoles_tienda_hasta" id="horario_miercoles_tienda_hasta"
                    :disabled="shop.b_horario_miercoles_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-miercoles" v-model="shop.b_horario_miercoles_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_miercoles_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_miercoles_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_miercoles_tienda_desde')}}</span>
             <span v-show="errors.has('horario_miercoles_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_miercoles_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_miercoles_tienda_hasta')}}</span>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Jueves</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_jueves_tienda_desde"
+          
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_jueves_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Jueves</h4>
+            </div>
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_jueves_tienda_desde"
                    name="horario_jueves_tienda_desde" id="horario_jueves_tienda_desde"
                    :disabled="shop.b_horario_jueves_tienda_no_laborable">
-            <label for="laborable-jueves">
-              <input type="checkbox" id="laborable-jueves" v-model="shop.b_horario_jueves_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_jueves_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_jueves_tienda_hasta"
                    name="horario_jueves_tienda_hasta" id="horario_jueves_tienda_hasta"
                    :disabled="shop.b_horario_jueves_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-jueves" v-model="shop.b_horario_jueves_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_jueves_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_jueves_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_jueves_tienda_desde')}}</span>
             <span v-show="errors.has('horario_jueves_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_jueves_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_jueves_tienda_hasta')}}</span>
           </div>
         </div>
+          
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_viernes_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Viernes</h4>
       </div>
-      <div class="row">
-        <div class="col-xs-6 col-md-3 col-md-offset-2 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Viernes</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_viernes_tienda_desde"
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_viernes_tienda_desde"
                    name="horario_viernes_tienda_desde" id="horario_viernes_tienda_desde"
                    :disabled="shop.b_horario_viernes_tienda_no_laborable">
-            <label for="laborable-viernes">
-              <input type="checkbox" id="laborable-viernes" v-model="shop.b_horario_viernes_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_viernes_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_viernes_tienda_hasta"
                    name="horario_viernes_tienda_hasta" id="horario_viernes_tienda_hasta"
                    :disabled="shop.b_horario_viernes_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-viernes" v-model="shop.b_horario_viernes_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_viernes_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_viernes_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_viernes_tienda_desde')}}</span>
             <span v-show="errors.has('horario_viernes_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_viernes_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_viernes_tienda_hasta')}}</span>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Sabado</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_sabado_tienda_desde"
+          
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_sabado_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Sábado</h4>
+            </div>
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_sabado_tienda_desde"
                    name="horario_sabado_tienda_desde" id="horario_sabado_tienda_desde"
                    :disabled="shop.b_horario_sabado_tienda_no_laborable">
-            <label for="laborable-sabado">
-              <input type="checkbox" id="laborable-sabado" v-model="shop.b_horario_sabado_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_sabado_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_sabado_tienda_hasta"
                    name="horario_sabado_tienda_hasta" id="horario_sabado_tienda_hasta"
                    :disabled="shop.b_horario_sabado_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-sabado" v-model="shop.b_horario_sabado_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_sabado_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_sabado_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_sabado_tienda_desde')}}</span>
             <span v-show="errors.has('horario_sabado_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_sabado_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_sabado_tienda_hasta')}}</span>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 text-center">
-          <div class="contenedor-dia-semana">
-            <label>Domingo</label>
-            <input type="time" class="form-control" placeholder="Desde" v-model="shop.v_horario_domingo_tienda_desde"
+          
+          <div class="schedule-card" :class="{ 'no-laborable': shop.b_horario_domingo_tienda_no_laborable }">
+            <div class="day-header">
+              <i class="fa fa-calendar-day"></i>
+              <h4>Domingo</h4>
+            </div>
+            <div class="time-inputs">
+              <div class="time-group">
+                <label>Desde</label>
+                <input type="time" class="modern-time-input" placeholder="Desde" v-model="shop.v_horario_domingo_tienda_desde"
                    name="horario_domingo_tienda_desde" id="horario_domingo_tienda_desde"
                    :disabled="shop.b_horario_domingo_tienda_no_laborable">
-            <label for="laborable-domingo">
-              <input type="checkbox" id="laborable-domingo" v-model="shop.b_horario_domingo_tienda_no_laborable"> No
-              laborable
-            </label>
-            <input type="time" class="form-control" placeholder="Hasta" v-model="shop.v_horario_domingo_tienda_hasta"
+              </div>
+              <div class="time-group">
+                <label>Hasta</label>
+                <input type="time" class="modern-time-input" placeholder="Hasta" v-model="shop.v_horario_domingo_tienda_hasta"
                    name="horario_domingo_tienda_hasta" id="horario_domingo_tienda_hasta"
                    :disabled="shop.b_horario_domingo_tienda_no_laborable">
+              </div>
+            </div>
+            <div class="no-laborable-check">
+              <label class="checkbox-modern">
+                <input type="checkbox" id="laborable-domingo" v-model="shop.b_horario_domingo_tienda_no_laborable">
+                <span class="checkmark"></span>
+                No laborable
+              </label>
+            </div>
+            <div class="error-messages">
             <span v-show="errors.has('horario_domingo_tienda_desde')"
-                  class="error-formulario">{{ errors.first('horario_domingo_tienda_desde')}}</span><br>
+                    class="modern-error">{{ errors.first('horario_domingo_tienda_desde')}}</span>
             <span v-show="errors.has('horario_domingo_tienda_hasta')"
-                  class="error-formulario">{{ errors.first('horario_domingo_tienda_hasta')}}</span>
+                    class="modern-error">{{ errors.first('horario_domingo_tienda_hasta')}}</span>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-6">
-          <div :class="(!errors.first('v_descripcion'))?'form-group':'form-group has-error'">
-            <label for="v_descripcion">Descripción</label>
-            <textarea class="form-control margen-textarea-modulo-tienda" id="v_descripcion" rows="3"
+      </div>
+      <!-- Descripción y Reseña -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fa fa-info-circle"></i>
+          Información Adicional
+        </h3>
+        <div class="form-grid">
+          <div class="form-group-modern">
+            <label for="v_descripcion" class="modern-label">
+              <i class="fa fa-align-left"></i>
+              Descripción
+            </label>
+            <textarea class="modern-textarea" id="v_descripcion" rows="4"
                       v-model="shop.v_descripcion"
-                      name="v_descripcion" v-validate="'required|min:5|max:255'" data-vv-as="descripción"></textarea>
+                      name="v_descripcion" v-validate="'required|min:5|max:255'" data-vv-as="descripción"
+                      placeholder="Describe los productos y servicios de la tienda"></textarea>
             <span v-show="errors.has('v_descripcion')"
-                  class="help-block text-center">{{ errors.first('v_descripcion')}}</span>
+                  class="modern-error">{{ errors.first('v_descripcion')}}</span>
           </div>
-        </div>
-        <div class="col-xs-12 col-md-6">
-          <div :class="(!errors.first('v_resena'))?'form-group':'form-group has-error'">
-            <label for="v_resena">Reseña</label>
-            <textarea class="form-control margen-textarea-modulo-tienda" id="v_resena" rows="3" name="v_resena"
+          <div class="form-group-modern">
+            <label for="v_resena" class="modern-label">
+              <i class="fa fa-star"></i>
+              Reseña
+            </label>
+            <textarea class="modern-textarea" id="v_resena" rows="4" name="v_resena"
                       v-model="shop.v_resena"
-                      v-validate="'required|min:5|max:50'" data-vv-as="reseña"></textarea>
+                      v-validate="'required|min:5|max:50'" data-vv-as="reseña"
+                      placeholder="Reseña o testimonio de la tienda"></textarea>
             <span v-show="errors.has('v_resena')"
-                  class="help-block text-center">{{ errors.first('v_resena')}}</span>
+                  class="modern-error">{{ errors.first('v_resena')}}</span>
           </div>
         </div>
       </div>
@@ -419,44 +592,371 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12" align="center">
-          <div class="form-group">
-            <v-btn color="primary" class="btn btn-warning btn-flat" type="submit" id="submitButton" :disabled="deshabilitar"
-                    style="margin: 15px 0 0 0"
-                    data-loading-text="&lt;i class='pull-left fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando">
-              <i class="fa fa-pencil pull-left"></i> Editar
-            </v-btn>
-          </div>
-        </div>
+      <!-- Botón de Envío -->
+      <div class="form-actions">
+        <button type="submit" id="submitButton" :disabled="deshabilitar" class="btn-modern btn-update">
+          <i class="fa fa-save"></i>
+          <span>Actualizar Tienda</span>
+        </button>
       </div>
     </form>
   </div>
 </template>
 
 <style scoped>
+/* Estilos para el modal de edición de tienda */
 .shop-update-modal {
-  padding: 20px 10px 10px 10px;
+  padding: 0;
+  border-radius: 0;
+  background: #fff;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modern-form {
+  padding: 0;
+}
+
+/* Header del Modal */
+.modal-header-custom {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%);
+  color: white;
+  padding: 25px 30px;
+  margin: -20px -20px 30px -20px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(255,102,51,0.3);
+}
+
+.header-icon {
+  font-size: 2.5rem;
+  opacity: 0.9;
+}
+
+.header-content h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.header-content p {
+  margin: 5px 0 0 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+/* Secciones de Información */
+.info-section {
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  border-bottom: 2px solid #ff6633;
+  padding-bottom: 10px;
+}
+
+.section-title i {
+  color: #ff6633;
+  font-size: 1.2rem;
+}
+
+/* Grid de Formulario */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group-modern.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Labels Modernos */
+.modern-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.modern-label i {
+  color: #ff6633;
+  font-size: 0.9rem;
+}
+
+/* Inputs Modernos */
+.modern-input, .modern-select, .modern-textarea {
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
   background: #fff;
 }
-.form-row {
+
+.modern-input:focus, .modern-select:focus, .modern-textarea:focus {
+  outline: none;
+  border-color: #ff6633;
+  box-shadow: 0 0 0 3px rgba(255,102,51,0.1);
+  transform: translateY(-1px);
+}
+
+.modern-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+/* Errores */
+.modern-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Grid de Horarios */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.schedule-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.schedule-card:hover {
+  border-color: #ff6633;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255,102,51,0.1);
+}
+
+.schedule-card.no-laborable {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  opacity: 0.7;
+}
+
+.day-header {
+  margin-bottom: 15px;
+}
+
+.day-header i {
+  font-size: 1.5rem;
+  color: #ff6633;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.day-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.time-inputs {
   display: flex;
-  flex-wrap: wrap;
-  margin-right: -10px;
-  margin-left: -10px;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
 }
-.form-row > .col-md-4,
-.form-row > .col-md-6,
-.form-row > .col-md-12 {
-  padding-left: 10px;
-  padding-right: 10px;
+
+.time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-.mb-3 {
-  margin-bottom: 1.5rem !important;
+
+.time-group label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
 }
-.mt-4 {
-  margin-top: 2rem !important;
+
+.modern-time-input {
+  padding: 8px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.modern-time-input:focus {
+  outline: none;
+  border-color: #ff6633;
+  box-shadow: 0 0 0 2px rgba(255,102,51,0.1);
+}
+
+.modern-time-input:disabled {
+  background: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Checkbox Moderno */
+.no-laborable-check {
+  margin-bottom: 10px;
+}
+
+.checkbox-modern {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+  justify-content: center;
+}
+
+.checkbox-modern input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e9ecef;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.checkbox-modern input[type="checkbox"]:checked + .checkmark {
+  background: #ff6633;
+  border-color: #ff6633;
+}
+
+.checkbox-modern input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.error-messages {
+  min-height: 20px;
+}
+
+/* Botón de Envío */
+.form-actions {
+  text-align: center;
+  padding: 30px 20px;
+  background: #f8f9fa;
+  margin: 30px -20px -20px -20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-modern {
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(255,102,51,0.3);
+}
+
+.btn-modern:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b 0%, #ff6633 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,102,51,0.4);
+}
+
+.btn-modern:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-modern i {
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-header-custom {
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .schedule-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .info-section {
+    padding: 0 15px;
+  }
+  
+  .form-actions {
+    padding: 20px 15px;
+  }
+  
+  .btn-modern {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .time-inputs {
+    flex-direction: row;
+    gap: 15px;
+  }
+  
+  .time-group {
+    flex: 1;
+  }
 }
 </style>
 
@@ -765,22 +1265,17 @@
         this.actualizarRut = true;
         reader.onload = (e) => {
           vm.imageRut = e.target.result;
-          let token = this.getUsuario.token;
-          let formData = new FormData();
-          formData.append('imagen', vm.shop.v_rut);
-          formData.append('ruta', 'rut');
-          formData.append('fieldname', 'v_rut');
-          this.getAppServices().postMethodWithBearer('api/avanzamas/imagenes/' + this.shop.id_m_tiendas + '?tipo=tienda', formData, token)
-            .then(response => {
-              /*this.$emit('modal_close');
-              $('#modal').modal('hide');*/
-              this.$toastr('success', "Se actualizó la imagen con éxito", "Acción exitosa");
-            }, errors => this.getAppServices().mapErrorsResponses(this, errors));
+          // Solo mostrar la vista previa, no subir automáticamente
+          // La imagen se subirá cuando el usuario presione "Guardar"
         };
         reader.readAsDataURL(file);
       },
       removeImageRut: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.shop.v_rut = '';
+        this.imageRut = '';
+        // No disparar actualización automática
       },
       onFileChangeCamaraComercio(e) {
         this.shop.v_camara_comercio = event.target.files[0];
@@ -795,22 +1290,17 @@
         this.actualizarCamaraComercio = true;
         reader.onload = (e) => {
           vm.imageCamaraComercio = e.target.result;
-          let token = this.getUsuario.token;
-          let formData = new FormData();
-          formData.append('imagen', vm.shop.v_camara_comercio);
-          formData.append('ruta', 'camara_comercios');
-          formData.append('fieldname', 'v_camara_comercio');
-          this.getAppServices().postMethodWithBearer('api/avanzamas/imagenes/' + this.shop.id_m_tiendas + '?tipo=tienda', formData, token)
-            .then(response => {
-              this.$emit('modal_close');
-              $('#modal').modal('hide');
-              this.$toastr('success', "Se actualizó la imagen con éxito", "Acción exitosa");
-            }, errors => this.getAppServices().mapErrorsResponses(this, errors));
+          // Solo mostrar la vista previa, no subir automáticamente
+          // La imagen se subirá cuando el usuario presione "Guardar"
         };
         reader.readAsDataURL(file);
       },
       removeImageCamaraComercio: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.shop.v_camara_comercio = '';
+        this.imageCamaraComercio = '';
+        // No disparar actualización automática
       },
       onFileChangeContrato(e) {
         this.shop.v_contrato = event.target.files[0];
@@ -825,22 +1315,17 @@
         this.actualizarContrato = true;
         reader.onload = (e) => {
           vm.imageContrato = e.target.result;
-          let token = this.getUsuario.token;
-          let formData = new FormData();
-          formData.append('imagen', vm.shop.v_contrato);
-          formData.append('ruta', 'contratos');
-          formData.append('fieldname', 'v_contrato');
-          this.getAppServices().postMethodWithBearer('api/avanzamas/imagenes/' + this.shop.id_m_tiendas + '?tipo=tienda', formData, token)
-            .then(response => {
-              this.$emit('modal_close');
-              $('#modal').modal('hide');
-              this.$toastr('success', "Se actualizó la imagen con éxito", "Acción exitosa");
-            }, errors => this.getAppServices().mapErrorsResponses(this, errors));
+          // Solo mostrar la vista previa, no subir automáticamente
+          // La imagen se subirá cuando el usuario presione "Guardar"
         };
         reader.readAsDataURL(file);
       },
       removeImageContrato: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.shop.v_contrato = '';
+        this.imageContrato = '';
+        // No disparar actualización automática
       },
       onFileChangePortada(e) {
         this.shop.v_portada = event.target.files[0];
@@ -855,23 +1340,17 @@
         this.actualizarPortada = true;
         reader.onload = (e) => {
           vm.imagePortada = e.target.result;
-          let token = this.getUsuario.token;
-          let formData = new FormData();
-          formData.append('imagen', vm.shop.v_portada);
-          formData.append('ruta', 'portadas');
-          formData.append('fieldname', 'v_portada');
-          this.getAppServices().postMethodWithBearer('api/avanzamas/imagenes/' + this.shop.id_m_tiendas + '?tipo=tienda', formData, token)
-            .then(response => {
-              this.$emit('modal_close');
-              $('#modal').modal('hide');
-              this.$toastr('success', "Se actualizó la imagen con éxito", "Acción exitosa");
-            }, errors => this.getAppServices().mapErrorsResponses(this, errors));
+          // Solo mostrar la vista previa, no subir automáticamente
+          // La imagen se subirá cuando el usuario presione "Guardar"
         };
-
         reader.readAsDataURL(file);
       },
       removeImagePortada: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.shop.v_portada = '';
+        this.imagePortada = '';
+        // No disparar actualización automática
       },
       onFileChangeLogo(e) {
         this.shop.v_logo = event.target.files[0];
@@ -886,22 +1365,17 @@
         this.actualizarLogo = true;
         reader.onload = (e) => {
           vm.imageLogo = e.target.result;
-          let token = this.getUsuario.token;
-          let formData = new FormData();
-          formData.append('imagen', vm.shop.v_logo);
-          formData.append('ruta', 'logos');
-          formData.append('fieldname', 'v_logo');
-          this.getAppServices().postMethodWithBearer('api/avanzamas/imagenes/' + this.shop.id_m_tiendas + '?tipo=tienda', formData, token)
-            .then(response => {
-              this.$emit('modal_close');
-              $('#modal').modal('hide');
-              this.$toastr('success', "Se actualizó la imagen con éxito", "Acción exitosa");
-            }, errors => this.getAppServices().mapErrorsResponses(this, errors));
+          // Solo mostrar la vista previa, no subir automáticamente
+          // La imagen se subirá cuando el usuario presione "Guardar"
         };
         reader.readAsDataURL(file);
       },
       removeImageLogo: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.shop.v_logo = '';
+        this.imageLogo = '';
+        // No disparar actualización automática
       },
       direccionPrincipal() {
         this.actualizarDireccionPrincipal = true;
@@ -922,13 +1396,36 @@
             let boton_editar = $('#submitButton');
             boton_editar.button('loading');
             let yo = this;
-            this.shop.actualizarDireccionPrincipal = this.actualizarDireccionPrincipal;
-            this.shop.actualizarTelefonoPrincipal = this.actualizarTelefonoPrincipal;
-            this.shop.actualizarTelefonoSecundario = this.actualizarTelefonoSecundario;
-            this.shop.actualizarNombre = this.actualizarNombre;
-            this.shop.id_usuario_asesor_fk = this.usuario_asesor.value;
-            this.shop.id_usuario_cliente_fk = this.usuario_cliente.value;
-            this.getAppServices().putMethodWithBearer('api/ecommerce/tiendas/' + this.shop.id_m_tiendas, this.shop, token)
+            // Preparar datos para envío, limpiando campos de imagen vacíos
+            let updateData = { ...this.shop };
+            
+            // Limpiar campos de imagen que están vacíos
+            const imageFields = ['v_rut', 'v_camara_comercio', 'v_contrato', 'v_logo', 'v_portada'];
+            imageFields.forEach(field => {
+                console.log(`Campo ${field}:`, updateData[field], typeof updateData[field]);
+                
+                // Solo eliminar si está vacío, es un array vacío, o es un objeto vacío (pero NO si es un File)
+                if (updateData[field] === '' || 
+                    (Array.isArray(updateData[field]) && updateData[field].length === 0) ||
+                    (typeof updateData[field] === 'object' && updateData[field] !== null && 
+                     !(updateData[field] instanceof File) && Object.keys(updateData[field]).length === 0)) {
+                    console.log(`Eliminando campo vacío: ${field}`);
+                    delete updateData[field];
+                } else if (updateData[field] instanceof File) {
+                    console.log(`Manteniendo archivo válido: ${field}`);
+                }
+            });
+            
+            console.log('Datos a enviar:', updateData);
+            
+            updateData.actualizarDireccionPrincipal = this.actualizarDireccionPrincipal;
+            updateData.actualizarTelefonoPrincipal = this.actualizarTelefonoPrincipal;
+            updateData.actualizarTelefonoSecundario = this.actualizarTelefonoSecundario;
+            updateData.actualizarNombre = this.actualizarNombre;
+            updateData.id_usuario_asesor_fk = this.usuario_asesor.value;
+            updateData.id_usuario_cliente_fk = this.usuario_cliente.value;
+            
+            this.getAppServices().putMethodWithBearer('api/ecommerce/tiendas/' + this.shop.id_m_tiendas, updateData, token)
               .then(response => {
                 // Limpiar efectos ripple usando el mixin
                 this.clearRippleEffects();

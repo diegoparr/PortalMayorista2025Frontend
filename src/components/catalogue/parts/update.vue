@@ -1,106 +1,156 @@
 <template>
-  <div class="row">
-    <div class="col-xs-12 col-md-12 text-center">
-      <div class="radio">
-        <label class="margin-radios">
-          <input type="radio" name="optionsRadios" value="categorias" v-on:click="seleccionoOpcion('categorias')">
-          Categoria
-        </label>
-        <label class="margin-radios">
-          <input type="radio" name="optionsRadios" value="detalle" v-on:click="seleccionoOpcion('detalle')">
-          Detalle
-        </label>
-        <label class="margin-radios">
-          <input type="radio" name="optionsRadios" value="caracteristicas"
-                 v-on:click="seleccionoOpcion('caracteristicas')">
-          Caracteristicas
-        </label>
+  <div class="catalogue-update-modal">
+    <!-- Header del Modal -->
+    <div class="modal-header-custom">
+      <div class="header-content">
+        <div class="header-icon">
+          <i class="fa fa-edit"></i>
+        </div>
+        <div class="header-text">
+          <h2 class="modal-title">Editar Plantilla</h2>
+          <p class="modal-subtitle">{{catalogo.v_nombre || 'Plantilla de Catálogo'}}</p>
+        </div>
       </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-navigation">
+      <div class="tab-buttons">
+        <button :class="['tab-button', { active: opcion === 'categorias' }]" 
+                @click="seleccionoOpcion('categorias')">
+          <i class="fa fa-tags"></i>
+          Categoría
+        </button>
+        <button :class="['tab-button', { active: opcion === 'detalle' }]" 
+                @click="seleccionoOpcion('detalle')">
+          <i class="fa fa-edit"></i>
+          Detalle
+        </button>
+        <button :class="['tab-button', { active: opcion === 'caracteristicas' }]" 
+                @click="seleccionoOpcion('caracteristicas')">
+          <i class="fa fa-list"></i>
+          Características
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content-container">
       <template v-if="opcion=='categorias'">
-        <div class="row">
-          <div class="col-xs-12 col-md-4">
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">Categoria Actual</h3>
+        <div class="tab-content">
+          <div class="content-header">
+            <h3 class="content-title">
+              <i class="fa fa-tags"></i>
+              Gestión de Categorías
+            </h3>
+            <p class="content-description">Cambia la categoría de tu plantilla de catálogo</p>
               </div>
-              <div class="box-body">
-                <table class="table table-bordered">
-                  <tbody>
-                  <tr>
-                    <th class="text-center">Categoria Actual</th>
-                    <th class="text-center">Categoria Principal</th>
-                  </tr>
-                  <tr>
-                    <td class="text-center">{{catalogo.categoria.v_nombre}}</td>
-                    <td class="text-center">{{catalogo.categoria_principal.v_nombre}}</td>
-                  </tr>
-                  </tbody>
-                </table>
+
+          <div class="categories-grid">
+            <!-- Categoría Actual -->
+            <div class="current-category-card">
+              <div class="card-header">
+                <h4 class="card-title">
+                  <i class="fa fa-info-circle"></i>
+                  Categoría Actual
+                </h4>
+              </div>
+              <div class="card-content">
+                <div class="category-info">
+                  <div class="info-item">
+                    <label>Categoría</label>
+                    <span>{{catalogo.categoria.v_nombre}}</span>
+            </div>
+                  <div class="info-item">
+                    <label>Categoría Principal</label>
+                    <span>{{catalogo.categoria_principal.v_nombre}}</span>
+          </div>
+              </div>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-md-8">
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">Selecciona la nueva categoría</h3>
+
+            <!-- Nueva Categoría -->
+            <div class="new-category-card">
+              <div class="card-header">
+                <h4 class="card-title">
+                  <i class="fa fa-edit"></i>
+                  Seleccionar Nueva Categoría
+                </h4>
               </div>
-              <div class="box-body">
-                <loader v-if="cargandoData"></loader>
-                <div class="row" v-else>
-                  <div class="col-xs-12">
+              <div class="card-content">
+                <loader v-if="cargandoData" class="loading-inline"></loader>
+                
+                <div v-else class="category-selection">
+                  <div class="breadcrumb-container">
                     <ol class="breadcrumb">
-                      <li v-for="(categoriaSeleccionada,i) in categoriasSeleccionadas">
-                        <a v-on:click="cambiar(i)" class="categories-links">{{categoriaSeleccionada.texto}}</a>
+                      <li v-for="(categoriaSeleccionada,i) in categoriasSeleccionadas" :key="i">
+                        <a v-on:click="cambiar(i)" class="breadcrumb-link">{{categoriaSeleccionada.texto}}</a>
                       </li>
                     </ol>
                   </div>
-                  <div class="col-xs-12 col-md-7 col-md-offset-3" v-if="hayCategorias">
-                    <loader v-if="cargandoData"></loader>
-                    <model-select :options="categorias" id="v_ciudad" v-model="categoria"
-                                  class="form-control" v-on:input="seleccionarCategoria"
-
-                                  data-placement="left" title="Selecciona la tienda"
+                  
+                  <div class="form-group-wrapper" v-if="hayCategorias">
+                    <div class="form-group">
+                      <label for="v_ciudad">
+                        <i class="fa fa-tags"></i>
+                        Categoría
+                      </label>
+                      <model-select :options="categorias" 
+                                   id="v_ciudad" 
+                                   v-model="categoria"
+                                   class="form-control modern-select" 
+                                   v-on:input="seleccionarCategoria"
+                                   data-placement="left" 
+                                   title="Selecciona la categoría"
                                   required>
                     </model-select>
                   </div>
-                  <div class="col-xs-12 text-center" v-if="!hayCategorias">
-                    <h5>No hay mas categorias</h5>
                   </div>
-                  <div class="col-xs-12" v-if="hayCaracteristicas">
-                    <div class="row">
-                      <div class="table-responsive no-padding">
-                        <table class="table table-hover">
-                          <tbody>
-                          <tr>
-                            <th class="text-center">Nombre</th>
-                            <th class="text-center">Valor</th>
-                            <th class="text-center">Opciones</th>
-                          </tr>
-                          <tr v-for="(caracteristica,i) in caracteristicas">
-                            <td class="text-center">{{caracteristica.v_nombre}}</td>
-                            <td class="text-center">
-                              <input type="text" class="form-control" :placeholder="caracteristica.v_nombre"
+                  
+                  <div v-else class="empty-state">
+                    <i class="fa fa-info-circle"></i>
+                    <p>No hay más categorías disponibles</p>
+                  </div>
+
+                  <!-- Características de la Nueva Categoría -->
+                  <div v-if="hayCaracteristicas" class="characteristics-preview">
+                    <h5 class="preview-title">
+                      <i class="fa fa-list"></i>
+                      Características de la Nueva Categoría
+                    </h5>
+                    <div class="characteristics-grid">
+                      <div v-for="(caracteristica,i) in caracteristicas" :key="i" class="characteristic-item">
+                        <div class="characteristic-name">{{caracteristica.v_nombre}}</div>
+                        <div class="characteristic-input">
+                          <input type="text" 
+                                 class="form-control modern-input" 
+                                 :placeholder="caracteristica.v_nombre"
                                      :id="'inputCaracteristica'+i">
-                            </td>
-                            <td>
-                              <v-btn color="info" :id="'btnCaracteristica'+i"
-                                      v-on:click="llenarCaracteristica(caracteristica,i)"><i
-                                class="fa fa-check" aria-hidden="true"></i></v-btn>
-                              <v-btn color="primary" v-on:click="reiniciarCaracteristica(caracteristica,i)">
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                              </v-btn>
-                            </td>
-                          </tr>
-                          </tbody>
-                        </table>
                       </div>
+                        <div class="characteristic-actions">
+                          <button class="btn btn-success btn-sm" 
+                                  :id="'btnCaracteristica'+i"
+                                  v-on:click="llenarCaracteristica(caracteristica,i)">
+                            <i class="fa fa-check"></i>
+                          </button>
+                          <button class="btn btn-warning btn-sm" 
+                                  v-on:click="reiniciarCaracteristica(caracteristica,i)">
+                            <i class="fa fa-refresh"></i>
+                          </button>
                     </div>
                   </div>
-                  <div class="col-xs-12" v-if="seleccionoCategoria">
-                    <v-btn color="primary" v-on:click="actualizarCategoria" id="submitButtonCategoria"
+                    </div>
+                  </div>
+
+                  <div class="action-buttons" v-if="seleccionoCategoria">
+                    <v-btn color="primary" 
+                           v-on:click="actualizarCategoria" 
+                           id="submitButtonCategoria"
                             :disabled="disabledBtnCategory"
-                            data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando">
-                      Actualizar Categoria de la Plantilla
+                           data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando"
+                           class="btn-update">
+                      <i class="fa fa-save"></i>
+                      Actualizar Categoría
                     </v-btn>
                   </div>
                 </div>
@@ -110,106 +160,179 @@
         </div>
       </template>
       <template v-if="opcion=='detalle'">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">{{catalogo.v_nombre}}</h3>
+        <div class="tab-content">
+          <div class="content-header">
+            <h3 class="content-title">
+              <i class="fa fa-edit"></i>
+              Editar Detalles
+            </h3>
+            <p class="content-description">Modifica la información básica de tu plantilla</p>
               </div>
-              <div class="box-body">
-                <div class="col-xs-12 col-md-12">
-                  <div :class="(!errors.first('v_nombre'))?'form-group':'form-group has-error'">
-                    <label for="v_nombre">Nombre</label>
-                    <input placeholder="Nombre del Catalogo" name="v_nombre" type="text" class="form-control"
-                            data-placement="left" required id="v_nombre"
-                           title="Ingresa el nombre del catalogo que deseas registrar" data-vv-as="nombre del catalogo"
-                           v-model="catalogo.v_nombre" v-validate="'required|min:5|max:255'">
-                    <span v-show="errors.has('v_nombre')"
-                          class="help-block text-center">{{ errors.first('v_nombre')}}</span>
+
+          <div class="form-section">
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="v_nombre">
+                  <i class="fa fa-tag"></i>
+                  Nombre de la Plantilla
+                </label>
+                <input placeholder="Nombre de la Plantilla" 
+                       name="v_nombre" 
+                       type="text" 
+                       class="form-control modern-input"
+                       data-placement="left" 
+                       required 
+                       id="v_nombre"
+                       title="Ingresa el nombre de la plantilla" 
+                       data-vv-as="nombre de la plantilla"
+                       v-model="catalogo.v_nombre" 
+                       v-validate="'required|min:5|max:255'">
+                <span v-show="errors.has('v_nombre')" class="error-message">
+                  <i class="fa fa-exclamation-triangle"></i>
+                  {{ errors.first('v_nombre')}}
+                </span>
                   </div>
                 </div>
-                <div class="col-xs-12">
-                  <label for="v_descripcion">Descripción</label>
-                  <vue-editor id="v_descripcion" v-model="catalogo.v_descripcion" :editorToolbar="customToolbar"
-                              placeholder="Descripción del Catalogo"></vue-editor>
+
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="v_descripcion">
+                  <i class="fa fa-file-text"></i>
+                  Descripción
+                </label>
+                <vue-editor ref="vueEditor"
+                           :key="'editor-update-' + Math.random()"
+                           id="v_descripcion" 
+                           v-model="catalogo.v_descripcion" 
+                           :editorToolbar="customToolbar"
+                           placeholder="Descripción detallada de la plantilla..."
+                           class="modern-editor"
+                           :editorOptions="editorOptions">
+                </vue-editor>
                 </div>
-                <div class="col-xs-12 margin-top-dragdrop-container">
-                  <label for="v_descripcion">Imagenes del Catalogo</label>
-                  <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"
-                                v-on:vdropzone-mounted="agregarImagenes" v-on:vdropzone-removed-file="quitarImagen"
-                                v-on:vdropzone-success="obtenerImagen"></vue-dropzone>
                 </div>
-                <div class="col-xs-12" style="margin: 10px 0 0 0;">
-                  <v-btn color="primary" v-on:click="actualizarDetalle" id="submitButtonDetalle"
-                          :disabled="disabledBtnDetalle"
-                          data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando">
-                    Actualizar Detalle de la Plantilla
-                  </v-btn>
-                </div>
+
+            <div class="form-group-wrapper">
+              <div class="form-group">
+                <label for="dropzone">
+                  <i class="fa fa-images"></i>
+                  Imágenes de la Plantilla
+                </label>
+                <vue-dropzone ref="myVueDropzone" 
+                             id="dropzone" 
+                             :options="dropzoneOptions"
+                             v-on:vdropzone-mounted="agregarImagenes" 
+                             v-on:vdropzone-removed-file="quitarImagen"
+                             v-on:vdropzone-success="obtenerImagen"
+                             class="modern-dropzone">
+                </vue-dropzone>
+                <p class="dropzone-help">
+                  <i class="fa fa-info-circle"></i>
+                  Arrastra y suelta las imágenes aquí o haz clic para seleccionar archivos
+                </p>
               </div>
+            </div>
+
+            <div class="action-buttons">
+              <v-btn color="primary" 
+                     v-on:click="actualizarDetalle" 
+                     id="submitButtonDetalle"
+                          :disabled="disabledBtnDetalle"
+                     data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando"
+                     class="btn-update">
+                <i class="fa fa-save"></i>
+                Actualizar Detalles
+                  </v-btn>
             </div>
           </div>
         </div>
       </template>
       <template v-if="opcion=='caracteristicas'">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">{{catalogo.v_nombre}}</h3>
+        <div class="tab-content">
+          <div class="content-header">
+            <h3 class="content-title">
+              <i class="fa fa-list"></i>
+              Gestión de Características
+            </h3>
+            <p class="content-description">Administra las características de tu plantilla</p>
               </div>
-              <div class="box-body">
-                <div class="row">
-                  <div class="col-xs-12 col-md-11">
-                    <div :class="(!errors.first('v_nombre_caracteristica'))?'form-group':'form-group has-error'">
-                      <label for="n_v_nombre_caracteristica">Nombre</label>
-                      <input placeholder="Nombre de la Caracteristica" name="v_nombre_caracteristica" type="text"
-                             class="form-control" v-model="nombre_caracteristica"
-                              data-placement="left" required id="n_v_nombre_caracteristica"
-                             title="Ingresa el nombre de la caracteristica que deseas registrar"
-                             data-vv-as="caracteristica"
+
+          <div class="form-section">
+            <div class="add-characteristic-section">
+              <h4 class="section-subtitle">
+                <i class="fa fa-plus"></i>
+                Agregar Nueva Característica
+              </h4>
+              <div class="form-row">
+                <div class="form-group-wrapper">
+                  <div class="form-group">
+                    <label for="n_v_nombre_caracteristica">
+                      <i class="fa fa-tag"></i>
+                      Nombre de la Característica
+                    </label>
+                    <input placeholder="Nombre de la Característica" 
+                           name="v_nombre_caracteristica" 
+                           type="text"
+                           class="form-control modern-input" 
+                           v-model="nombre_caracteristica"
+                           data-placement="left" 
+                           required 
+                           id="n_v_nombre_caracteristica"
+                           title="Ingresa el nombre de la característica que deseas registrar"
+                           data-vv-as="característica"
                              v-validate="'required|min:5|max:255'">
-                      <span v-show="errors.has('v_nombre_caracteristica')"
-                            class="help-block">{{ errors.first('v_nombre_caracteristica')}}</span>
+                    <span v-show="errors.has('v_nombre_caracteristica')" class="error-message">
+                      <i class="fa fa-exclamation-triangle"></i>
+                      {{ errors.first('v_nombre_caracteristica')}}
+                    </span>
                     </div>
                   </div>
-
-                  <div class="col-xs-12 col-md-1 text-center">
-                    <v-btn color="primary" :disabled="!deshabilitarButtonPlus"
+                <div class="form-group-wrapper">
+                  <button class="btn btn-primary btn-add" 
+                          :disabled="!deshabilitarButtonPlus"
                             v-on:click="crearCaracteristicaNueva">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span id="NtextButtonCaracteristica">Registrar Caracteristica</span>
-                    </v-btn>
+                    <i class="fa fa-plus"></i>
+                    Agregar
+                  </button>
                   </div>
                 </div>
-                <div class="table-responsive no-padding">
-                  <table class="table table-hover">
-                    <tbody>
-                    <tr>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Opciones</th>
-                    </tr>
-                    <tr v-for="(caracteristica,i) in catalogo.caracteristicas">
-                      <td class="text-center">{{caracteristica.v_nombre}}</td>
-                      <td>
-                        <v-btn color="error"
-                                v-on:click="eliminarCaracteristicaNueva(caracteristica.v_nombre)">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </v-btn>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-xs-12" style="margin: 10px 0 0 0;">
-                  <v-btn color="primary" v-on:click="actualizarCaracteristicas"
-                          id="submitButtonCaracteristicas"
+            </div>
 
-                          data-loading-text="&lt;i class='pull-left fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando">
-                    Actualizar Detalle de la Plantilla
-                  </v-btn>
+            <div class="characteristics-list" v-if="catalogo.caracteristicas && catalogo.caracteristicas.length > 0">
+              <h4 class="section-subtitle">
+                <i class="fa fa-check-circle"></i>
+                Características Actuales
+              </h4>
+              <div class="characteristics-table">
+                <div v-for="(caracteristica,i) in catalogo.caracteristicas" :key="i" class="characteristic-item">
+                  <div class="characteristic-info">
+                    <span class="characteristic-name">{{caracteristica.v_nombre}}</span>
+                  </div>
+                  <button class="btn btn-danger btn-sm"
+                                v-on:click="eliminarCaracteristicaNueva(caracteristica.v_nombre)">
+                    <i class="fa fa-trash"></i>
+                  </button>
                 </div>
               </div>
+            </div>
+
+            <div v-else class="empty-characteristics">
+              <div class="empty-icon">
+                <i class="fa fa-info-circle"></i>
+                </div>
+              <h4>No hay características registradas</h4>
+              <p>Agrega características para describir mejor tu plantilla</p>
+              </div>
+
+            <div class="action-buttons">
+              <v-btn color="primary" 
+                     v-on:click="actualizarCaracteristicas"
+                     id="submitButtonCaracteristicas"
+                     data-loading-text="&lt;i class='pull-left fa fa-spinner fa-spin '&gt;&lt;/i&gt; Editando"
+                     class="btn-update">
+                <i class="fa fa-save"></i>
+                Actualizar Características
+              </v-btn>
             </div>
           </div>
         </div>
@@ -258,6 +381,11 @@
           [{'header': [1, 2, 3, 4, 5, 6, false]}],
           [{'align': []}],
         ],
+        editorOptions: {
+          modules: {
+            markdownShortcuts: false
+          }
+        },
         dropzoneOptions: {
           url: 'https://httpbin.org/post',
           thumbnailWidth: 150,
@@ -284,12 +412,22 @@
     mounted() {
       let yo = this;
       $('#modal').on('hidden.bs.modal', function (e) {
+        // Limpiar el editor Quill para evitar conflictos
+        if (yo.$refs.vueEditor && yo.$refs.vueEditor.quill) {
+          yo.$refs.vueEditor.quill = null;
+        }
         yo.$emit('modal_close');
       });
     },
+    beforeDestroy() {
+      // Limpiar el editor antes de destruir el componente
+      if (this.$refs.vueEditor && this.$refs.vueEditor.quill) {
+        this.$refs.vueEditor.quill = null;
+      }
+    },
     created() {
       $(function () {
-        $('[]').tooltip()
+        $('[data-placement]').tooltip()
       });
       console.log(this.catalogo);
     },
@@ -298,7 +436,18 @@
       getAppServices() {
         return AppService;
       },
+      // Método para limpiar el editor Quill
+      limpiarEditor() {
+        if (this.$refs.vueEditor && this.$refs.vueEditor.quill) {
+          this.$refs.vueEditor.quill = null;
+        }
+      },
       seleccionoOpcion(value) {
+        // Limpiar el editor al cambiar de pestaña
+        this.$nextTick(() => {
+          this.limpiarEditor();
+        });
+        
         switch (value) {
           case 'categorias':
             this.cargarCategorias(null);
@@ -481,6 +630,9 @@
         this.catalogo.caracteristicas.push({
           indice: this.caracteristicas.length,
           v_nombre: this.nombre_caracteristica,
+          v_tipo: 'unica', // Tipo por defecto para nuevas características
+          v_unidad: 'n/a', // Unidad por defecto
+          b_requerido: false, // No requerido por defecto
           id_m_categorias_fk: this.catalogo.id_m_categorias_fk,
           id_m_categorias_principal_fk: this.catalogo.id_m_categorias_principal_fk,
           pivot: {
@@ -537,7 +689,7 @@
         );
       },
       deshabilitarButtonPlus() {
-        return this.nombre_caracteristica !== null && this.tipo !== null && !this.errors.has('v_tipo');
+        return this.nombre_caracteristica !== null && this.nombre_caracteristica.trim() !== '' && !this.errors.has('v_nombre_caracteristica');
       },
       disabledBtnCaracteristicas() {
         return this.aceptoCaracteristicasActuales;
@@ -545,3 +697,652 @@
     })
   }
 </script>
+
+<style scoped>
+/* Modal Principal */
+.catalogue-update-modal {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+/* Header del Modal */
+.modal-header-custom {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%);
+  color: white;
+  padding: 25px 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header-custom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6633, #ff8c42, #ff6633);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.header-icon i {
+  font-size: 20px;
+  color: white;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-subtitle {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Tabs Navigation */
+.tabs-navigation {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 0 30px;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 0;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 20px 30px;
+  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.tab-button:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+.tab-button.active {
+  background: white;
+  color: #ff6633;
+  border-bottom-color: #ff6633;
+  font-weight: 600;
+}
+
+.tab-button i {
+  font-size: 14px;
+}
+
+/* Tab Content */
+.tab-content-container {
+  padding: 30px;
+  min-height: 500px;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Content Header */
+.content-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.content-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.content-title i {
+  color: #ff6633;
+  font-size: 18px;
+}
+
+.content-description {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Categories Grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.current-category-card,
+.new-category-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  background: #f8f9fa;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title i {
+  color: #ff6633;
+  font-size: 14px;
+}
+
+.card-content {
+  padding: 25px;
+}
+
+/* Category Info */
+.category-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-item label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.info-item span {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Breadcrumb */
+.breadcrumb-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #ff6633;
+}
+
+.breadcrumb {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '>';
+  margin: 0 10px;
+  color: #666;
+}
+
+.breadcrumb-link {
+  color: #ff6633;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  background: #ff6633;
+  color: white;
+  text-decoration: none;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-group-wrapper {
+  margin-bottom: 20px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-group-wrapper:hover {
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group label i {
+  color: #ff6633;
+  font-size: 12px;
+}
+
+/* Modern Inputs */
+.modern-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.modern-input:focus {
+  border-color: #ff6633;
+  box-shadow: 0 0 0 3px rgba(255, 102, 51, 0.1);
+  outline: none;
+}
+
+.modern-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+/* Error Messages */
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+/* Loading States */
+.loading-inline {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-state i {
+  font-size: 48px;
+  color: #ddd;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Dropzone */
+.modern-dropzone {
+  border: 2px dashed #ff6633 !important;
+  border-radius: 12px !important;
+  background: #fff5f2 !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-dropzone:hover {
+  border-color: #e55a2b !important;
+  background: #fff0eb !important;
+}
+
+.dropzone-help {
+  margin-top: 10px;
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Editor */
+.modern-editor {
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Characteristics Preview */
+.characteristics-preview {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-title i {
+  color: #ff6633;
+  font-size: 12px;
+}
+
+.characteristics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.characteristic-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.characteristic-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.characteristic-input {
+  margin-bottom: 10px;
+}
+
+.characteristic-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Add Characteristic Section */
+.add-characteristic-section {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-subtitle i {
+  color: #ff6633;
+  font-size: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b 0%, #d44a1a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 102, 51, 0.3);
+}
+
+.btn-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Characteristics List */
+.characteristics-list {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.characteristics-table {
+  padding: 0;
+}
+
+.characteristic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.characteristic-item:last-child {
+  border-bottom: none;
+}
+
+.characteristic-item:hover {
+  background: #f8f9fa;
+}
+
+.characteristic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.characteristic-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Empty Characteristics */
+.empty-characteristics {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.empty-characteristics .empty-icon {
+  font-size: 64px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.empty-characteristics h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.empty-characteristics p {
+  color: #666;
+  margin: 0;
+}
+
+/* Action Buttons */
+.action-buttons {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-update {
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-update:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b 0%, #d44a1a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 102, 51, 0.3);
+}
+
+.btn-update:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tab-content-container {
+    padding: 20px;
+  }
+  
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .tab-buttons {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    border-bottom: 1px solid #e9ecef;
+    border-radius: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .characteristics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .breadcrumb {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .breadcrumb li:not(:last-child)::after {
+    display: none;
+  }
+}
+</style>

@@ -24,7 +24,7 @@
   export default {
     data() {
       return {
-        loader: true,
+        loader: false, // Iniciar como false para evitar loader inicial
       }
     },
     methods: {
@@ -34,12 +34,20 @@
     },
     components: {Loader},
     watch: {
-      '$route': function (to) {
-        console.log(to)
+      '$route': function (to, from) {
+        // Desactivar loader al cambiar de ruta
+        this.loader = false;
       }
     },
     created() {
-      console.log(this.$route.meta);
+      // Desactivar loader al crear el componente
+      this.loader = false;
+    },
+    mounted() {
+      // Asegurar que el loader esté desactivado después del montaje
+      this.$nextTick(() => {
+        this.loader = false;
+      });
     }
   }
 </script>
