@@ -5,18 +5,20 @@
 
 /* ===== FIX PARA EL SIDEBAR EN MÓVILES ===== */
 
-/* Asegurar que el sidebar tenga el comportamiento correcto en móviles */
-.main-sidebar {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 1000 !important;
-  height: 100vh !important;
-  width: 250px !important;
-  background: #222d32 !important;
-  transition: transform 0.3s ease !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .main-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    height: 100vh !important;
+    width: 250px !important;
+    background: #222d32 !important;
+    transition: transform 0.3s ease !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 }
 
 /* Ocultar sidebar por defecto en móviles */
@@ -98,71 +100,75 @@
 
 /* ===== ESTILOS DEL SIDEBAR ===== */
 
-/* Asegurar que el sidebar tenga el estilo correcto */
-.sidebar {
-  height: 100% !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  background: #222d32 !important;
-}
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .sidebar {
+    height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background: #222d32 !important;
+  }
 
-/* Estilos para el menú del sidebar */
-.sidebar-menu {
-  list-style: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #222d32 !important;
-}
+  /* Estilos para el menú del sidebar */
+  .sidebar-menu {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #222d32 !important;
+  }
 
-.sidebar-menu li {
-  position: relative !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #222d32 !important;
-}
+  .sidebar-menu li {
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #222d32 !important;
+  }
 
-.sidebar-menu li a {
-  display: block !important;
-  padding: 15px 20px !important;
-  color: #b8c7ce !important;
-  text-decoration: none !important;
-  border-left: 3px solid transparent !important;
-  transition: all 0.3s ease !important;
-  background: #222d32 !important;
-  font-size: 14px !important;
-  line-height: 1.4 !important;
-}
+  .sidebar-menu li a {
+    display: block !important;
+    padding: 15px 20px !important;
+    color: #b8c7ce !important;
+    text-decoration: none !important;
+    border-left: 3px solid transparent !important;
+    transition: all 0.3s ease !important;
+    background: #222d32 !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
 
-.sidebar-menu li a:hover {
-  background: #1e282c !important;
-  color: #ffffff !important;
-  border-left-color: #ff6633 !important;
-}
+  .sidebar-menu li a:hover {
+    background: #1e282c !important;
+    color: #ffffff !important;
+    border-left-color: #ff6633 !important;
+  }
 
-.sidebar-menu li.router-link-active a {
-  background: #1e282c !important;
-  color: #ffffff !important;
-  border-left-color: #ff6633 !important;
-}
+  .sidebar-menu li.router-link-active a {
+    background: #1e282c !important;
+    color: #ffffff !important;
+    border-left-color: #ff6633 !important;
+  }
 
-.sidebar-menu li a i {
-  width: 20px !important;
-  margin-right: 10px !important;
-  text-align: center !important;
-  font-size: 16px !important;
-}
+  .sidebar-menu li a i {
+    width: 20px !important;
+    margin-right: 10px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+  }
 
-.sidebar-menu li a .nav-label {
-  font-weight: 500 !important;
+  .sidebar-menu li a .nav-label {
+    font-weight: 500 !important;
+  }
 }
 
 /* ===== ESTILOS PARA EL USER PANEL ===== */
 
-/* Asegurar que el user panel se vea bien en móviles */
-.user-panel {
-  background: #1e282c !important;
-  padding: 15px !important;
-  border-bottom: 1px solid #3c8dbc !important;
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .user-panel {
+    background: #1e282c !important;
+    padding: 15px !important;
+    border-bottom: 1px solid #3c8dbc !important;
+  }
 }
 
 /* ===== FIX PARA EL HEADER EN MÓVILES ===== */
@@ -340,84 +346,90 @@
 
 /* ===== FIX PARA NAVEGACIÓN ===== */
 
-/* Asegurar que la navegación funcione correctamente */
-.sidebar-menu li a {
-  position: relative !important;
-  z-index: 1 !important;
-}
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .sidebar-menu li a {
+    position: relative !important;
+    z-index: 1 !important;
+  }
 
-.sidebar-menu li a:before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: transparent !important;
-  transition: background 0.3s ease !important;
-  z-index: -1 !important;
-}
+  .sidebar-menu li a:before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: transparent !important;
+    transition: background 0.3s ease !important;
+    z-index: -1 !important;
+  }
 
-.sidebar-menu li a:hover:before {
-  background: #1e282c !important;
-}
+  .sidebar-menu li a:hover:before {
+    background: #1e282c !important;
+  }
 
-.sidebar-menu li.router-link-active a:before {
-  background: #1e282c !important;
-}
+  .sidebar-menu li.router-link-active a:before {
+    background: #1e282c !important;
+  }
 
-/* ===== FIX PARA ICONOS ===== */
+  /* ===== FIX PARA ICONOS ===== */
 
-/* Asegurar que los iconos se vean correctamente */
-.sidebar-menu li a i {
-  display: inline-block !important;
-  width: 20px !important;
-  text-align: center !important;
-  margin-right: 10px !important;
-  font-size: 16px !important;
-  line-height: 1 !important;
-}
+  /* Asegurar que los iconos se vean correctamente */
+  .sidebar-menu li a i {
+    display: inline-block !important;
+    width: 20px !important;
+    text-align: center !important;
+    margin-right: 10px !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
 
-/* ===== FIX PARA TEXTO ===== */
+  /* ===== FIX PARA TEXTO ===== */
 
-/* Asegurar que el texto se vea correctamente */
-.sidebar-menu li a .nav-label {
-  display: inline-block !important;
-  vertical-align: middle !important;
-  font-size: 14px !important;
-  line-height: 1.4 !important;
-  font-weight: 500 !important;
+  /* Asegurar que el texto se vea correctamente */
+  .sidebar-menu li a .nav-label {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    font-weight: 500 !important;
+  }
 }
 
 /* ===== FIX PARA SCROLLBAR ===== */
 
-/* Personalizar el scrollbar del sidebar */
-.sidebar::-webkit-scrollbar {
-  width: 6px !important;
-}
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .sidebar::-webkit-scrollbar {
+    width: 6px !important;
+  }
 
-.sidebar::-webkit-scrollbar-track {
-  background: #1e282c !important;
-}
+  .sidebar::-webkit-scrollbar-track {
+    background: #1e282c !important;
+  }
 
-.sidebar::-webkit-scrollbar-thumb {
-  background: #3c8dbc !important;
-  border-radius: 3px !important;
-}
+  .sidebar::-webkit-scrollbar-thumb {
+    background: #3c8dbc !important;
+    border-radius: 3px !important;
+  }
 
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #ff6633 !important;
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background: #ff6633 !important;
+  }
 }
 
 /* ===== FIX PARA FOCUS ===== */
 
-/* Asegurar que los elementos sean accesibles */
-.sidebar-menu li a:focus {
-  outline: 2px solid #ff6633 !important;
-  outline-offset: -2px !important;
-}
+/* Solo aplicar estilos específicos en móviles */
+@media (max-width: 767px) {
+  .sidebar-menu li a:focus {
+    outline: 2px solid #ff6633 !important;
+    outline-offset: -2px !important;
+  }
 
-.mobile-menu-toggle:focus {
-  outline: 2px solid #ffffff !important;
-  outline-offset: 2px !important;
+  .mobile-menu-toggle:focus {
+    outline: 2px solid #ffffff !important;
+    outline-offset: 2px !important;
+  }
 }
