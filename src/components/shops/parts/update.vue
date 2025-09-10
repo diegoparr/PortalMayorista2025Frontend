@@ -1396,37 +1396,94 @@
             let boton_editar = $('#submitButton');
             boton_editar.button('loading');
             let yo = this;
-            // Preparar datos para envío, limpiando campos de imagen vacíos
-            let updateData = { ...this.shop };
             
-            // Limpiar campos de imagen que están vacíos
-            const imageFields = ['v_rut', 'v_camara_comercio', 'v_contrato', 'v_logo', 'v_portada'];
-            imageFields.forEach(field => {
-                console.log(`Campo ${field}:`, updateData[field], typeof updateData[field]);
-                
-                // Solo eliminar si está vacío, es un array vacío, o es un objeto vacío (pero NO si es un File)
-                if (updateData[field] === '' || 
-                    (Array.isArray(updateData[field]) && updateData[field].length === 0) ||
-                    (typeof updateData[field] === 'object' && updateData[field] !== null && 
-                     !(updateData[field] instanceof File) && Object.keys(updateData[field]).length === 0)) {
-                    console.log(`Eliminando campo vacío: ${field}`);
-                    delete updateData[field];
-                } else if (updateData[field] instanceof File) {
-                    console.log(`Manteniendo archivo válido: ${field}`);
-                }
+            // Primero actualizar las imágenes si hay archivos nuevos
+            this.actualizarImagenesTienda(token).then(() => {
+              // Luego actualizar los datos de la tienda
+              this.actualizarDatosTienda(token, boton_editar);
+            }).catch(error => {
+              console.error('Error al actualizar imágenes:', error);
+              boton_editar.button('reset');
             });
+          });
+        });
+      },
+      
+      async actualizarImagenesTienda(token) {
+        const imageFields = ['v_rut', 'v_camara_comercio', 'v_contrato', 'v_logo', 'v_portada'];
+        const imageUpdates = [];
+        
+        for (let field of imageFields) {
+          if (this.shop[field] instanceof File) {
+            console.log(`Subiendo imagen ${field}:`, this.shop[field]);
             
-            console.log('Datos a enviar:', updateData);
+            const formData = new FormData();
+            formData.append('imagen', this.shop[field]);
+            formData.append('ruta', this.getRutaImagen(field));
+            formData.append('fieldname', field);
             
-            updateData.actualizarDireccionPrincipal = this.actualizarDireccionPrincipal;
-            updateData.actualizarTelefonoPrincipal = this.actualizarTelefonoPrincipal;
-            updateData.actualizarTelefonoSecundario = this.actualizarTelefonoSecundario;
-            updateData.actualizarNombre = this.actualizarNombre;
-            updateData.id_usuario_asesor_fk = this.usuario_asesor.value;
-            updateData.id_usuario_cliente_fk = this.usuario_cliente.value;
+            try {
+              const response = await this.getAppServices().postMethodWithBearer(
+                `api/avanzamas/imagenes/${this.shop.id_m_tiendas}?tipo=tienda`, 
+                formData, 
+                token
+              );
+              
+              if (response.body) {
+                this.shop[field] = response.body;
+                console.log(`Imagen ${field} actualizada:`, response.body);
+              }
+            } catch (error) {
+              console.error(`Error al subir imagen ${field}:`, error);
+            }
+          }
+        }
+      },
+      
+      getRutaImagen(field) {
+        const rutas = {
+          'v_rut': 'rut',
+          'v_camara_comercio': 'camara_comercios',
+          'v_contrato': 'contratos',
+          'v_logo': 'logos',
+          'v_portada': 'portadas'
+        };
+        return rutas[field] || 'logos';
+      },
+      
+      actualizarDatosTienda(token, boton_editar) {
+        // Preparar datos para envío, limpiando campos de imagen vacíos
+        let updateData = { ...this.shop };
+        let yo = this;
+        
+        // Limpiar campos de imagen que están vacíos
+        const imageFields = ['v_rut', 'v_camara_comercio', 'v_contrato', 'v_logo', 'v_portada'];
+        imageFields.forEach(field => {
+            console.log(`Campo ${field}:`, updateData[field], typeof updateData[field]);
             
-            this.getAppServices().putMethodWithBearer('api/ecommerce/tiendas/' + this.shop.id_m_tiendas, updateData, token)
-              .then(response => {
+            // Solo eliminar si está vacío, es un array vacío, o es un objeto vacío (pero NO si es un File)
+            if (updateData[field] === '' || 
+                (Array.isArray(updateData[field]) && updateData[field].length === 0) ||
+                (typeof updateData[field] === 'object' && updateData[field] !== null && 
+                 !(updateData[field] instanceof File) && Object.keys(updateData[field]).length === 0)) {
+                console.log(`Eliminando campo vacío: ${field}`);
+                delete updateData[field];
+            } else if (updateData[field] instanceof File) {
+                console.log(`Manteniendo archivo válido: ${field}`);
+            }
+        });
+        
+        console.log('Datos a enviar:', updateData);
+        
+        updateData.actualizarDireccionPrincipal = this.actualizarDireccionPrincipal;
+        updateData.actualizarTelefonoPrincipal = this.actualizarTelefonoPrincipal;
+        updateData.actualizarTelefonoSecundario = this.actualizarTelefonoSecundario;
+        updateData.actualizarNombre = this.actualizarNombre;
+        updateData.id_usuario_asesor_fk = this.usuario_asesor.value;
+        updateData.id_usuario_cliente_fk = this.usuario_cliente.value;
+        
+        this.getAppServices().putMethodWithBearer('api/ecommerce/tiendas/' + this.shop.id_m_tiendas, updateData, token)
+          .then(response => {
                 // Limpiar efectos ripple usando el mixin
                 this.clearRippleEffects();
                 
@@ -1438,8 +1495,6 @@
                 boton_editar.button('reset');
                 yo.getAppServices().mapErrorsResponses(yo, errors);
               });
-          });
-        });
       }
     }
   }
