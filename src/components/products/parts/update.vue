@@ -589,13 +589,16 @@
           [{'align': []}],
         ],
         dropzoneOptions: {
-          url: 'https://httpbin.org/post',
+          url: '/api/avanzamas/actualizar', // Endpoint correcto del backend
           thumbnailWidth: 150,
           maxFilesize: 1.5,
           acceptedFiles: 'image/*',
           addRemoveLinks: true,
           dictCancelUpload: 'Quitar',
-          headers: {"My-Awesome-Header": "header value"},
+          autoProcessQueue: false, // Deshabilitar subida automática
+          headers: {
+            "Accept": "application/json"
+          }
         },
         images: [],
         imagesProducto: [],
@@ -865,6 +868,7 @@
         caracteristica.v_valor = '';
       },
       obtenerImagen(file) {
+        // Solo agregar el archivo a la lista, no subirlo automáticamente
         this.images.push(file);
         this.editoImagenes = true;
         this.agregoImagenes = true;
@@ -938,11 +942,16 @@
               formData.append("modelo", "producto");
               formData.append("id_modelo", this.producto.id_m_productos);
               this.postMethodWithBearer(this.urlsApi().endpointsManejoImagenes.actualizar, formData, token).then(
-                response => {
+                imageResponse => {
                   yo.$emit('update');
                   $('#modal').modal('hide');
                   yo.$toastr('success', "Se ha actualizado el recurso con éxito.", "Acción exitosa");
-                }, errors => yo.mapErrorsResponses(yo, errors))
+                }, imageErrors => {
+                  console.error('Error al actualizar imágenes:', imageErrors);
+                  yo.$emit('update');
+                  $('#modal').modal('hide');
+                  yo.$toastr('success', response.body.mensaje, "Producto actualizado, pero hubo un error con las imágenes");
+                })
             } else {
               yo.$emit('update');
               $('#modal').modal('hide');
