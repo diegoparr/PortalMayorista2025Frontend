@@ -64,7 +64,7 @@
       "destination": "/dist/$1"
     },
     {
-      "source": "/((?!api|images|build\\.js|style\\.css|favicon\\.png|img|fonts|assets|new|dist).*)",
+      "source": "/((?!api|images|build\\.js|style\\.css|favicon\\.png|img|fonts|assets|new|dist|modal-production-fix\\.css|production-override\\.css|sidebar-responsive-fix\\.css).*)",
       "destination": "/index.html"
     }
   ],
