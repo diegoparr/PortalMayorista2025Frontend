@@ -1,0 +1,423 @@
+/* 
+ * FIX RESPONSIVO PARA SIDEBAR DEL PANEL ADMINISTRATIVO
+ * Este archivo corrige los problemas de responsive del sidebar en móviles
+ */
+
+/* ===== FIX PARA EL SIDEBAR EN MÓVILES ===== */
+
+/* Asegurar que el sidebar tenga el comportamiento correcto en móviles */
+.main-sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1000 !important;
+  height: 100vh !important;
+  width: 250px !important;
+  background: #222d32 !important;
+  transition: transform 0.3s ease !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Ocultar sidebar por defecto en móviles */
+@media (max-width: 767px) {
+  .main-sidebar {
+    transform: translateX(-100%) !important;
+  }
+  
+  /* Mostrar sidebar cuando tenga la clase 'sidebar-open' */
+  .main-sidebar.sidebar-open {
+    transform: translateX(0) !important;
+  }
+  
+  /* Overlay para cerrar el sidebar al hacer clic fuera */
+  .sidebar-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 999 !important;
+    display: none !important;
+  }
+  
+  .sidebar-overlay.show {
+    display: block !important;
+  }
+}
+
+/* Ajustar el contenido principal cuando el sidebar esté abierto */
+@media (max-width: 767px) {
+  .content-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+    transition: margin-left 0.3s ease !important;
+  }
+  
+  .content-wrapper.sidebar-open {
+    margin-left: 0 !important;
+  }
+}
+
+/* ===== BOTÓN HAMBURGUESA PARA MÓVILES ===== */
+
+/* Botón hamburguesa en el header */
+.mobile-menu-toggle {
+  display: none !important;
+  position: fixed !important;
+  top: 15px !important;
+  left: 15px !important;
+  z-index: 1001 !important;
+  background: #ff6633 !important;
+  border: none !important;
+  color: white !important;
+  padding: 10px 12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 18px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.mobile-menu-toggle:hover {
+  background: #e55a2b !important;
+  transform: scale(1.05) !important;
+}
+
+.mobile-menu-toggle:active {
+  transform: scale(0.95) !important;
+}
+
+/* Mostrar botón hamburguesa solo en móviles */
+@media (max-width: 767px) {
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+}
+
+/* ===== ESTILOS DEL SIDEBAR ===== */
+
+/* Asegurar que el sidebar tenga el estilo correcto */
+.sidebar {
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background: #222d32 !important;
+}
+
+/* Estilos para el menú del sidebar */
+.sidebar-menu {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #222d32 !important;
+}
+
+.sidebar-menu li {
+  position: relative !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #222d32 !important;
+}
+
+.sidebar-menu li a {
+  display: block !important;
+  padding: 15px 20px !important;
+  color: #b8c7ce !important;
+  text-decoration: none !important;
+  border-left: 3px solid transparent !important;
+  transition: all 0.3s ease !important;
+  background: #222d32 !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+.sidebar-menu li a:hover {
+  background: #1e282c !important;
+  color: #ffffff !important;
+  border-left-color: #ff6633 !important;
+}
+
+.sidebar-menu li.router-link-active a {
+  background: #1e282c !important;
+  color: #ffffff !important;
+  border-left-color: #ff6633 !important;
+}
+
+.sidebar-menu li a i {
+  width: 20px !important;
+  margin-right: 10px !important;
+  text-align: center !important;
+  font-size: 16px !important;
+}
+
+.sidebar-menu li a .nav-label {
+  font-weight: 500 !important;
+}
+
+/* ===== ESTILOS PARA EL USER PANEL ===== */
+
+/* Asegurar que el user panel se vea bien en móviles */
+.user-panel {
+  background: #1e282c !important;
+  padding: 15px !important;
+  border-bottom: 1px solid #3c8dbc !important;
+}
+
+/* ===== FIX PARA EL HEADER EN MÓVILES ===== */
+
+/* Ajustar el header para que no interfiera con el sidebar */
+@media (max-width: 767px) {
+  .main-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: #3c8dbc !important;
+    height: 60px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .main-header .navbar {
+    margin: 0 !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 15px !important;
+  }
+  
+  .main-header .navbar .navbar-nav {
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+/* ===== FIX PARA EL CONTENIDO PRINCIPAL ===== */
+
+/* Ajustar el contenido principal para móviles */
+@media (max-width: 767px) {
+  .content-wrapper {
+    margin-top: 60px !important;
+    margin-left: 0 !important;
+    padding: 15px !important;
+    min-height: calc(100vh - 60px) !important;
+  }
+  
+  .content-header {
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
+  }
+  
+  .content-header h1 {
+    font-size: 24px !important;
+    margin: 0 !important;
+  }
+  
+  .content-header .breadcrumb {
+    margin: 5px 0 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  
+  .content {
+    padding: 0 !important;
+  }
+}
+
+/* ===== FIX PARA TABLETAS ===== */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .main-sidebar {
+    width: 200px !important;
+  }
+  
+  .content-wrapper {
+    margin-left: 200px !important;
+  }
+  
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
+/* ===== FIX PARA PANTALLAS GRANDES ===== */
+
+@media (min-width: 1025px) {
+  .main-sidebar {
+    width: 250px !important;
+  }
+  
+  .content-wrapper {
+    margin-left: 250px !important;
+  }
+  
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
+/* ===== ANIMACIONES Y TRANSICIONES ===== */
+
+/* Transición suave para el sidebar */
+.main-sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Transición suave para el contenido */
+.content-wrapper {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ===== FIX PARA SCROLL EN MÓVILES ===== */
+
+/* Asegurar que el scroll funcione correctamente en móviles */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden !important;
+  }
+  
+  .main-sidebar {
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  .content-wrapper {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ===== FIX PARA ELEMENTOS ESPECÍFICOS ===== */
+
+/* Asegurar que los botones y elementos interactivos funcionen en móviles */
+@media (max-width: 767px) {
+  .btn, .button, button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 12px 16px !important;
+  }
+  
+  .form-control {
+    min-height: 44px !important;
+    padding: 12px 16px !important;
+  }
+  
+  .table-responsive {
+    border: none !important;
+  }
+}
+
+/* ===== FIX PARA MODALES EN MÓVILES ===== */
+
+/* Asegurar que los modales funcionen correctamente en móviles */
+@media (max-width: 767px) {
+  .modal-dialog {
+    margin: 10px !important;
+    width: calc(100% - 20px) !important;
+    max-width: none !important;
+  }
+  
+  .modal-content {
+    border-radius: 8px !important;
+  }
+  
+  .modal-header {
+    padding: 15px !important;
+  }
+  
+  .modal-body {
+    padding: 15px !important;
+    max-height: calc(100vh - 200px) !important;
+    overflow-y: auto !important;
+  }
+  
+  .modal-footer {
+    padding: 15px !important;
+  }
+}
+
+/* ===== FIX PARA NAVEGACIÓN ===== */
+
+/* Asegurar que la navegación funcione correctamente */
+.sidebar-menu li a {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.sidebar-menu li a:before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: transparent !important;
+  transition: background 0.3s ease !important;
+  z-index: -1 !important;
+}
+
+.sidebar-menu li a:hover:before {
+  background: #1e282c !important;
+}
+
+.sidebar-menu li.router-link-active a:before {
+  background: #1e282c !important;
+}
+
+/* ===== FIX PARA ICONOS ===== */
+
+/* Asegurar que los iconos se vean correctamente */
+.sidebar-menu li a i {
+  display: inline-block !important;
+  width: 20px !important;
+  text-align: center !important;
+  margin-right: 10px !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+/* ===== FIX PARA TEXTO ===== */
+
+/* Asegurar que el texto se vea correctamente */
+.sidebar-menu li a .nav-label {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+}
+
+/* ===== FIX PARA SCROLLBAR ===== */
+
+/* Personalizar el scrollbar del sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #1e282c !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #3c8dbc !important;
+  border-radius: 3px !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #ff6633 !important;
+}
+
+/* ===== FIX PARA FOCUS ===== */
+
+/* Asegurar que los elementos sean accesibles */
+.sidebar-menu li a:focus {
+  outline: 2px solid #ff6633 !important;
+  outline-offset: -2px !important;
+}
+
+.mobile-menu-toggle:focus {
+  outline: 2px solid #ffffff !important;
+  outline-offset: 2px !important;
+}

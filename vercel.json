@@ -36,6 +36,10 @@
       "destination": "/production-override.css"
     },
     {
+      "source": "/sidebar-responsive-fix.css",
+      "destination": "/sidebar-responsive-fix.css"
+    },
+    {
       "source": "/favicon.png",
       "destination": "/favicon.png"
     },

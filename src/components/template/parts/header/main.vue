@@ -1,5 +1,8 @@
 <template>
   <header class="main-header">
+    <!-- Botón hamburguesa para móviles -->
+    <mobile-menu-toggle></mobile-menu-toggle>
+    
     <router-link class="logo" :to="{name:'explore'}">
       <img src="/dist/favicon.png" class="logo-mini" alt="LaHipertienda" width="40" height="40">
       <img src="/dist/img/img_logo.png" class="logo-lg logo-lg-img" alt="LaHipertienda">
@@ -15,6 +18,7 @@
 </template>
 <script>
   import UserMenu from './parts/user-menu.vue';
+  import MobileMenuToggle from './parts/mobile-menu-toggle.vue';
   import {mapGetters, mapMutations} from 'vuex';
 
   export default {
@@ -23,7 +27,7 @@
         busqueda: null
       }
     },
-    components: {UserMenu},
+    components: {UserMenu, MobileMenuToggle},
     methods: Object.assign({}, mapMutations([
     ]), {
 

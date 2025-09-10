@@ -16,6 +16,8 @@ import './assets/css/admin-responsive-fix.css';
 import './assets/css/modal-production-fix.css';
 // Importar override específico para producción
 import './assets/css/production-override.css';
+// Importar fix para el responsive del sidebar
+import './assets/css/sidebar-responsive-fix.css';
 
 import Vue from 'vue';
 import App from './components/App.vue';

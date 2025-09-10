@@ -8,11 +8,12 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp index.html dist/ && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && cp dist/img_logo.png . && cp dist/logo_small.png . && cp dist/promo*.jpg . && cp dist/promo*.png . && cp dist/*.png . && cp dist/*.gif . && cp dist/*.svg . && cp -r dist/img . && cp -r dist/fonts . && cp -r dist/assets . && cp -r dist/new . && cp src/assets/css/modal-production-fix.css dist/ && cp src/assets/css/production-override.css dist/ && echo 'Production build completed'",
+    "vercel-build": "cross-env NODE_ENV=production webpack --progress --hide-modules && cp index.html dist/ && cp dist/build.js . && cp dist/style.css . && cp dist/favicon.png . && cp dist/img_logo.png . && cp dist/logo_small.png . && cp dist/promo*.jpg . && cp dist/promo*.png . && cp dist/*.png . && cp dist/*.gif . && cp dist/*.svg . && cp -r dist/img . && cp -r dist/fonts . && cp -r dist/assets . && cp -r dist/new . && cp src/assets/css/modal-production-fix.css dist/ && cp src/assets/css/production-override.css dist/ && cp src/assets/css/sidebar-responsive-fix.css dist/ && echo 'Production build completed'",
     "check-env": "node check-env.js",
     "debug-build": "npm run vercel-build && echo === DEBUG INFO === && echo Verificando archivos en dist: && dir dist\\index.html && dir dist\\build.js && dir dist\\style.css && echo === FIN DEBUG ===",
     "test-vercel": "npm run vercel-build && echo === VERCEL TEST === && echo Estructura de archivos en dist: && dir dist && echo === Archivos principales: && dir dist\\index.html && dir dist\\build.js && dir dist\\style.css && echo === Verificando rutas SPA: && echo index.html existe en dist: && if exist dist\\index.html (echo SI) else (echo NO) && echo === FIN TEST ===",
-    "fix-modal": "node fix-modal-production.js"
+    "fix-modal": "node fix-modal-production.js",
+    "fix-sidebar": "node fix-sidebar-responsive.js"
   },
   "dependencies": {
     "@deveodk/vue-toastr": "^1.0.4",
