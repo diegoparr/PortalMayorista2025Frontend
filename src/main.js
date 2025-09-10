@@ -137,17 +137,7 @@ Object.assign(Vue.http.headers, ApiConfig.getApiHeaders());
 Vue.prototype.$processImageUrl = function(url) {
   if (!url) return imageConfig.defaultImage;
   
-  // Si es una URL absoluta del backend, convertirla a relativa en producción
-  if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/') || 
-      url.startsWith('http://127.0.0.1:8000/') || url.startsWith('https://127.0.0.1:8000/')) {
-    if (process.env.NODE_ENV === 'production') {
-      // Extraer solo la ruta para usar el proxy de Vercel
-      const urlObj = new URL(url);
-      return urlObj.pathname;
-    }
-  }
-  
-  // Usar la función de limpieza existente
+  // Usar la función de limpieza centralizada
   return imageConfig.cleanUrl(url);
 };
 
@@ -155,17 +145,7 @@ Vue.prototype.$processImageUrl = function(url) {
 Vue.filter('processImage', function(url) {
   if (!url) return imageConfig.defaultImage;
   
-  // Si es una URL absoluta del backend, convertirla a relativa en producción
-  if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/') || 
-      url.startsWith('http://127.0.0.1:8000/') || url.startsWith('https://127.0.0.1:8000/')) {
-    if (process.env.NODE_ENV === 'production') {
-      // Extraer solo la ruta para usar el proxy de Vercel
-      const urlObj = new URL(url);
-      return urlObj.pathname;
-    }
-  }
-  
-  // Usar la función de limpieza existente
+  // Usar la función de limpieza centralizada
   return imageConfig.cleanUrl(url);
 });
 

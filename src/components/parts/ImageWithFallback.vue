@@ -49,17 +49,7 @@ export default {
         return;
       }
 
-      // Si es una URL absoluta del backend, convertirla a relativa en producción
-      if (url.startsWith('http://82.25.91.192:8082/') || url.startsWith('https://82.25.91.192:8082/')) {
-        if (process.env.NODE_ENV === 'production') {
-          // Extraer solo la ruta para usar el proxy de Vercel
-          const urlObj = new URL(url);
-          this.processedSrc = urlObj.pathname;
-          return;
-        }
-      }
-
-      // Usar la función de limpieza existente
+      // Usar la función de limpieza centralizada
       this.processedSrc = imageConfig.cleanUrl(url);
     },
 

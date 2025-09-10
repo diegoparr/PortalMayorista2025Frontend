@@ -6,6 +6,13 @@ export default {
     staging: 'https://staging.tu-dominio.com'
   },
   
+  // URLs del backend para detección de URLs absolutas
+  backendUrls: {
+    development: ['http://127.0.0.1:8000', 'https://127.0.0.1:8000'],
+    production: ['http://82.25.91.192:8082', 'https://82.25.91.192:8082'],
+    staging: ['https://staging.tu-dominio.com']
+  },
+  
   // Servidores obsoletos que ya no existen
   obsoleteServers: [
     'lahipertienda.com:7443',
@@ -45,6 +52,16 @@ export default {
     return isObsolete;
   },
   
+  // Función para verificar si una URL es del backend
+  isBackendUrl(url) {
+    if (!url) return false;
+    
+    const env = process.env.NODE_ENV || 'development';
+    const backendUrls = this.backendUrls[env] || this.backendUrls.development;
+    
+    return backendUrls.some(backendUrl => url.startsWith(backendUrl));
+  },
+
   // Función para limpiar URLs obsoletas
   cleanUrl(url) {
     if (!url || this.isObsoleteUrl(url)) {
@@ -53,12 +70,16 @@ export default {
     
     // Si es una URL completa válida, manejarla según el entorno
     if (url.startsWith('http://') || url.startsWith('https://')) {
-      if (process.env.NODE_ENV === 'production') {
-        // En producción, convertir URLs absolutas a relativas para usar el proxy
-        const urlObj = new URL(url);
-        return urlObj.pathname;
+      if (this.isBackendUrl(url)) {
+        if (process.env.NODE_ENV === 'production') {
+          // En producción, convertir URLs absolutas del backend a relativas para usar el proxy
+          const urlObj = new URL(url);
+          return urlObj.pathname;
+        }
+        // En desarrollo, mantener la URL tal como está
+        return url;
       }
-      // En desarrollo, mantener la URL tal como está
+      // Si no es del backend, mantener la URL tal como está
       return url;
     }
     
