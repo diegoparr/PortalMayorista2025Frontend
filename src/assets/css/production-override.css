@@ -1,0 +1,179 @@
+/* 
+ * OVERRIDE ESPECÍFICO PARA PRODUCCIÓN
+ * Este archivo se carga con mayor prioridad para corregir problemas de CSS en Vercel
+ */
+
+/* ===== OVERRIDE AGRESIVO PARA MODALES EN PRODUCCIÓN ===== */
+
+/* Asegurar que el modal tenga el ancho correcto en producción */
+.modal-dialog.modal-lg {
+  max-width: 90% !important;
+  width: 90% !important;
+  margin: 30px auto !important;
+}
+
+@media (min-width: 992px) {
+  .modal-dialog.modal-lg {
+    max-width: 800px !important;
+    width: 800px !important;
+  }
+}
+
+/* Fix para el contenido del modal */
+.modal-content {
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Fix para el body del modal */
+.modal-body {
+  padding: 30px !important;
+  background: #ffffff !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* ===== OVERRIDE ESPECÍFICO PARA EL WIZARD DE PRODUCTOS ===== */
+
+/* Contenedor principal del wizard */
+.product-creation-wizard {
+  background: #ffffff !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Header del wizard - FIX CRÍTICO PARA LA BARRA NARANJA */
+.wizard-header {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%) !important;
+  color: white !important;
+  padding: 30px !important;
+  text-align: center !important;
+  border-radius: 15px 15px 0 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Fix específico para evitar que la barra naranja se estire */
+.wizard-header::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%) !important;
+  z-index: 1 !important;
+}
+
+.wizard-title,
+.wizard-subtitle {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ===== OVERRIDE PARA VUE-FORM-WIZARD ===== */
+
+/* Ocultar el header y nav del form-wizard interno */
+.vue-form-wizard .wizard-header {
+  display: none !important;
+}
+
+.vue-form-wizard .wizard-nav {
+  display: none !important;
+}
+
+/* Contenido del wizard */
+.vue-form-wizard .wizard-content {
+  padding: 30px !important;
+  background: #ffffff !important;
+  min-height: 300px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* ===== OVERRIDE PARA ELEMENTOS ESPECÍFICOS ===== */
+
+/* Asegurar que todos los elementos tengan box-sizing correcto */
+.product-creation-wizard *,
+.vue-form-wizard *,
+.modal-content * {
+  box-sizing: border-box !important;
+}
+
+/* Asegurar que no haya overflow horizontal */
+.product-creation-wizard,
+.vue-form-wizard,
+.modal-content,
+.modal-body,
+.wizard-content {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Fix para las filas del formulario */
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 100% !important;
+}
+
+.col-xs-12,
+.col-md-3,
+.col-md-4,
+.col-md-6,
+.col-md-8 {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ===== OVERRIDE RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .modal-dialog.modal-lg {
+    max-width: 95% !important;
+    width: 95% !important;
+    margin: 15px auto !important;
+  }
+  
+  .wizard-header {
+    padding: 20px !important;
+  }
+  
+  .wizard-title {
+    font-size: 1.5rem !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  
+  .wizard-subtitle {
+    font-size: 1rem !important;
+  }
+  
+  .wizard-nav {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 20px !important;
+  }
+  
+  .wizard-content {
+    padding: 0 !important;
+  }
+  
+  .vue-form-wizard .wizard-content {
+    padding: 20px 15px !important;
+  }
+}

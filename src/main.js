@@ -12,6 +12,10 @@ import './assets/css/global-selects.css';
 import './assets/css/panel-usuario-styles.css';
 // Importar fix para el responsive del panel administrativo
 import './assets/css/admin-responsive-fix.css';
+// Importar fix específico para modales en producción
+import './assets/css/modal-production-fix.css';
+// Importar override específico para producción
+import './assets/css/production-override.css';
 
 import Vue from 'vue';
 import App from './components/App.vue';

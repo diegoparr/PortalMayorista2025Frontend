@@ -1,0 +1,621 @@
+/* 
+ * FIX ESPECÍFICO PARA MODALES EN PRODUCCIÓN (VERCEL)
+ * Este archivo corrige los problemas de renderizado de modales en producción
+ * que se ven diferentes comparado con el entorno local
+ */
+
+/* ===== FIX PARA EL MODAL DE CREACIÓN DE PRODUCTOS ===== */
+
+/* Asegurar que el modal tenga el ancho correcto */
+.modal-dialog.modal-lg {
+  max-width: 90% !important;
+  width: 90% !important;
+  margin: 30px auto !important;
+}
+
+@media (min-width: 992px) {
+  .modal-dialog.modal-lg {
+    max-width: 800px !important;
+    width: 800px !important;
+  }
+}
+
+/* Fix para el contenido del modal */
+.modal-content {
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Fix para el header del modal */
+.modal-header {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 20px !important;
+}
+
+.modal-title {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+/* Fix para el body del modal */
+.modal-body {
+  padding: 30px !important;
+  background: #ffffff !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* ===== FIX ESPECÍFICO PARA EL WIZARD DE PRODUCTOS ===== */
+
+/* Contenedor principal del wizard */
+.product-creation-wizard {
+  background: #ffffff !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Header del wizard - FIX PARA LA BARRA NARANJA ESTIRADA */
+.wizard-header {
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%) !important;
+  color: white !important;
+  padding: 30px !important;
+  text-align: center !important;
+  border-radius: 15px 15px 0 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Fix específico para evitar que la barra naranja se estire */
+.wizard-header::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%) !important;
+  z-index: 1 !important;
+}
+
+.wizard-title,
+.wizard-subtitle {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wizard-title {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 15px !important;
+}
+
+.wizard-title i {
+  font-size: 2.2rem !important;
+  opacity: 0.9 !important;
+}
+
+.wizard-subtitle {
+  font-size: 1.1rem !important;
+  opacity: 0.9 !important;
+  font-weight: 300 !important;
+}
+
+/* Navegación del wizard */
+.wizard-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 30px !important;
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  gap: 40px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.wizard-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.wizard-nav-item .wizard-nav-link {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ecf0f1 !important;
+  color: #95a5a6 !important;
+  font-size: 24px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  border: 4px solid transparent !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wizard-nav-item.active .wizard-nav-link {
+  background: #ff6633 !important;
+  color: #ffffff !important;
+  border-color: #e55a2b !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 25px rgba(255, 102, 51, 0.3) !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-link {
+  background: #27ae60 !important;
+  color: #ffffff !important;
+  border-color: #2ecc71 !important;
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3) !important;
+}
+
+.wizard-nav-item .wizard-nav-text {
+  margin-top: 15px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #7f8c8d !important;
+  text-align: center !important;
+  max-width: 120px !important;
+  transition: all 0.3s ease !important;
+}
+
+.wizard-nav-item.active .wizard-nav-text {
+  color: #ff6633 !important;
+  font-weight: 700 !important;
+}
+
+.wizard-nav-item.completed .wizard-nav-text {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
+}
+
+/* Líneas conectoras entre pasos */
+.wizard-nav-item:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 35px !important;
+  left: 50px !important;
+  width: 40px !important;
+  height: 4px !important;
+  background: #ecf0f1 !important;
+  z-index: 1 !important;
+  border-radius: 2px !important;
+}
+
+.wizard-nav-item.completed:not(:last-child)::after {
+  background: #27ae60 !important;
+}
+
+/* Contenido del wizard */
+.wizard-content {
+  padding: 0 !important;
+  background: #ffffff !important;
+  min-height: 400px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* ===== FIX PARA VUE-FORM-WIZARD ===== */
+
+/* Ocultar el header y nav del form-wizard interno */
+.vue-form-wizard .wizard-header {
+  display: none !important;
+}
+
+.vue-form-wizard .wizard-nav {
+  display: none !important;
+}
+
+/* Contenido del wizard */
+.vue-form-wizard .wizard-content {
+  padding: 30px !important;
+  background: #ffffff !important;
+  min-height: 300px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* Footer del wizard */
+.vue-form-wizard .wizard-card-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 20px 30px !important;
+  background: #f8f9fa !important;
+  border-top: 1px solid #e1e8ed !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Botones del wizard */
+.vue-form-wizard .wizard-btn {
+  padding: 15px 30px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.vue-form-wizard .wizard-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.vue-form-wizard .wizard-btn-prev {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-prev:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(127, 140, 141, 0.3) !important;
+}
+
+.vue-form-wizard .wizard-btn-next {
+  background: linear-gradient(135deg, #ff6633 0%, #e55a2b 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-next:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b 0%, #d44d1f 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(255, 102, 51, 0.3) !important;
+}
+
+.vue-form-wizard .wizard-btn-finish {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: #ffffff !important;
+}
+
+.vue-form-wizard .wizard-btn-finish:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2ecc71 0%, #58d68d 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3) !important;
+}
+
+/* ===== FIX PARA LOS TABS DEL WIZARD ===== */
+
+.tab-content {
+  padding: 20px 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* Fix para el breadcrumb */
+.tab-content .breadcrumb {
+  background: transparent !important;
+  padding: 0 !important;
+  margin-bottom: 20px !important;
+}
+
+.tab-content .breadcrumb li a {
+  color: #fe7501 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.tab-content .breadcrumb li a:hover {
+  color: #e67e22 !important;
+  text-decoration: underline !important;
+}
+
+/* ===== FIX PARA LAS CAJAS DE PRODUCTOS ===== */
+
+.shadow-box-products {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.shadow-box-products:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ===== FIX PARA LOS BOTONES DE VUETIFY ===== */
+
+.v-btn {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+}
+
+.v-btn--info {
+  background-color: #17a2b8 !important;
+  border-color: #17a2b8 !important;
+}
+
+.v-btn--primary {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.v-btn--success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.v-btn--warning {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.v-btn--error {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+/* ===== FIX PARA FORMULARIOS ===== */
+
+.form-group {
+  margin-bottom: 20px !important;
+}
+
+.form-control {
+  border-radius: 6px !important;
+  border: 2px solid #e1e8ed !important;
+  transition: all 0.3s ease !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.form-control:focus {
+  border-color: #fe7501 !important;
+  box-shadow: 0 0 0 3px rgba(254, 117, 1, 0.1) !important;
+}
+
+/* ===== FIX PARA PAGINACIÓN ===== */
+
+.pagination {
+  margin: 20px 0 !important;
+}
+
+.pagination li a {
+  color: #fe7501 !important;
+  border-color: #e1e8ed !important;
+}
+
+.pagination li.active a {
+  background-color: #fe7501 !important;
+  border-color: #fe7501 !important;
+}
+
+.pagination li a:hover {
+  color: #e67e22 !important;
+  border-color: #e67e22 !important;
+}
+
+/* ===== FIX PARA IMÁGENES DE PRODUCTOS ===== */
+
+.img-product {
+  height: 150px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  border-radius: 6px !important;
+  max-width: 100% !important;
+}
+
+/* ===== FIX PARA LAS CAJAS DE CARACTERÍSTICAS ===== */
+
+.box-hipertienda {
+  border-radius: 8px !important;
+  border: 1px solid #e1e8ed !important;
+  background: #ffffff !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.box-hipertienda .box-header {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e1e8ed !important;
+  padding: 15px !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.box-hipertienda .box-title {
+  margin: 0 !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.box-hipertienda .box-body {
+  padding: 20px !important;
+}
+
+/* ===== FIX PARA ENLACES DE CATEGORÍAS ===== */
+
+.categories-links {
+  color: #fe7501 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.categories-links:hover {
+  color: #e67e22 !important;
+  text-decoration: underline !important;
+}
+
+/* ===== FIX PARA MENSAJES DE ERROR ===== */
+
+.help-block {
+  color: #dc3545 !important;
+  font-size: 12px !important;
+  margin-top: 5px !important;
+}
+
+.form-group.has-error .form-control {
+  border-color: #dc3545 !important;
+}
+
+/* ===== FIX RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .modal-dialog.modal-lg {
+    max-width: 95% !important;
+    width: 95% !important;
+    margin: 15px auto !important;
+  }
+  
+  .wizard-header {
+    padding: 20px !important;
+  }
+  
+  .wizard-title {
+    font-size: 1.5rem !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  
+  .wizard-subtitle {
+    font-size: 1rem !important;
+  }
+  
+  .wizard-nav {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 20px !important;
+  }
+  
+  .wizard-nav-item:not(:last-child)::after {
+    display: none !important;
+  }
+  
+  .wizard-content {
+    padding: 0 !important;
+  }
+  
+  .vue-form-wizard .wizard-content {
+    padding: 20px 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-card-footer {
+    flex-direction: column !important;
+    gap: 15px !important;
+    text-align: center !important;
+    padding: 15px !important;
+  }
+  
+  .vue-form-wizard .wizard-btn {
+    padding: 12px 20px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ===== FIX ADICIONAL PARA PRODUCCIÓN ===== */
+
+/* Asegurar que todos los elementos tengan box-sizing correcto */
+.product-creation-wizard *,
+.vue-form-wizard *,
+.modal-content * {
+  box-sizing: border-box !important;
+}
+
+/* Asegurar que no haya overflow horizontal */
+.product-creation-wizard,
+.vue-form-wizard,
+.modal-content,
+.modal-body,
+.wizard-content {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Fix específico para el problema de la barra naranja estirada */
+.wizard-header {
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.wizard-header::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(135deg, #ff6633 0%, #7c7c7c 100%) !important;
+  z-index: 0 !important;
+}
+
+.wizard-title,
+.wizard-subtitle {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Asegurar que el contenido del modal no se desborde */
+.modal-body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  word-wrap: break-word !important;
+}
+
+/* Fix para las filas del formulario */
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 100% !important;
+}
+
+.col-xs-12,
+.col-md-3,
+.col-md-4,
+.col-md-6,
+.col-md-8 {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}

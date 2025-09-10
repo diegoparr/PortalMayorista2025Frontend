@@ -28,6 +28,14 @@
       "destination": "/style.css"
     },
     {
+      "source": "/modal-production-fix.css",
+      "destination": "/modal-production-fix.css"
+    },
+    {
+      "source": "/production-override.css",
+      "destination": "/production-override.css"
+    },
+    {
       "source": "/favicon.png",
       "destination": "/favicon.png"
     },
