@@ -742,16 +742,13 @@
           n_precio_descuento: 0
         },
         dropzoneOptions: {
-          url: '/api/avanzamas/actualizar', // Endpoint correcto del backend
+          url: 'https://httpbin.org/post',
           thumbnailWidth: 150,
           maxFilesize: 1.5,
           acceptedFiles: 'image/*',
           addRemoveLinks: true,
           dictCancelUpload: 'Quitar',
-          autoProcessQueue: false, // Deshabilitar subida automática
-          headers: {
-            "Accept": "application/json"
-          }
+          headers: {"My-Awesome-Header": "header value"}
         },
         images: [],
         paginationCatalogos: {
@@ -898,7 +895,6 @@
         this.cargarCategorias(event.value);
       },
       obtenerImagene(file, response) {
-        // Solo agregar el archivo a la lista, no subirlo automáticamente
         this.images.push(file);
         if (this.producto.v_nombre !== null && this.producto.v_descripcion !== null && this.producto.v_codigo !== null &&
           this.producto.n_precio !== null && this.producto.n_existencia !== null && this.producto.n_stock_min !== null)
@@ -1010,36 +1006,10 @@
         let yo = this;
         this.postMethodWithBearer(this.urlsApi().endpointProductosRegistrar, formData, token)
           .then(response => {
-            // Si hay imágenes, subirlas después de crear el producto
-            if (this.images.length > 0) {
-              let imageFormData = new FormData();
-              imageFormData.append('agregarImagenes', true);
-              imageFormData.append('modelo', 'producto');
-              imageFormData.append('id_modelo', response.body.data.id_m_productos);
-              
-              for (let i = 0; i < this.images.length; i++) {
-                imageFormData.append('imagesNuevas' + i, this.images[i]);
-              }
-              
-              this.postMethodWithBearer(this.urlsApi().endpointsManejoImagenes.actualizar, imageFormData, token)
-                .then(imageResponse => {
-                  boton_registrar.button('reset');
-                  yo.$toastr('success', response.body.mensaje, "Acción exitosa");
-                  $('#modal').modal('hide');
-                  yo.$emit('store');
-                }, imageErrors => {
-                  console.error('Error al subir imágenes:', imageErrors);
-                  boton_registrar.button('reset');
-                  yo.$toastr('success', response.body.mensaje, "Producto creado, pero hubo un error con las imágenes");
-                  $('#modal').modal('hide');
-                  yo.$emit('store');
-                });
-            } else {
-              boton_registrar.button('reset');
-              yo.$toastr('success', response.body.mensaje, "Acción exitosa");
-              $('#modal').modal('hide');
-              yo.$emit('store');
-            }
+            boton_registrar.button('reset');
+            yo.$toastr('success', response.body.mensaje, "Acción exitosa");
+            $('#modal').modal('hide');
+            yo.$emit('store');
           }, errors => this.mapErrorsResponses(this, errors));
       },
       seleccionarCatalogo(catalogo) {
