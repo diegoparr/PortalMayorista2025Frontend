@@ -89,13 +89,18 @@ module.exports = {
     },
     noInfo: true,
     overlay: true,
-    host: "0.0.0.0",
+    host: "localhost",
     port: 1234,
     allowedHosts: [
       '.localhost',
     ],
     contentBase: path.join(__dirname, '.'),
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    before: function(app, server) {
+      app.get('/', function(req, res) {
+        res.sendFile(path.join(__dirname, 'index.dev.html'));
+      });
+    }
   },
   performance: {
     hints: false

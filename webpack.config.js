@@ -1,5 +1,6 @@
 let path = require('path');
 let webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 require('vue-social-sharing');
 
@@ -144,6 +145,12 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
+    }),
+
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      inject: true
     })
   ])
 }
