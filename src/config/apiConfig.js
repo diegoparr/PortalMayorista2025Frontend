@@ -3,7 +3,7 @@ export default {
   getApiBaseUrl() {
     if (process.env.NODE_ENV === 'production') {
       // En producción, usar el proxy de Vercel
-      return '/api';
+      return '';
     } else {
       // En desarrollo, usar la URL directa del backend
       //return 'http://82.25.91.192:8082';
