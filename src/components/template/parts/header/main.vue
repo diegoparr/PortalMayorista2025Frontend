@@ -4,8 +4,8 @@
     <mobile-menu-toggle></mobile-menu-toggle>
     
     <router-link class="logo" :to="{name:'explore'}">
-      <img src="/dist/favicon.png" class="logo-mini" alt="LaHipertienda" width="40" height="40">
-      <img src="/dist/img/img_logo.png" class="logo-lg logo-lg-img" alt="LaHipertienda">
+      <img :src="require('@/assets/img/favicon.png')" class="logo-mini" alt="LaHipertienda" width="40" height="40">
+      <img :src="require('@/assets/img/img_logo.png')" class="logo-lg logo-lg-img" alt="LaHipertienda">
     </router-link>
     <nav class="navbar navbar-static-top">
       <div class="navbar-custom-menu">

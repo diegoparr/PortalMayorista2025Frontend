@@ -4,7 +4,7 @@
       <div class="register-box-body">
         <div class="register-logo">
           <router-link class="links-hipertienda" :to="{name:'explore'}">
-            <img src="/dist/img/img_logo.png" class="img-responsive img-responsive-center" alt="Cinque Terre">
+            <img :src="require('@/assets/img/img_logo.png')" class="img-responsive img-responsive-center" alt="Cinque Terre">
           </router-link>
         </div>
         <form v-on:submit.prevent="registerUser">
