@@ -28,7 +28,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     // Usar /dist/ tanto en desarrollo como en producción
-    publicPath: '/dist/',
+    publicPath: '/',
     filename: 'build.js'
   },
   module: {
