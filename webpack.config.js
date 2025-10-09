@@ -28,7 +28,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     // Usar /dist/ tanto en desarrollo como en producción
-    publicPath: '/',
+    publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {
@@ -87,9 +87,7 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          outputPath: 'img',
           name: '[name].[ext]?[hash]',
-          publicPath: '/img/'
         }
       }
     ]
