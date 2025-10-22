@@ -5,7 +5,7 @@
         <div class="login-box-body">
           <div class="login-logo">
             <router-link class="links-hipertienda" :to="{name:'explore'}">
-              <img src="/dist/img/img_logo.png"
+              <img :src="require('@/assets/img/img_logo.png')"
                    class="img-responsive-center"
                    alt="Logo">
             </router-link>

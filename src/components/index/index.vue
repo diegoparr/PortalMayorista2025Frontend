@@ -2,7 +2,7 @@
   <div class="wrapper-full-screen-home">
     <navbar-index v-if="!datosUsuario"></navbar-index>
     <div class="container margin-top-container-index">
-      <img src="/dist/img/img_logo.png" class="img-responsive img-responsive-center" alt="Cinque Terre" width="600"
+      <img :src="require('@/assets/img/img_logo.png')" class="img-responsive img-responsive-center" alt="Cinque Terre" width="600"
            height="230">
       <div class="row">
         <div class="col-xs-12 col-md-4 col-md-offset-4">

@@ -3,7 +3,7 @@
     <template v-if="formularioMostrar==='acceso'">
       <div class="login-box-body">
         <div class="login-logo">
-          <router-link class="links-hipertienda" :to="{name:'explore'}"><img src="/dist/img/img_logo.png" class="img-responsive img-responsive-center" alt="Logo"></router-link>
+          <router-link class="links-hipertienda" :to="{name:'explore'}"><img :src="require('@/assets/img/img_logo.png')" class="img-responsive img-responsive-center" alt="Logo"></router-link>
         </div>
         <h2 class="text-center">Ingresa tu nueva Contraseña</h2>
         <form v-on:submit.prevent="checkForm">

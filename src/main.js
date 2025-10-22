@@ -77,6 +77,7 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
+Vue.use(VueResource);
 Vue.use(VueTruncate);
 Vue.mixin(EndpointsApi);
 Vue.mixin(AppServices);
@@ -101,7 +102,6 @@ Vue.use(VeeValidate, {
   }
 });
 
-Vue.use(VueResource);
 Vue.use(VueToastr, {
   defaultPosition: 'toast-top-right',
   defaultType: 'info',

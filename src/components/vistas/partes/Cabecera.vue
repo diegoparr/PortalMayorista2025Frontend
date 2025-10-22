@@ -3,7 +3,7 @@
     <v-toolbar dense flat color="white" style="z-index: 10">
       <v-responsive>
         <router-link class="link-negro-naranja" :to="{name:'index'}">
-          <img class="logo hidden-sm-and-down" src="../../../../dist/img/img_logo.png" alt="hipertienda">
+          <img class="logo hidden-sm-and-down" :src="require('@/assets/img/img_logo.png')" alt="hipertienda">
           <img style="width: 25px;height: 25px" class="logo hidden-md-and-up" src="../../../../dist/img/logo_small.png"
                alt="hipertienda">
         </router-link>
@@ -182,7 +182,7 @@
       <v-container style="background-color: white">
         <v-card flat class="text-xs-center">
           <form class="container" v-on:submit.prevent="enviarMail">
-            <img class="logo hidden-sm-and-down" src="../../../../dist/img/img_logo.png" alt="hipertienda">
+            <img class="logo hidden-sm-and-down" :src="require('@/assets/img/img_logo.png')" alt="hipertienda">
             <img style="width: 25px;height: 25px" class="logo hidden-md-and-up"
                  src="../../../../dist/img/logo_small.png"
                  alt="hipertienda">

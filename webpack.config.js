@@ -1,5 +1,7 @@
 let path = require('path');
 let webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 require('vue-social-sharing');
 
@@ -85,14 +87,15 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
         }
       }
     ]
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': path.resolve(__dirname, 'src')
     },
     extensions: ['*', '.js', '.vue', '.json']
   },
@@ -144,6 +147,18 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
-    })
+    }),
+
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      inject: true
+    }),
+
+    new CopyWebpackPlugin([
+      { from: 'src/assets/img', to: 'img' },
+      { from: 'src/assets/css/modal-production-fix.css', to: 'modal-production-fix.css' },
+      { from: 'src/assets/css/sidebar-responsive-fix.css', to: 'sidebar-responsive-fix.css' }
+    ])
   ])
 }

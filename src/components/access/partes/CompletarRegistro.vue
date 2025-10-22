@@ -2,7 +2,7 @@
   <div class="login-box">
     <div class="login-box-body">
       <div class="login-logo">
-        <img src="/dist/img/img_logo.png" class="img-responsive img-responsive-center" alt="Cinque Terre">
+        <img  :src="require('@/assets/img/img_logo.png')" class="img-responsive img-responsive-center" alt="Cinque Terre">
       </div>
       <p class="login-box-msg">¡Ya casi completa tus registro!</p>
       <form v-on:submit.prevent="completarRegistroUsuarioRedesSociales">

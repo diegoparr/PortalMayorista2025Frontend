@@ -6,8 +6,9 @@ export default {
       return '';
     } else {
       // En desarrollo, usar la URL directa del backend
-      return 'http://82.25.91.192:8082';
+      //return 'http://82.25.91.192:8082';
       //return 'http://127.0.0.1:8000';
+      return 'http://hipertiendaapi.test';
     }
   },
 
